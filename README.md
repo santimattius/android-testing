@@ -1,3 +1,5 @@
+![Quality Checks](https://github.com/santimattius/android-testing//actions/workflows/main.yml/badge.svg)
+
 # Android Testing
 
 This is a template to build an Android app applying good practices and using a clean architecture,
