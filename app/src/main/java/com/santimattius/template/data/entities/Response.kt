@@ -1,10 +1,10 @@
 package com.santimattius.template.data.entities
 
-import com.squareup.moshi.Json
+import com.google.gson.annotations.SerializedName
 
 data class Response<T>(
-    @Json(name = "page") val page: Int = 1,
-    @Json(name = "results") val results: List<T> = emptyList(),
-    @Json(name = "total_pages") val totalPages: Int = 1,
-    @Json(name = "total_results") val totalResults: Int = 1,
+    @SerializedName("page") val page: Int = 1,
+    @SerializedName("results") val results: List<T> = emptyList(),
+    @SerializedName("total_pages") val totalPages: Int = 1,
+    @SerializedName("total_results") val totalResults: Int = 1,
 )

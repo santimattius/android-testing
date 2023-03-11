@@ -1,10 +1,8 @@
 package com.santimattius.template.data.client.network
 
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
 
 object RetrofitServiceCreator {
@@ -27,18 +25,9 @@ object RetrofitServiceCreator {
         val retrofit = Retrofit.Builder()
             .baseUrl(baseUrl)
             .client(client)
-            .configure()
+            .addConverterFactory(GsonConverterFactory.create())
             .build()
 
         return retrofit.create()
-    }
-
-
-    private fun Retrofit.Builder.configure(): Retrofit.Builder {
-        val moshi = Moshi.Builder()
-            .add(KotlinJsonAdapterFactory())
-            .build()
-        val moshiConverterFactory = MoshiConverterFactory.create(moshi)
-        return this.addConverterFactory(moshiConverterFactory)
     }
 }

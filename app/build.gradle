@@ -84,6 +84,7 @@ dependencies {
     implementation libs.room.runtime
     kapt libs.room.compiler
 
+    testImplementation 'junit:junit:4.12'
     testImplementation libs.bundles.unitTesting
     androidTestImplementation libs.bundles.androidTesting
 
