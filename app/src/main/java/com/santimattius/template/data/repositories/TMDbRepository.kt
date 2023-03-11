@@ -1,17 +1,19 @@
 package com.santimattius.template.data.repositories
 
-import android.content.Context
-import com.santimattius.template.data.datasources.implementation.MovieDataSource
-import com.santimattius.template.data.datasources.implementation.RoomDataSource
+import com.santimattius.template.data.datasources.LocalDataSource
+import com.santimattius.template.data.datasources.RemoteDataSource
 import com.santimattius.template.data.dtoToEntity
 import com.santimattius.template.data.entityToDomain
 import com.santimattius.template.domain.entities.Movie
 import com.santimattius.template.domain.repositories.MovieRepository
 
-internal class TMDbRepository(context: Context) : MovieRepository {
+internal class TMDbRepository(
+    private val remoteDataSource: RemoteDataSource,
+    private val localDataSource: LocalDataSource,
+) : MovieRepository {
 
-    private val remoteDataSource = MovieDataSource()
-    private val localDataSource = RoomDataSource(context)
+//    private val remoteDataSource = MovieDataSource()
+//    private val localDataSource = RoomDataSource(context)
 
     override suspend fun getPopular(): List<Movie> {
         if (localDataSource.isEmpty()) {
