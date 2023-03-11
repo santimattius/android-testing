@@ -8,7 +8,6 @@ import com.santimattius.template.data.entities.MovieDto as TheMovieDbMovie
 
 internal class MovieDataSource : RemoteDataSource {
 
-
     private val service: TheMovieDBService = RetrofitServiceCreator.create(BuildConfig.API_KEY)
 
     @Suppress("TooGenericExceptionCaught")
@@ -20,7 +19,6 @@ internal class MovieDataSource : RemoteDataSource {
             Result.failure(ex)
         }
     }
-
 
     companion object {
         private const val SINGLE_PAGE = 1

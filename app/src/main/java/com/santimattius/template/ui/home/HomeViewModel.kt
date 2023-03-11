@@ -6,7 +6,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.santimattius.template.data.repositories.TMDbRepository
-import com.santimattius.template.domain.repositories.MovieRepository
 import com.santimattius.template.ui.home.models.HomeState
 import com.santimattius.template.ui.home.models.mapping.asUiModels
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -17,10 +16,9 @@ class HomeViewModel(
     application: Application,
 ) : AndroidViewModel(application) {
 
-    private val movieRepository: MovieRepository = TMDbRepository(application)
+    private val movieRepository = TMDbRepository(application)
 
     private val _state = MutableLiveData<HomeState>()
-
     val state: LiveData<HomeState>
         get() = _state
 
