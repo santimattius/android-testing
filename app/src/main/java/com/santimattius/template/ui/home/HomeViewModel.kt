@@ -1,16 +1,10 @@
 package com.santimattius.template.ui.home
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.santimattius.template.BuildConfig
-import com.santimattius.template.data.client.database.AppDataBase
-import com.santimattius.template.data.client.network.RetrofitServiceCreator
-import com.santimattius.template.data.datasources.implementation.MovieDataSource
-import com.santimattius.template.data.datasources.implementation.RoomDataSource
-import com.santimattius.template.data.repositories.TMDbRepository
+import com.santimattius.template.domain.repositories.MovieRepository
 import com.santimattius.template.ui.home.models.HomeState
 import com.santimattius.template.ui.home.models.mapping.asUiModels
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -18,13 +12,10 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
-    application: Application,
-) : AndroidViewModel(application) {
+    private val movieRepository: MovieRepository,
+) : ViewModel() {
 
-    private val movieRepository = TMDbRepository(
-        remoteDataSource = MovieDataSource(service = RetrofitServiceCreator.create(BuildConfig.API_KEY)),
-        localDataSource = RoomDataSource(dao = AppDataBase.get(application).dao())
-    )
+//    private val movieRepository = AppContainer.getRepository(application)
 
     private val _state = MutableLiveData<HomeState>()
     val state: LiveData<HomeState>
