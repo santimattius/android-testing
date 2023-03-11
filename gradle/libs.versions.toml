@@ -24,7 +24,6 @@ retrofit = "2.9.0"
 okHttp = "4.9.3"
 coroutine = "1.6.4"
 gson = "2.10"
-moshi = "1.9.0"
 okhttp3IdlingResource = "1.0.0"
 glide = "4.12.0"
 mockk = "1.12.3"
@@ -52,12 +51,9 @@ lifecycle_livedata_ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx",
 # Retrofit
 retrofit_core = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 retrofit_gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
-retrofit_moshi = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "retrofit" }
 logging_interceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okHttp" }
 # Moshi
 gson_core = { module = "com.google.code.gson:gson", version.ref = "gson" }
-moshi_core = { module = "com.squareup.moshi:moshi", version.ref = "moshi" }
-moshi_kotlin = { module = "com.squareup.moshi:moshi-kotlin", version.ref = "moshi" }
 #ImageLoader
 glide_core = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 # Coroutines
@@ -89,8 +85,8 @@ okHttp3_idling_resource = { module = "com.jakewharton.espresso:okhttp3-idling-re
 ui = ["legacy.support", "app.compart", "fragment.ktx", "constraint.layout", "recycler.view", "material", "fragment.testing"]
 lifecycle = ["lifecycle.extensions", "lifecycle.runtime.ktx", "lifecycle.viewmodel.ktx", "lifecycle.livedata.ktx"]
 coroutine = ["coroutine.core", "coroutine.android"]
-retrofit = ["retrofit.core", "retrofit.gson", "retrofit.moshi", "logging.interceptor"]
-serializable = ["gson.core", "moshi.core", "moshi.kotlin"]
+retrofit = ["retrofit.core", "retrofit.gson", "logging.interceptor"]
+serializable = ["gson.core"]
 
 unitTesting = ["core.testing", "mockwebserver", "coroutine.test", "junit", "mockk.core", "robolectric.core", "robolectric.httpclient", "test.ext.ktx"]
 androidTesting = ["mockwebserver", "okHttp3.idling.resource", "mockk.android", "test.ext.ktx", "test.runner", "test.rule", "test.espresso.contrib"]
