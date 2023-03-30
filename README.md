@@ -1,6 +1,6 @@
-![Quality Checks](https://github.com/santimattius/android-testing//actions/workflows/main.yml/badge.svg)
+![giphy](https://user-images.githubusercontent.com/22333101/228989416-87aa423f-2c23-49ea-b2df-2c033ecbfa8f.gif)
 
-# Android Testing
+# [Working progress] Android Testing 
 
 This is a template to build an Android app applying good practices and using a clean architecture,
 you will see that the code is super decoupled with external frameworks and even with the same
