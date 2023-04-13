@@ -19,5 +19,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "android-testing"
 include ':app'
-
-enableFeaturePreview("VERSION_CATALOGS")
