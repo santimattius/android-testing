@@ -8,26 +8,19 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.recyclerview.widget.GridLayoutManager
 import com.santimattius.template.R
 import com.santimattius.template.core.presentation.DialogAction
 import com.santimattius.template.databinding.PopularMoviesFragmentBinding
-import com.santimattius.template.di.AppContainer
 import com.santimattius.template.ui.components.showDialog
 import com.santimattius.template.ui.home.components.PopularMoviesAdapter
 import com.santimattius.template.ui.home.models.HomeState
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
 
-    private val viewModel: HomeViewModel by viewModels {
-        viewModelFactory {
-            initializer {
-                AppContainer.provideViewModel(requireContext())
-            }
-        }
-    }
+    private val viewModel: HomeViewModel by viewModels()
 
     private val homeAdapter: PopularMoviesAdapter by lazy {
         PopularMoviesAdapter {
@@ -67,13 +60,16 @@ class HomeFragment : Fragment() {
                 viewBinding.textEmptyResult.isVisible = state.values.isEmpty()
                 homeAdapter.submitList(state.values)
             }
+
             HomeState.Error -> {
                 loading(visible = false)
                 showError()
             }
+
             HomeState.Loading -> {
                 loading(visible = true)
             }
+
             HomeState.Refreshing -> refresh(true)
             HomeState.Completed -> refresh(false)
         }

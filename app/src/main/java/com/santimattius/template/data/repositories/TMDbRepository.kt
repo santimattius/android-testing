@@ -7,13 +7,10 @@ import com.santimattius.template.data.entityToDomain
 import com.santimattius.template.domain.entities.Movie
 import com.santimattius.template.domain.repositories.MovieRepository
 
-internal class TMDbRepository(
+class TMDbRepository(
     private val remoteDataSource: RemoteDataSource,
     private val localDataSource: LocalDataSource,
 ) : MovieRepository {
-
-//    private val remoteDataSource = MovieDataSource()
-//    private val localDataSource = RoomDataSource(context)
 
     override suspend fun getPopular(): List<Movie> {
         if (localDataSource.isEmpty()) {

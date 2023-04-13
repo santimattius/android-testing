@@ -7,15 +7,16 @@ import androidx.lifecycle.viewModelScope
 import com.santimattius.template.domain.repositories.MovieRepository
 import com.santimattius.template.ui.home.models.HomeState
 import com.santimattius.template.ui.home.models.mapping.asUiModels
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class HomeViewModel(
+@HiltViewModel
+class HomeViewModel @Inject constructor(
     private val movieRepository: MovieRepository,
 ) : ViewModel() {
-
-//    private val movieRepository = AppContainer.getRepository(application)
 
     private val _state = MutableLiveData<HomeState>()
     val state: LiveData<HomeState>
