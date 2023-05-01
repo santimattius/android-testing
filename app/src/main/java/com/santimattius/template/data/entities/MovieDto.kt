@@ -2,9 +2,7 @@ package com.santimattius.template.data.entities
 
 import com.google.gson.annotations.SerializedName
 
-data class
-
-MovieDto(
+data class MovieDto(
     @SerializedName("id")
     val id: Int = 0,
     @SerializedName("overview")

@@ -6,7 +6,8 @@ plugins {
     alias libs.plugins.hilt
 }
 
-apply from: "$rootDir/gradle/report.gradle"
+//TODO: jacoco error
+//apply from: "$rootDir/gradle/report.gradle"
 
 def localProperties = new Properties()
 localProperties.load(new FileInputStream(rootProject.file("./local.properties")))
@@ -33,7 +34,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
-            testCoverageEnabled true
+
         }
     }
     compileOptions {
@@ -51,12 +52,6 @@ android {
         unitTests {
             returnDefaultValues = true
             includeAndroidResources = true
-        }
-        unitTests.all {
-            jacoco {
-                includeNoLocationClasses = true
-                jacoco.excludes = ['jdk.internal.*']
-            }
         }
     }
     namespace 'com.santimattius.template'
@@ -83,12 +78,16 @@ dependencies {
 
     implementation libs.room.ktx
     implementation libs.room.runtime
+    testImplementation 'junit:junit:4.12'
     kapt libs.room.compiler
 
     implementation libs.hilt.android
     kapt libs.hilt.compiler
 
     testImplementation 'junit:junit:4.13.2'
+    //Use for Flows
+    testImplementation 'app.cash.turbine:turbine:0.12.3'
+
     testImplementation libs.bundles.unitTesting
     androidTestImplementation libs.bundles.androidTesting
 

@@ -10,13 +10,13 @@ import kotlinx.coroutines.test.runTest
 import org.junit.*
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class TMDbRepositoryTest {
+class TMDbRepositoryTestWithMock {
 
     @get:Rule
     val coroutinesTestRule = MainCoroutinesTestRule()
 
-    private val remoteDataSource = mockk<RemoteDataSource>()
-    private val localDataSource = mockk<LocalDataSource>()
+    private val remoteDataSource: RemoteDataSource = mockk(relaxed = true)
+    private val localDataSource: LocalDataSource = mockk(relaxed = true)
     private val repository: TMDbRepository = TMDbRepository(remoteDataSource, localDataSource)
 
     @After
@@ -25,8 +25,8 @@ class TMDbRepositoryTest {
     }
 
     @Test
-    fun `first test example`() {
-        val movies = MovieMother.getMovies()
+    fun `Given there are movies when make the request the result is not empty`() {
+        val movies = MovieMother.createMovies()
         //Given
         coEvery {
             remoteDataSource.getPopularMovies()
