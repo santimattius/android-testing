@@ -22,9 +22,10 @@ class TMDbRepositoryTestWithFakes {
 
     @Test
     fun `Given there are movies when make the request the result is not empty`() {
-        val movies = MovieMother.createMovies()
         //Given
+        val movies = MovieMother.createMovies()
         remoteDataSource.onMovies = { movies }
+
         //When
         runTest(coroutinesTestRule.testDispatcher) {
             val result = repository.fetchPopular()

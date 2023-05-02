@@ -19,6 +19,13 @@ object MovieMother {
             object : TypeToken<Response<MovieDto>>() {}.type
         ).results
     }
+
+    fun createMovie(
+        id: Int = 508947,
+        title: String = "Spider-Man: No Way Home",
+        overview: String = "Spider-Man: No Way Home",
+        poster: String = "/fOy2Jurz9k6RnJnMUMRDAgBwru2.jpg"
+    ) = Movie(id, overview, title, poster)
 }
 
 fun List<MovieDto>.dtoToDomain() = this.map {
