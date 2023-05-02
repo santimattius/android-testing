@@ -78,7 +78,7 @@ robolectric_httpclient = { module = "org.robolectric:shadows-httpclient", versio
 # AndroidTest
 test_ext = { module = "androidx.test.ext:junit", version.ref = "junitExt" }
 test_ext_ktx = { module = "androidx.test.ext:junit-ktx", version.ref = "junitExt" }
-test_runner = { module = "androidx.test:runnert", version = "1.2.0" }
+test_runner = { module = "androidx.test:runner", version = "1.2.0" }
 test_rule = { module = "androidx.test:rules", version = "1.2.0" }
 test_espresso = { module = "androidx.test.espresso:espresso-core", version.ref = "espressoCore" }
 test_espresso_contrib = { module = "androidx.test.espresso:espresso-contrib", version.ref = "espressoCore" }
