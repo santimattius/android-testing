@@ -1,35 +1,35 @@
 package com.santimattius.template.data.entities
 
-import com.squareup.moshi.Json
+import com.google.gson.annotations.SerializedName
 
 data class MovieDto(
-    @Json(name = "id")
+    @SerializedName("id")
     val id: Int = 0,
-    @Json(name = "overview")
+    @SerializedName("overview")
     val overview: String = "",
-    @Json(name = "original_language")
+    @SerializedName("original_language")
     val originalLanguage: String = "",
-    @Json(name = "original_title")
+    @SerializedName("original_title")
     val originalTitle: String = "",
-    @Json(name = "video")
+    @SerializedName("video")
     val video: Boolean = false,
-    @Json(name = "title")
+    @SerializedName("title")
     val title: String = "",
-    @Json(name = "genre_ids")
+    @SerializedName("genre_ids")
     val genreIds: List<Int> = emptyList(),
-    @Json(name = "poster_path")
+    @SerializedName("poster_path")
     private val posterPath: String? = null,
-    @Json(name = "backdrop_path")
+    @SerializedName("backdrop_path")
     val backdropPath: String? = null,
-    @Json(name = "release_date")
+    @SerializedName("release_date")
     val releaseDate: String = "",
-    @Json(name = "popularity")
+    @SerializedName("popularity")
     val popularity: Double = 0.0,
-    @Json(name = "vote_average")
+    @SerializedName("vote_average")
     val voteAverage: Double = 0.0,
-    @Json(name = "adult")
+    @SerializedName("adult")
     val adult: Boolean = false,
-    @Json(name = "vote_count")
+    @SerializedName("vote_count")
     val voteCount: Int = 0,
 ) {
     val poster: String

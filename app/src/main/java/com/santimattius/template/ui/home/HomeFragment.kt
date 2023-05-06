@@ -11,13 +11,13 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.santimattius.template.R
 import com.santimattius.template.core.presentation.DialogAction
-import com.santimattius.template.ui.components.openLink
-import com.santimattius.template.ui.components.showDialog
 import com.santimattius.template.databinding.PopularMoviesFragmentBinding
-
+import com.santimattius.template.ui.components.showDialog
 import com.santimattius.template.ui.home.components.PopularMoviesAdapter
 import com.santimattius.template.ui.home.models.HomeState
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
 
     private val viewModel: HomeViewModel by viewModels()
@@ -60,13 +60,16 @@ class HomeFragment : Fragment() {
                 viewBinding.textEmptyResult.isVisible = state.values.isEmpty()
                 homeAdapter.submitList(state.values)
             }
+
             HomeState.Error -> {
                 loading(visible = false)
                 showError()
             }
+
             HomeState.Loading -> {
                 loading(visible = true)
             }
+
             HomeState.Refreshing -> refresh(true)
             HomeState.Completed -> refresh(false)
         }
@@ -77,15 +80,13 @@ class HomeFragment : Fragment() {
     }
 
     private fun showError() {
-        showDialog(
-            message = getString(R.string.message_loading_error),
+        showDialog(message = getString(R.string.message_loading_error),
             positiveAction = DialogAction(text = getString(R.string.button_text_positive_error)) {
                 viewModel.refresh()
             },
             negativeAction = DialogAction(text = getString(R.string.button_text_negative_error)) {
                 requireActivity().finish()
-            }
-        )
+            })
     }
 
     private fun loading(visible: Boolean) = run {

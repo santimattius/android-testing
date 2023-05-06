@@ -1,16 +1,13 @@
 package com.santimattius.template.data.datasources.implementation
 
-import android.content.Context
-import com.santimattius.template.data.client.database.AppDataBase
 import com.santimattius.template.data.client.database.MovieDao
 import com.santimattius.template.data.datasources.LocalDataSource
 import com.santimattius.template.data.entities.MovieEntity
 
 class RoomDataSource(
-    context: Context,
+    private val dao: MovieDao,
 ) : LocalDataSource {
 
-    private val dao: MovieDao = AppDataBase.get(context).dao()
     override suspend fun getAll(): List<MovieEntity> = dao.getAll()
 
     override suspend fun isEmpty() = runSafe { count() == 0 }

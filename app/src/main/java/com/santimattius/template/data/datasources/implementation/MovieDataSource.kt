@@ -1,16 +1,12 @@
 package com.santimattius.template.data.datasources.implementation
 
-import com.santimattius.template.BuildConfig
-import com.santimattius.template.data.client.network.RetrofitServiceCreator
 import com.santimattius.template.data.client.network.TheMovieDBService
 import com.santimattius.template.data.datasources.RemoteDataSource
 import com.santimattius.template.data.entities.MovieDto as TheMovieDbMovie
 
-internal class MovieDataSource : RemoteDataSource {
-
-
-    private val service: TheMovieDBService = RetrofitServiceCreator.create(BuildConfig.API_KEY)
-
+internal class MovieDataSource(
+    private val service: TheMovieDBService,
+) : RemoteDataSource {
     @Suppress("TooGenericExceptionCaught")
     override suspend fun getPopularMovies(): Result<List<TheMovieDbMovie>> {
         return try {
@@ -20,7 +16,6 @@ internal class MovieDataSource : RemoteDataSource {
             Result.failure(ex)
         }
     }
-
 
     companion object {
         private const val SINGLE_PAGE = 1

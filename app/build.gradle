@@ -1,11 +1,13 @@
 plugins {
-    id 'com.android.application'
-    id 'kotlin-android'
+    alias libs.plugins.android.application
+    alias libs.plugins.kotlin
     id 'kotlin-kapt'
-    id 'io.gitlab.arturbosch.detekt'
+    alias libs.plugins.detekt
+    alias libs.plugins.hilt
 }
 
-apply from: "$rootDir/gradle/report.gradle"
+//TODO: jacoco error
+//apply from: "$rootDir/gradle/report.gradle"
 
 def localProperties = new Properties()
 localProperties.load(new FileInputStream(rootProject.file("./local.properties")))
@@ -32,15 +34,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
-            testCoverageEnabled true
+
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_11.toString()
+        jvmTarget = JavaVersion.VERSION_17.toString()
     }
 
     viewBinding {
@@ -51,17 +53,12 @@ android {
             returnDefaultValues = true
             includeAndroidResources = true
         }
-        unitTests.all {
-            jacoco {
-                includeNoLocationClasses = true
-                jacoco.excludes = ['jdk.internal.*']
-            }
-        }
     }
     namespace 'com.santimattius.template'
 }
 
 detekt {
+    toolVersion = "1.22.0"
     config = files("${project.rootDir}/config/detekt/detekt.yml")
     baseline = file("$rootDir/detekt-baseline.xml")
     autoCorrect = true
@@ -82,10 +79,21 @@ dependencies {
 
     implementation libs.room.ktx
     implementation libs.room.runtime
+    testImplementation 'junit:junit:4.13.2'
     kapt libs.room.compiler
+
+    implementation libs.hilt.android
+    kapt libs.hilt.compiler
+
+    testImplementation 'junit:junit:4.13.2'
+    //Use for Flows
+    testImplementation 'app.cash.turbine:turbine:0.12.3'
 
     testImplementation libs.bundles.unitTesting
     androidTestImplementation libs.bundles.androidTesting
 
+}
 
+kapt {
+    correctErrorTypes true
 }
