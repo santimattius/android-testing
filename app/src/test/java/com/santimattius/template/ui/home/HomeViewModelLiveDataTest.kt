@@ -7,13 +7,13 @@ import com.santimattius.template.ui.home.fakes.FakeMovieRepository
 import com.santimattius.template.ui.home.models.HomeState
 import com.santimattius.template.utils.MainCoroutinesTestRule
 import com.santimattius.template.utils.getOrAwaitValue
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
-import org.junit.After
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class HomeViewModelLiveDataTest {
 
     @get:Rule
@@ -24,14 +24,6 @@ class HomeViewModelLiveDataTest {
 
     private val movieRepository = FakeMovieRepository()
     private val viewModel = HomeViewModel(movieRepository)
-
-    @Before
-    fun setUp() {
-    }
-
-    @After
-    fun tearDown() {
-    }
 
     @Test
     fun `fetch result success`() {
@@ -44,6 +36,7 @@ class HomeViewModelLiveDataTest {
     }
 
     @Test
+    @Suppress("TooGenericExceptionCaught")
     fun `fetch result fail`() {
         //Given
         movieRepository.onPopularMovies = { throw Throwable() }

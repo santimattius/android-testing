@@ -58,6 +58,7 @@ android {
 }
 
 detekt {
+    toolVersion = "1.22.0"
     config = files("${project.rootDir}/config/detekt/detekt.yml")
     baseline = file("$rootDir/detekt-baseline.xml")
     autoCorrect = true
@@ -78,7 +79,7 @@ dependencies {
 
     implementation libs.room.ktx
     implementation libs.room.runtime
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13.2'
     kapt libs.room.compiler
 
     implementation libs.hilt.android

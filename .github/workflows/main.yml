@@ -49,25 +49,4 @@ jobs:
       - name: Set gradlew permissions
         run: chmod +x gradlew
       - name: Run Tests
-        run: ./gradlew app:testDebugUnitTestCoverage
-      - name: Generate Report
-        uses: actions/upload-artifact@v2
-        with:
-          name: report
-          path: app/build/reports/jacoco/testDebugUnitTestCoverage
-
-      - name: Download Test Reports Folder
-        uses: actions/download-artifact@v2
-        with:
-          name: report
-          path: app/build/reports/jacoco/testDebugUnitTestCoverage
-
-      - name: Upload Test Report
-        uses: codecov/codecov-action@v3
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
-          files: app/build/reports/jacoco/testDebugUnitTestCoverage/testDebugUnitTestCoverage.xml # optional
-          flags: unittests # optional
-          name: pull-request # optional
-          fail_ci_if_error: true # optional (default = false)
-          verbose: true # optional (default = false)
+        run: ./gradlew :app:test

@@ -24,14 +24,6 @@ class HomeViewModelFlowsTest {
     private val movieRepository = FakeMovieRepository()
     private val viewModel = HomeViewModel2(movieRepository)
 
-    @Before
-    fun setUp() {
-    }
-
-    @After
-    fun tearDown() {
-    }
-
     @Test
     fun popularMovies() {
         val movies = MovieMother.createMovies().dtoToUiModel()
