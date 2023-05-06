@@ -24,7 +24,7 @@ jobs:
           fetch-depth: 1
           ref: ${{ github.head_ref }}
       - name: DeteKt
-        uses: natiginfo/action-detekt-all@1.20.0-RC1
+        uses: natiginfo/action-detekt-all@1.22.0
         with:
           args: --fail-fast --config config/detekt/detekt.yml
   tests:
@@ -46,15 +46,10 @@ jobs:
         env:
           APIKEY: ${{ secrets.APIKEY }}
         run: echo apiKey="$APIKEY" > ./local.properties
-      # Execute unit tests
-#      - name: Unit Test with Android Emulator Runner
-#        uses: ReactiveCircus/android-emulator-runner@v2
-#        with:
-#          api-level: 29
-#          script: ./gradlew app:testDebugUnitTestCoverage
+      - name: Set gradlew permissions
+        run: chmod +x gradlew
       - name: Run Tests
         run: ./gradlew app:testDebugUnitTestCoverage
-
       - name: Generate Report
         uses: actions/upload-artifact@v2
         with:
@@ -68,7 +63,7 @@ jobs:
           path: app/build/reports/jacoco/testDebugUnitTestCoverage
 
       - name: Upload Test Report
-        uses: codecov/codecov-action@v2
+        uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
           files: app/build/reports/jacoco/testDebugUnitTestCoverage/testDebugUnitTestCoverage.xml # optional
