@@ -3,8 +3,8 @@ package com.santimattius.template.di
 import android.content.Context
 import com.santimattius.template.BuildConfig
 import com.santimattius.template.data.client.database.AppDataBase
-import com.santimattius.template.data.client.network.RequestInterceptor
 import com.santimattius.template.data.client.network.TheMovieDBService
+import com.santimattius.template.data.client.network.createRetrofitService
 import com.santimattius.template.data.datasources.LocalDataSource
 import com.santimattius.template.data.datasources.RemoteDataSource
 import com.santimattius.template.data.datasources.implementation.MovieDataSource
@@ -16,9 +16,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import okhttp3.OkHttpClient
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
 import javax.inject.Singleton
 
@@ -56,14 +54,9 @@ class AppModule {
     @Provides
     @Singleton
     fun provideRetrofit(): Retrofit {
-        val client = OkHttpClient().newBuilder()
-            .addInterceptor(RequestInterceptor(BuildConfig.API_KEY))
-            .build()
-
-        return Retrofit.Builder()
-            .baseUrl("https://api.themoviedb.org")
-            .client(client)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+        return createRetrofitService(
+            baseUrl = "https://api.themoviedb.org",
+            apiKey = BuildConfig.API_KEY
+        )
     }
 }
