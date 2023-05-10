@@ -3,10 +3,10 @@ package com.santimattius.template.ui.home
 import app.cash.turbine.test
 import com.santimattius.shared_test.data.MovieMother
 import com.santimattius.shared_test.data.dtoToUiModel
-import com.santimattius.template.ui.home.fakes.FakeMovieRepository
-import com.santimattius.template.ui.androidview.home.models.HomeState
 import com.santimattius.shared_test.rules.MainCoroutinesTestRule
+import com.santimattius.template.ui.androidview.home.models.HomeState
 import com.santimattius.template.ui.compose.HomeViewModel
+import com.santimattius.template.ui.home.fakes.FakeMovieRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.hamcrest.CoreMatchers.equalTo
@@ -21,13 +21,12 @@ class HomeViewModelFlowsTest {
     val mainCoroutinesTestRule = MainCoroutinesTestRule()
 
     private val movieRepository = FakeMovieRepository()
-    private val viewModel = HomeViewModel(movieRepository)
 
     @Test
     fun popularMovies() {
         val movies = MovieMother.createMovies().dtoToUiModel()
         runTest(mainCoroutinesTestRule.testDispatcher) {
-            viewModel.popularMovies()
+            val viewModel = HomeViewModel(movieRepository)
             viewModel.state.test {
                 assertThat(
                     awaitItem(),
@@ -37,4 +36,6 @@ class HomeViewModelFlowsTest {
             }
         }
     }
+
+
 }

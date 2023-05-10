@@ -23,7 +23,7 @@ import org.junit.runner.RunWith
 @MediumTest
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
-class HomeFragmentTest {
+class MainActivityTest {
 
     @get:Rule
     var hiltRule = HiltAndroidRule(this)
@@ -40,7 +40,7 @@ class HomeFragmentTest {
     }
 
     @Test
-    fun showsAuthorNameOfImageIfThereAreImages() {
+    fun showsTitleOfImageIfThereAreImages() {
         val pictures = MovieMother.createMovies().dtoToUiModel()
 
         ActivityScenario.launch(MainActivity::class.java)
