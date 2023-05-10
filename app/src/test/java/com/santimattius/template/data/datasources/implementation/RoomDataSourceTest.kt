@@ -7,8 +7,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.santimattius.template.data.client.database.AppDataBase
 import com.santimattius.template.data.dtoToEntity
-import com.santimattius.template.data.repositories.MovieMother
-import com.santimattius.template.utils.MainCoroutinesTestRule
+import com.santimattius.shared_test.data.MovieMother
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.hamcrest.MatcherAssert.assertThat
@@ -27,7 +26,7 @@ import java.io.IOException
 class RoomDataSourceTest {
 
     @get:Rule
-    val coroutinesTestRule = MainCoroutinesTestRule()
+    val coroutinesTestRule = com.santimattius.shared_test.rules.MainCoroutinesTestRule()
     private lateinit var db: AppDataBase
     private lateinit var dataSource: RoomDataSource
 

@@ -1,8 +1,8 @@
 package com.santimattius.template.data.datasources.implementation
 
+import com.santimattius.shared_test.data.TheMovieDBServiceMother
 import com.santimattius.template.data.client.network.TheMovieDBService
 import com.santimattius.template.data.client.network.createRetrofitService
-import com.santimattius.template.utils.MockWebServerRule
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
@@ -14,7 +14,7 @@ import retrofit2.create
 class MovieDataSourceTest {
 
     @get:Rule
-    val mockWebServerRule = MockWebServerRule()
+    val mockWebServerRule = com.santimattius.shared_test.rules.MockWebServerRule()
     private lateinit var dataSource: MovieDataSource
 
     @Before

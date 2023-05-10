@@ -1,17 +1,16 @@
 package com.santimattius.template.ui.home
 
 import app.cash.turbine.test
-import com.santimattius.template.data.repositories.MovieMother
-import com.santimattius.template.data.repositories.dtoToUiModel
+import com.santimattius.shared_test.data.MovieMother
+import com.santimattius.shared_test.data.dtoToUiModel
 import com.santimattius.template.ui.home.fakes.FakeMovieRepository
-import com.santimattius.template.ui.home.models.HomeState
-import com.santimattius.template.utils.MainCoroutinesTestRule
+import com.santimattius.template.ui.androidview.home.models.HomeState
+import com.santimattius.shared_test.rules.MainCoroutinesTestRule
+import com.santimattius.template.ui.compose.HomeViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
-import org.junit.After
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
@@ -22,7 +21,7 @@ class HomeViewModelFlowsTest {
     val mainCoroutinesTestRule = MainCoroutinesTestRule()
 
     private val movieRepository = FakeMovieRepository()
-    private val viewModel = HomeViewModel2(movieRepository)
+    private val viewModel = HomeViewModel(movieRepository)
 
     @Test
     fun popularMovies() {

@@ -1,7 +1,7 @@
 package com.santimattius.template.ui.home.fakes
 
-import com.santimattius.template.data.repositories.MovieMother
-import com.santimattius.template.data.repositories.dtoToDomain
+import com.santimattius.shared_test.data.MovieMother
+import com.santimattius.shared_test.data.dtoToDomain
 import com.santimattius.template.domain.entities.Movie
 import com.santimattius.template.domain.repositories.MovieRepository
 
