@@ -23,7 +23,7 @@ android {
         versionCode Integer.valueOf(version_code)
         versionName version_name
         multiDexEnabled true
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.santimattius.template.CustomTestRunner"
 
         buildConfigField "String", "API_KEY", localProperties['apiKey']
         vectorDrawables {
@@ -84,6 +84,10 @@ configurations {
     }
 }
 
+hilt {
+    enableTransformForLocalTests = true
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -142,10 +146,14 @@ dependencies {
 
     //Unit Testing
     testImplementation libs.bundles.unitTesting
+    testImplementation libs.bundles.robolectric
     testImplementation project(path: ':shared-test')
 
     //Android Testing
     androidTestImplementation 'junit:junit:4.13.2'
+    androidTestImplementation("androidx.test:core-ktx:1.5.0")
+    debugImplementation("androidx.fragment:fragment-testing-manifest:1.6.0-rc01")
+    debugImplementation("androidx.fragment:fragment-testing:1.6.0-rc01")
     androidTestImplementation libs.bundles.androidTesting
     androidTestImplementation libs.coroutine.test
     androidTestImplementation project(path: ':shared-test')

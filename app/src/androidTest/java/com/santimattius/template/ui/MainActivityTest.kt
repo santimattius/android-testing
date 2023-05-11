@@ -4,25 +4,27 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
 import com.santimattius.shared_test.data.MovieMother
 import com.santimattius.shared_test.data.dtoToUiModel
 import com.santimattius.shared_test.rules.MainCoroutinesTestRule
 import com.santimattius.template.R
+import com.santimattius.template.di.DataModule
 import com.santimattius.template.espresso.RecyclerViewInteraction
 import com.santimattius.template.ui.androidview.home.MainActivity
 import com.santimattius.template.ui.androidview.home.models.MovieUiModel
 import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
+import dagger.hilt.android.testing.UninstallModules
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @MediumTest
-@ExperimentalCoroutinesApi
-@RunWith(AndroidJUnit4::class)
+@UninstallModules(DataModule::class)
+@HiltAndroidTest
 class MainActivityTest {
 
     @get:Rule
@@ -45,7 +47,7 @@ class MainActivityTest {
 
         ActivityScenario.launch(MainActivity::class.java)
 
-        RecyclerViewInteraction.onRecyclerView<MovieUiModel>(withId(R.id.image_movie))
+        RecyclerViewInteraction.onRecyclerView<MovieUiModel>(withId(R.id.grid_of_movies))
             .withItems(pictures)
             .check { picture, view, exception ->
                 matches(hasDescendant(withContentDescription(picture.title))).check(

@@ -97,7 +97,8 @@ coroutine = ["coroutine.core", "coroutine.android"]
 retrofit = ["retrofit.core", "retrofit.gson", "logging.interceptor"]
 serializable = ["gson.core"]
 
-unitTesting = ["core.testing", "mockwebserver", "coroutine.test", "junit", "mockk.core", "robolectric.core", "robolectric.httpclient", "test.ext.ktx"]
+robolectric = ["robolectric.core", "robolectric.httpclient"]
+unitTesting = ["core.testing", "mockwebserver", "coroutine.test", "junit", "mockk.core", "test.ext.ktx"]
 androidTesting = ["core.testing", "mockwebserver", "okHttp3.idling.resource", "junit", "mockk.android", "test.ext.ktx", "test.runner", "test.rule", "test.espresso", "test.espresso.contrib"]
 
 [plugins]
