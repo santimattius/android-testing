@@ -1,11 +1,9 @@
-![giphy](https://user-images.githubusercontent.com/22333101/228989416-87aa423f-2c23-49ea-b2df-2c033ecbfa8f.gif)
+# Android Testing 
 
-# [Working progress] Android Testing 
+This is a template to build an Android app applying good practices and testable architecture.
 
-This is a template to build an Android app applying good practices and using a clean architecture,
-you will see that the code is super decoupled with external frameworks and even with the same
-Android framework, this will help you to model your domain purely in Kotlin without generating
-external dependencies.
+![pyramid](https://github.com/santimattius/android-testing/assets/22333101/2c4b30e2-b31c-4fe4-bb67-c947dedb4ca8)
+
 
 ## Screenshot
 
@@ -14,6 +12,19 @@ external dependencies.
   <img wight="280" src="https://github.com/santimattius/android-testing/blob/master/screenshoot/entertainment_app.png?raw=true" alt="App Capture"/>
 
 </p>
+
+## Unit Tests to Avoid
+Some unit tests should be avoided because of their low value:
+
+- Tests that verify the correct operation of the framework or a library, not your code.
+- Framework entry points such as activities, fragments, or services should not have business logic so unit testing shouldn't be a priority. Unit tests for activities have little value, because they would cover mostly framework code and they require a more involved setup. Instrumented tests such as UI tests can cover these classes.
+- 
+[Intro to Unit Testing on Android (Spanish)](https://github.com/santimattius/android-testing/files/11521079/Intro.a.Unit.Testing.en.Android-1.pdf)
+
+## Integration Testing
+Integration or intermediate level tests are tests that validate the interactions between stack levels within a module or the interactions between related modules.
+
+Check more content, here: [Intro to Integration Testing on Android (Spanish)](https://github.com/santimattius/android-testing/files/11521077/Intro.a.Tests.de.Integracion.en.Android-1.pdf)
 
 ## Content
 
