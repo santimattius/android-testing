@@ -58,9 +58,18 @@ Below you will find the libraries used to build the template and according to my
 used in android development so far.
 
 - **[Retrofit](https://square.github.io/retrofit/)**, networking.
-- **[Moshi](https://github.com/square/moshi)**, json parser.
+- **[Gson](https://github.com/google/gson)**, json parser.
 - **[Glide](https://github.com/bumptech/glide)**, with image loader.
+- **[Coil](https://coil-kt.github.io/coil/compose/)**, with image loader for Jetpack compose.
 - **[Kotlin coroutines](https://kotlinlang.org/docs/reference/coroutines-overview.html)**.
+- Testing
+  -  [Mockk](https://mockk.io/)
+  -  [MockWebServer](https://github.com/square/okhttp/tree/master/mockwebserver)
+  -  [Room Testing](https://developer.android.com/training/data-storage/room/testing-db)
+  -  [Android Testing Library](https://developer.android.com/training/testing/local-tests)
+  -  [Robolectric](https://robolectric.org/)
+  -  [Espresso](https://developer.android.com/training/testing/espresso)
+  -  [Jetpack Compose Testing API](https://developer.android.com/jetpack/compose/testing) 
 
 ## References
 
