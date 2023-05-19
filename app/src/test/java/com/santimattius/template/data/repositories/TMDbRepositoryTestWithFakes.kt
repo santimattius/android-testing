@@ -1,8 +1,8 @@
 package com.santimattius.template.data.repositories
 
-import com.santimattius.template.data.repositories.fakes.FakeLocalDataSource
-import com.santimattius.template.data.repositories.fakes.FakeRemoteDataSource
-import com.santimattius.template.utils.MainCoroutinesTestRule
+import com.santimattius.shared_test.data.FakeLocalDataSource
+import com.santimattius.shared_test.data.FakeRemoteDataSource
+import com.santimattius.shared_test.data.MovieMother
 import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -14,7 +14,7 @@ import org.junit.*
 class TMDbRepositoryTestWithFakes {
 
     @get:Rule
-    val coroutinesTestRule = MainCoroutinesTestRule()
+    val coroutinesTestRule = com.santimattius.shared_test.rules.MainCoroutinesTestRule()
 
     private val remoteDataSource = FakeRemoteDataSource()
     private val localDataSource = FakeLocalDataSource()

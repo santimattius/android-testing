@@ -21,7 +21,7 @@ coil = "2.1.0"
 
 junit = "4.13.2"
 junitExt = "1.1.4"
-espressoCore = "3.5.0"
+espressoCore = "3.5.1"
 lifecycle = "2.6.0-alpha01"
 lifecycleExtensions = "2.2.0"
 retrofit = "2.9.0"
@@ -31,7 +31,7 @@ gson = "2.10"
 okhttp3IdlingResource = "1.0.0"
 glide = "4.12.0"
 mockk = "1.12.3"
-robolectric = "4.6"
+robolectric = "4.9"
 
 [libraries]
 # Define the libraries
@@ -60,6 +60,7 @@ logging_interceptor = { module = "com.squareup.okhttp3:logging-interceptor", ver
 gson_core = { module = "com.google.code.gson:gson", version.ref = "gson" }
 #ImageLoader
 glide_core = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
+coil_core = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 # Coroutines
 coroutine_core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutine" }
 coroutine_android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutine" }
@@ -71,6 +72,7 @@ room_compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 #Hilt
 hilt_android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 hilt_compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt" }
+hilt_test = { module = "com.google.dagger:hilt-android-testing", version.ref = "hilt" }
 # Test
 junit = { module = "junit:junit", version.ref = "junit" }
 mockwebserver = { module = "com.squareup.okhttp3:mockwebserver", version.ref = "okHttp" }
@@ -95,8 +97,9 @@ coroutine = ["coroutine.core", "coroutine.android"]
 retrofit = ["retrofit.core", "retrofit.gson", "logging.interceptor"]
 serializable = ["gson.core"]
 
-unitTesting = ["core.testing", "mockwebserver", "coroutine.test", "junit", "mockk.core", "robolectric.core", "robolectric.httpclient", "test.ext.ktx"]
-androidTesting = ["mockwebserver", "okHttp3.idling.resource", "mockk.android", "test.ext.ktx", "test.runner", "test.rule", "test.espresso.contrib"]
+robolectric = ["robolectric.core", "robolectric.httpclient"]
+unitTesting = ["core.testing", "mockwebserver", "coroutine.test", "junit", "mockk.core", "test.ext.ktx"]
+androidTesting = ["core.testing", "mockwebserver", "okHttp3.idling.resource", "junit", "mockk.android", "test.ext.ktx", "test.runner", "test.rule", "test.espresso", "test.espresso.contrib"]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
@@ -104,3 +107,4 @@ android-library = { id = "com.android.library", version.ref = "androidGradlePlug
 kotlin = { id = "org.jetbrains.kotlin.android", version.ref = "kotlinGradlePlugin" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hiltGradlePlugin" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detektGradlePlugin" }
+kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlinGradlePlugin" }

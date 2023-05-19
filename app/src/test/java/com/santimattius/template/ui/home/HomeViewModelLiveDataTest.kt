@@ -1,12 +1,13 @@
 package com.santimattius.template.ui.home
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.santimattius.template.data.repositories.MovieMother
-import com.santimattius.template.data.repositories.dtoToUiModel
+import com.santimattius.shared_test.data.MovieMother
+import com.santimattius.shared_test.data.dtoToUiModel
 import com.santimattius.template.ui.home.fakes.FakeMovieRepository
-import com.santimattius.template.ui.home.models.HomeState
-import com.santimattius.template.utils.MainCoroutinesTestRule
-import com.santimattius.template.utils.getOrAwaitValue
+import com.santimattius.template.ui.androidview.home.models.HomeState
+import com.santimattius.shared_test.rules.MainCoroutinesTestRule
+import com.santimattius.shared_test.extensions.getOrAwaitValue
+import com.santimattius.template.ui.androidview.home.HomeViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat

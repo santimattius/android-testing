@@ -1,9 +1,9 @@
 package com.santimattius.template.data.repositories
 
+import com.santimattius.shared_test.data.MovieMother
 import com.santimattius.template.data.datasources.LocalDataSource
 import com.santimattius.template.data.datasources.RemoteDataSource
 import com.santimattius.template.data.dtoToEntity
-import com.santimattius.template.utils.MainCoroutinesTestRule
 import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -13,7 +13,7 @@ import org.junit.*
 class TMDbRepositoryTestWithMock {
 
     @get:Rule
-    val coroutinesTestRule = MainCoroutinesTestRule()
+    val coroutinesTestRule = com.santimattius.shared_test.rules.MainCoroutinesTestRule()
 
     private val remoteDataSource: RemoteDataSource = mockk(relaxed = true)
     private val localDataSource: LocalDataSource = mockk(relaxed = true)
