@@ -5,17 +5,16 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.fragment.app.FragmentContainerView
 import androidx.test.core.app.ActivityScenario
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.santimattius.shared_test.rules.MainCoroutinesTestRule
 import com.santimattius.template.R
 import com.santimattius.template.di.DataModule
-import com.santimattius.template.ui.androidview.home.components.viewholders.MovieViewHolder
-import com.santimattius.shared_test.rules.MainCoroutinesTestRule
 import com.santimattius.template.ui.androidview.home.HomeFragment
 import com.santimattius.template.ui.androidview.home.MainActivity
+import com.santimattius.template.ui.androidview.home.components.viewholders.MovieViewHolder
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.HiltTestApplication
 import dagger.hilt.android.testing.UninstallModules
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
@@ -24,7 +23,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.annotation.Config
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @UninstallModules(DataModule::class)
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)

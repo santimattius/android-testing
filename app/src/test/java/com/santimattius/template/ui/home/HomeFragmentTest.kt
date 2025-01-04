@@ -12,7 +12,6 @@ import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.HiltTestApplication
 import dagger.hilt.android.testing.UninstallModules
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert
 import org.junit.Before
@@ -22,7 +21,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.annotation.Config
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @UninstallModules(DataModule::class)
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
@@ -49,7 +47,7 @@ class HomeFragmentTest {
     }
 
     @Test
-    @Ignore
+    @Ignore("Test not working, check documentation test fragment and hilt")
     fun `verify first movie is spider-man`() {
 
 //        val scenario =

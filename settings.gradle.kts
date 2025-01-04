@@ -1,10 +1,9 @@
 pluginManagement {
     includeBuild("plugins")
     repositories {
-        gradlePluginPortal()
         google()
         mavenCentral()
-        maven { url 'https://plugins.gradle.org/m2/' }
+        gradlePluginPortal()
     }
 }
 dependencyResolutionManagement {
@@ -12,11 +11,9 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven { url 'https://plugins.gradle.org/m2/' }
-
     }
 }
 
 rootProject.name = "android-testing"
-include ':app'
-include ':shared-test'
+include(":app")
+include(":shared-test")

@@ -13,7 +13,6 @@ import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.HiltTestApplication
 import dagger.hilt.android.testing.UninstallModules
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -22,7 +21,6 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @UninstallModules(DataModule::class)
 @HiltAndroidTest
 @RunWith(RobolectricTestRunner::class)
