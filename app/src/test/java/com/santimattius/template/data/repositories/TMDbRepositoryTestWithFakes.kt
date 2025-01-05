@@ -3,14 +3,12 @@ package com.santimattius.template.data.repositories
 import com.santimattius.shared_test.data.FakeLocalDataSource
 import com.santimattius.shared_test.data.FakeRemoteDataSource
 import com.santimattius.shared_test.data.MovieMother
-import io.mockk.*
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
-import org.junit.*
+import org.junit.Rule
+import org.junit.Test
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class TMDbRepositoryTestWithFakes {
 
     @get:Rule

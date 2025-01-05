@@ -1,7 +1,7 @@
 apply plugin: 'jacoco'
 
 jacoco {
-    toolVersion = "0.8.10"
+    toolVersion = "0.8.8"
 }
 
 project.afterEvaluate {
@@ -37,15 +37,10 @@ ext.excludes = [
         '**/*Dagger*.*',
         '**/*Hilt*.*',
         '**/*MembersInjector*.*',
+        '**/*GeneratedInjector*.*',
         '**/*_MembersInjector.class',
         '**/*_Factory*.*',
         '**/*_Provide*Factory*.*',
-        '**/*Extensions*.*',
-        '**/data/entities/*.*',
-        '**/domain/entities/*.*',
-        '**/models/*.*',
-        '**/client/database/*.*',
-        '**/MappingKt.class',
 ]
 
 def createVariantCoverage(variant) {
@@ -56,6 +51,11 @@ def createVariantCoverage(variant) {
     tasks.create(name: "${testTaskName}Coverage", type: JacocoReport, dependsOn: "$testTaskName") {
         group = "Reporting"
         description = "Generate Jacoco coverage reports for the ${variantName.capitalize()} build."
+
+        reports {
+            xml.required = true
+            html.required = true
+        }
 
         def javaClasses = fileTree(dir: variant.javaCompileProvider.get().destinationDir, excludes: project.excludes)
         def kotlinClasses = fileTree(dir: "${buildDir}/tmp/kotlin-classes/${variantName}", excludes: project.excludes)
@@ -108,13 +108,5 @@ def createVariantCoverage(variant) {
                 "$project.projectDir/src/${variantName}/kotlin"
         ]))
         getExecutionData().setFrom(files("${project.buildDir}/outputs/unit_test_code_coverage/${variantName}UnitTest/${testTaskName}.exec"))
-    }
-}
-
-android {
-    buildTypes {
-        debug {
-            testCoverageEnabled true
-        }
     }
 }

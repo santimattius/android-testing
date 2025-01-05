@@ -7,14 +7,12 @@ import com.santimattius.shared_test.rules.MainCoroutinesTestRule
 import com.santimattius.template.ui.androidview.home.models.HomeState
 import com.santimattius.template.ui.compose.HomeViewModel
 import com.santimattius.template.ui.home.fakes.FakeMovieRepository
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Rule
 import org.junit.Test
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class HomeViewModelFlowsTest {
 
     @get:Rule
@@ -36,6 +34,4 @@ class HomeViewModelFlowsTest {
             }
         }
     }
-
-
 }

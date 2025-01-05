@@ -32,7 +32,7 @@ class AppModule {
     fun provideRetrofit(): Retrofit {
         return createRetrofitService(
             baseUrl = "https://api.themoviedb.org",
-            apiKey = BuildConfig.API_KEY
+            apiKey = BuildConfig.apiKey
         )
     }
 }
