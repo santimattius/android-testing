@@ -1,16 +1,21 @@
 package com.santimattius.shared_test.data
 
-import com.santimattius.core.data.datasources.LocalDataSource
+import com.santimattius.core.data.datasources.MovieLocalDataSource
 import com.santimattius.core.data.datasources.implementation.MovieNoExists
 import com.santimattius.core.data.datasources.implementation.MovieNoSaved
-import com.santimattius.core.data.entities.MovieEntity
+import com.santimattius.core.data.models.MovieEntity
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
-class FakeLocalDataSource : LocalDataSource {
+class FakeMovieLocalDataSource : MovieLocalDataSource {
 
     private val mutex = Mutex()
     private val movies = mutableListOf<MovieEntity>()
+
+    override val all: Flow<List<MovieEntity>>
+        get() = emptyFlow()
 
     override suspend fun getAll(): List<MovieEntity> {
         return mutex.withLock {
@@ -26,7 +31,7 @@ class FakeLocalDataSource : LocalDataSource {
 
     override suspend fun save(movies: List<MovieEntity>): Result<Boolean> {
         return mutex.withLock {
-            val result = this@FakeLocalDataSource.movies.addAll(movies)
+            val result = this@FakeMovieLocalDataSource.movies.addAll(movies)
             if (result) {
                 Result.success(value = true)
             } else {

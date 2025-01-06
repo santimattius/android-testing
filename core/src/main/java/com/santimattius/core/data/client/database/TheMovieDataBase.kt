@@ -4,17 +4,17 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.santimattius.core.data.entities.MovieEntity
+import com.santimattius.core.data.models.MovieEntity
 
 @Database(entities = [MovieEntity::class], version = 1, exportSchema = false)
-abstract class AppDataBase : RoomDatabase() {
+abstract class TheMovieDataBase : RoomDatabase() {
 
     companion object {
 
         private const val DATABASE_NAME = "tmdb_database"
 
         fun get(context: Context) =
-            Room.databaseBuilder(context, AppDataBase::class.java, DATABASE_NAME)
+            Room.databaseBuilder(context, TheMovieDataBase::class.java, DATABASE_NAME)
                 .build()
     }
 

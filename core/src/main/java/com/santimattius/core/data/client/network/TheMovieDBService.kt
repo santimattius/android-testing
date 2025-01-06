@@ -1,7 +1,7 @@
 package com.santimattius.core.data.client.network
 
-import com.santimattius.core.data.entities.MovieDto
-import com.santimattius.core.data.entities.Response
+import com.santimattius.core.data.models.NetworkMovie
+import com.santimattius.core.data.models.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -12,6 +12,6 @@ interface TheMovieDBService {
     suspend fun getMoviePopular(
         @Path("version") version: Int,
         @Query("page") page: Int,
-    ): Response<MovieDto>
+    ): Response<NetworkMovie>
 
 }

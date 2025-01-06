@@ -7,10 +7,14 @@ import androidx.room.Update
 import androidx.room.Delete
 import androidx.room.Transaction
 import androidx.room.OnConflictStrategy
-import com.santimattius.core.data.entities.MovieEntity
+import com.santimattius.core.data.models.MovieEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MovieDao {
+
+    @Query("SELECT * FROM movie")
+    fun searchAll():Flow<List<MovieEntity>>
 
     @Query("SELECT * FROM movie")
     suspend fun getAll(): List<MovieEntity>
@@ -19,13 +23,13 @@ interface MovieDao {
     suspend fun findById(id: Int): MovieEntity?
 
     @Query("SELECT COUNT(id) FROM movie")
-    fun count(): Int
+    suspend fun count(): Int
 
     @Insert
     suspend fun insertAll(vararg movies: MovieEntity)
 
     @Query("DELETE FROM movie")
-    fun deleteAll()
+    suspend fun deleteAll()
 
     @Delete
     suspend fun delete(movies: MovieEntity)

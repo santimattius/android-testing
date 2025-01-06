@@ -1,4 +1,4 @@
-package com.santimattius.core.data.entities
+package com.santimattius.core.data.models
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

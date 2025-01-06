@@ -7,7 +7,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.santimattius.shared_test.data.MovieMother
 import com.santimattius.shared_test.rules.MainCoroutinesTestRule
-import com.santimattius.core.data.client.database.AppDataBase
+import com.santimattius.core.data.client.database.TheMovieDataBase
 import com.santimattius.core.data.dtoToEntity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -28,16 +28,16 @@ class RoomDataSourceTest {
 
     @get:Rule
     val coroutinesTestRule = MainCoroutinesTestRule()
-    private lateinit var db: AppDataBase
-    private lateinit var dataSource: RoomDataSource
+    private lateinit var db: TheMovieDataBase
+    private lateinit var dataSource: RoomMovieLocalDataSource
 
     @Before
     fun setUp() {
         val context = ApplicationProvider.getApplicationContext<Context>()
-        db = Room.inMemoryDatabaseBuilder(context, AppDataBase::class.java)
+        db = Room.inMemoryDatabaseBuilder(context, TheMovieDataBase::class.java)
             .allowMainThreadQueries()
             .build()
-        dataSource = RoomDataSource(db)
+        dataSource = RoomMovieLocalDataSource(db)
     }
 
     @After

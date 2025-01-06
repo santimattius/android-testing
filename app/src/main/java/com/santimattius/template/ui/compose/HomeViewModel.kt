@@ -33,7 +33,7 @@ class HomeViewModel @Inject constructor(
     private fun popularMovies() {
         _state.update { HomeState.Loading }
         viewModelScope.launch(exceptionHandler) {
-            val popularMovies = movieRepository.getPopular()
+            val popularMovies = movieRepository.getAll()
             _state.update { HomeState.Data(values = popularMovies.asUiModels()) }
         }
     }

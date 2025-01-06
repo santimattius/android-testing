@@ -1,8 +1,8 @@
-package com.santimattius.core.data.entities
+package com.santimattius.core.data.models
 
 import com.google.gson.annotations.SerializedName
 
-data class MovieDto(
+data class NetworkMovie(
     @SerializedName("id")
     val id: Int = 0,
     @SerializedName("overview")

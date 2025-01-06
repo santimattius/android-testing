@@ -12,11 +12,11 @@ class FakeMovieRepository(
     var onFetchPopularMovies: () -> List<Movie> = onPopularMovies,
 ) : MovieRepository {
 
-    override suspend fun getPopular(): List<Movie> {
+    override suspend fun getAll(): List<Movie> {
         return onPopularMovies()
     }
 
-    override suspend fun fetchPopular(): Result<List<Movie>> {
+    override suspend fun refresh(): Result<List<Movie>> {
         return runCatching { onFetchPopularMovies() }
     }
 }

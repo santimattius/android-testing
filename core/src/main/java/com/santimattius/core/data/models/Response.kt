@@ -1,4 +1,4 @@
-package com.santimattius.core.data.entities
+package com.santimattius.core.data.models
 
 import com.google.gson.annotations.SerializedName
 

@@ -1,11 +1,11 @@
 package com.santimattius.template.di
 
-import com.santimattius.core.data.client.database.AppDataBase
+import com.santimattius.core.data.client.database.TheMovieDataBase
 import com.santimattius.core.data.client.network.TheMovieDBService
-import com.santimattius.core.data.datasources.LocalDataSource
-import com.santimattius.core.data.datasources.RemoteDataSource
+import com.santimattius.core.data.datasources.MovieLocalDataSource
+import com.santimattius.core.data.datasources.MovieNetworkDataSource
 import com.santimattius.core.data.datasources.implementation.MovieDataSource
-import com.santimattius.core.data.datasources.implementation.RoomDataSource
+import com.santimattius.core.data.datasources.implementation.RoomMovieLocalDataSource
 import com.santimattius.core.data.repositories.TMDbRepository
 import com.santimattius.core.domain.repositories.MovieRepository
 import dagger.Module
@@ -19,20 +19,20 @@ class DataModule {
 
     @Provides
     fun provideMovieRepository(
-        remoteDataSource: RemoteDataSource,
-        localDataSource: LocalDataSource,
+        movieNetworkDataSource: MovieNetworkDataSource,
+        movieLocalDataSource: MovieLocalDataSource,
     ): MovieRepository = TMDbRepository(
-        remoteDataSource = remoteDataSource,
-        localDataSource = localDataSource
+        movieNetworkDataSource = movieNetworkDataSource,
+        movieLocalDataSource = movieLocalDataSource
     )
 
     @Provides
-    fun provideLocalDataSource(appDataBase: AppDataBase): LocalDataSource {
-        return RoomDataSource(appDataBase = appDataBase)
+    fun provideLocalDataSource(theMovieDataBase: TheMovieDataBase): MovieLocalDataSource {
+        return RoomMovieLocalDataSource(theMovieDataBase = theMovieDataBase)
     }
 
     @Provides
-    fun provideRemoteDataSource(service: TheMovieDBService): RemoteDataSource {
+    fun provideRemoteDataSource(service: TheMovieDBService): MovieNetworkDataSource {
         return MovieDataSource(service = service)
     }
 }

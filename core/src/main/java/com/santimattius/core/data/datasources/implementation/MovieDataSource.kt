@@ -1,12 +1,13 @@
 package com.santimattius.core.data.datasources.implementation
 
 import com.santimattius.core.data.client.network.TheMovieDBService
-import com.santimattius.core.data.datasources.RemoteDataSource
-import com.santimattius.core.data.entities.MovieDto as TheMovieDbMovie
+import com.santimattius.core.data.datasources.MovieNetworkDataSource
+import com.santimattius.core.data.models.NetworkMovie as TheMovieDbMovie
 
 class MovieDataSource(
     private val service: TheMovieDBService,
-) : RemoteDataSource {
+) : MovieNetworkDataSource {
+
     @Suppress("TooGenericExceptionCaught")
     override suspend fun getPopularMovies(): Result<List<TheMovieDbMovie>> {
         return try {
