@@ -37,6 +37,7 @@ private val LightColorScheme = lightColorScheme(
     */
 )
 
+@Suppress("MagicNumber")
 @Composable
 fun AndroidTestingTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),

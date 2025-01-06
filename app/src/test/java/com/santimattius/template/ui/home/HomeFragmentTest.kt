@@ -6,8 +6,8 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.santimattius.shared_test.extensions.launchFragmentInHiltContainer
 import com.santimattius.shared_test.rules.MainCoroutinesTestRule
 import com.santimattius.template.di.DataModule
-import com.santimattius.template.ui.androidview.home.HomeFragment
-import com.santimattius.template.ui.androidview.home.components.viewholders.MovieViewHolder
+import com.santimattius.template.ui.xml.home.HomeFragment
+import com.santimattius.template.ui.xml.home.components.viewholders.MovieViewHolder
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.HiltTestApplication

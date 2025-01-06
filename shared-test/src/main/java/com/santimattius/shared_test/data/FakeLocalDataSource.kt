@@ -1,9 +1,9 @@
 package com.santimattius.shared_test.data
 
-import com.santimattius.template.data.datasources.LocalDataSource
-import com.santimattius.template.data.datasources.implementation.MovieNoExists
-import com.santimattius.template.data.datasources.implementation.MovieNoSaved
-import com.santimattius.template.data.entities.MovieEntity
+import com.santimattius.core.data.datasources.LocalDataSource
+import com.santimattius.core.data.datasources.implementation.MovieNoExists
+import com.santimattius.core.data.datasources.implementation.MovieNoSaved
+import com.santimattius.core.data.entities.MovieEntity
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 

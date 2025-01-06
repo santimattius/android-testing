@@ -9,7 +9,6 @@ plugins {
     alias(libs.plugins.hilt)
     alias(libs.plugins.google.secrets.gradle.plugin)
     alias(libs.plugins.automattic.measure.builds)
-    alias(libs.plugins.room)
 }
 apply("$rootDir/gradle/report.gradle")
 
@@ -28,10 +27,6 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
-    }
-
-    room {
-        schemaDirectory("$projectDir/schemas")
     }
 
     buildTypes {
@@ -111,20 +106,15 @@ measureBuilds {
 }
 
 dependencies {
+    implementation(project(":core"))
     implementation(libs.kotlin.stdlib)
     implementation(libs.core.ktx)
-    implementation(libs.glide.core)
 
     implementation(libs.bundles.ui)
     implementation(libs.bundles.lifecycle)
-    implementation(libs.bundles.coroutine)
-    implementation(libs.bundles.retrofit)
-    implementation(libs.bundles.serializable)
 
     implementation(libs.room.ktx)
     implementation(libs.room.runtime)
-    ksp(libs.room.compiler)
-
     //Compose
     implementation(platform(libs.compose.bom))
     implementation(libs.bundles.compose)
@@ -132,17 +122,19 @@ dependencies {
 
     testImplementation(platform(libs.compose.bom))
     testImplementation(libs.compose.ui.test.junit)
+    testImplementation(libs.bundles.compose.debug)
 
     androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.compose.ui.test.junit)
 
+    implementation(libs.glide.core)
     implementation(libs.coil.core)
+
     //Hilt
     implementation(libs.hilt.android)
     implementation(libs.hilt.navigation.compose)
     ksp(libs.hilt.compiler)
     ksp(libs.androidx.hilt.compiler)
-
 
     // For Robolectric tests.
     testImplementation(libs.hilt.test)
@@ -152,14 +144,12 @@ dependencies {
     androidTestImplementation(libs.hilt.test)
     kspAndroidTest(libs.hilt.android.compiler)
 
-    testImplementation(libs.junit)
-    //Use for Flows
-    testImplementation(libs.turbine)
-
     //Unit Testing
+    testImplementation(project(path = ":shared-test"))
     testImplementation(libs.bundles.unitTesting)
     testImplementation(libs.bundles.robolectric)
-    testImplementation(project(path = ":shared-test"))
+    testImplementation(libs.junit)
+    testImplementation(libs.turbine)
 
     //Android Testing
     debugImplementation(libs.androidx.fragment.testing.manifest)

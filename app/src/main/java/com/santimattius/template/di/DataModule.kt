@@ -1,13 +1,13 @@
 package com.santimattius.template.di
 
-import com.santimattius.template.data.client.database.AppDataBase
-import com.santimattius.template.data.client.network.TheMovieDBService
-import com.santimattius.template.data.datasources.LocalDataSource
-import com.santimattius.template.data.datasources.RemoteDataSource
-import com.santimattius.template.data.datasources.implementation.MovieDataSource
-import com.santimattius.template.data.datasources.implementation.RoomDataSource
-import com.santimattius.template.data.repositories.TMDbRepository
-import com.santimattius.template.domain.repositories.MovieRepository
+import com.santimattius.core.data.client.database.AppDataBase
+import com.santimattius.core.data.client.network.TheMovieDBService
+import com.santimattius.core.data.datasources.LocalDataSource
+import com.santimattius.core.data.datasources.RemoteDataSource
+import com.santimattius.core.data.datasources.implementation.MovieDataSource
+import com.santimattius.core.data.datasources.implementation.RoomDataSource
+import com.santimattius.core.data.repositories.TMDbRepository
+import com.santimattius.core.domain.repositories.MovieRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,7 +28,7 @@ class DataModule {
 
     @Provides
     fun provideLocalDataSource(appDataBase: AppDataBase): LocalDataSource {
-        return RoomDataSource(dao = appDataBase.dao())
+        return RoomDataSource(appDataBase = appDataBase)
     }
 
     @Provides

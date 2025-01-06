@@ -1,7 +1,7 @@
 package com.santimattius.shared_test.data
 
-import com.santimattius.template.data.datasources.RemoteDataSource
-import com.santimattius.template.data.entities.MovieDto
+import com.santimattius.core.data.datasources.RemoteDataSource
+import com.santimattius.core.data.entities.MovieDto
 
 class FakeRemoteDataSource(
     var onMovies: () -> List<MovieDto> = {

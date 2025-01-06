@@ -1,17 +1,16 @@
 package com.santimattius.template.di
 
 import android.content.Context
+import com.santimattius.core.data.client.database.AppDataBase
+import com.santimattius.core.data.client.network.RetrofitServiceCreator
+import com.santimattius.core.data.client.network.TheMovieDBService
 import com.santimattius.template.BuildConfig
-import com.santimattius.template.data.client.database.AppDataBase
-import com.santimattius.template.data.client.network.TheMovieDBService
-import com.santimattius.template.data.client.network.createRetrofitService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import retrofit2.Retrofit
-import retrofit2.create
+
 import javax.inject.Singleton
 
 @Module
@@ -23,14 +22,14 @@ class AppModule {
         AppDataBase.get(context)
 
     @Provides
-    fun provideMovieDBService(retrofit: Retrofit): TheMovieDBService =
-        retrofit.create()
+    fun provideMovieDBService(serviceCreator: RetrofitServiceCreator): TheMovieDBService =
+        serviceCreator.createService(TheMovieDBService::class.java)
 
 
     @Provides
     @Singleton
-    fun provideRetrofit(): Retrofit {
-        return createRetrofitService(
+    fun provideRetrofit(): RetrofitServiceCreator {
+        return RetrofitServiceCreator(
             baseUrl = "https://api.themoviedb.org",
             apiKey = BuildConfig.apiKey
         )

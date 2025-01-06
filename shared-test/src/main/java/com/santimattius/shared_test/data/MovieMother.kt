@@ -2,10 +2,9 @@ package com.santimattius.shared_test.data
 
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
-import com.santimattius.template.data.entities.MovieDto
-import com.santimattius.template.data.entities.Response
-import com.santimattius.template.domain.entities.Movie
-import com.santimattius.template.ui.androidview.home.models.MovieUiModel
+import com.santimattius.core.data.entities.MovieDto
+import com.santimattius.core.data.entities.Response
+import com.santimattius.core.domain.entities.Movie
 
 object MovieMother {
     private val jsonLoader = com.santimattius.shared_test.JsonLoader()
@@ -17,6 +16,10 @@ object MovieMother {
             json,
             object : TypeToken<Response<MovieDto>>() {}.type
         ).results
+    }
+
+    fun createDomainMovies(): List<Movie>{
+        return createMovies().dtoToDomain()
     }
 
     fun createMovie(

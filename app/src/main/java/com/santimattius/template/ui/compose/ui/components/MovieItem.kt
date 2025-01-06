@@ -19,7 +19,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
 import com.santimattius.template.R
-import com.santimattius.template.ui.androidview.home.models.MovieUiModel
+import com.santimattius.template.ui.xml.home.models.MovieUiModel
 
 private const val IMAGE_ASPECT_RATIO = 0.67f
 

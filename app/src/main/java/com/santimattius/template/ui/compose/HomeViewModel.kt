@@ -2,9 +2,9 @@ package com.santimattius.template.ui.compose
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.santimattius.template.domain.repositories.MovieRepository
-import com.santimattius.template.ui.androidview.home.models.HomeState
-import com.santimattius.template.ui.androidview.home.models.mapping.asUiModels
+import com.santimattius.core.domain.repositories.MovieRepository
+import com.santimattius.template.ui.xml.home.models.HomeState
+import com.santimattius.template.ui.xml.home.models.mapping.asUiModels
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableStateFlow

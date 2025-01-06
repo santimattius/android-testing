@@ -6,6 +6,7 @@
     <string name="button_text_negative_error">Salir</string>
     <string name="message_text_empty_result">No hay resultados</string>
     <string name="text_desc_movie_poster">Movie poster</string>
-    <string name="title_activity_home">HomeActivity</string>
+    <string name="title_activity_home_compose">Example Compose</string>
+    <string name="title_activity_home_view">Example View</string>
 
 </resources>

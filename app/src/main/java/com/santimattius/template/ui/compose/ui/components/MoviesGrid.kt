@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import com.santimattius.template.R
-import com.santimattius.template.ui.androidview.home.models.MovieUiModel
+import com.santimattius.template.ui.xml.home.models.MovieUiModel
 
 @Composable
 fun MoviesGrid(
