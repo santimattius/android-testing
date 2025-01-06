@@ -3,11 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.androidview.home.MainActivity">
+    tools:context=".ui.xml.home.HomeViewActivity">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_container_view"
-        android:name="com.santimattius.template.ui.androidview.home.HomeFragment"
+        android:name="com.santimattius.template.ui.xml.home.HomeFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:tag="home_tag" />

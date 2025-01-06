@@ -2,8 +2,8 @@ package com.santimattius.template.ui.home.fakes
 
 import com.santimattius.shared_test.data.MovieMother
 import com.santimattius.shared_test.data.dtoToDomain
-import com.santimattius.template.domain.entities.Movie
-import com.santimattius.template.domain.repositories.MovieRepository
+import com.santimattius.core.domain.entities.Movie
+import com.santimattius.core.domain.repositories.MovieRepository
 
 class FakeMovieRepository(
     var onPopularMovies: () -> List<Movie> = {

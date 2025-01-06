@@ -17,3 +17,4 @@ dependencyResolutionManagement {
 rootProject.name = "android-testing"
 include(":app")
 include(":shared-test")
+include(":core")

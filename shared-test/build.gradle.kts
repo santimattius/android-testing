@@ -37,12 +37,13 @@ android {
 
 dependencies {
 
-    implementation(project(":app"))
+    implementation(project(":core"))
     implementation(libs.bundles.coroutine)
     implementation(libs.coroutine.test)
     implementation(libs.bundles.retrofit)
     implementation(libs.bundles.serializable)
 
+    implementation(libs.androidx.fragment.testing.manifest)
     implementation(libs.hilt.android)
     implementation(libs.hilt.test)
     ksp(libs.hilt.compiler)

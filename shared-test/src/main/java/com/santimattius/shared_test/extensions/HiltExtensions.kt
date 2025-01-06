@@ -7,8 +7,8 @@ import androidx.annotation.StyleRes
 import androidx.fragment.app.Fragment
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
-import com.santimattius.template.HiltTestActivity
-import com.santimattius.template.R
+import com.santimattius.shared_test.HiltTestActivity
+import com.santimattius.shared_test.R
 
 //https://developer.android.com/training/dependency-injection/hilt-testing?hl=es-419#launchfragment
 inline fun <reified T : Fragment> launchFragmentInHiltContainer(
