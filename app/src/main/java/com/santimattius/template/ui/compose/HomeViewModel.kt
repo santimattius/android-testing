@@ -4,14 +4,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.santimattius.core.domain.repositories.MovieRepository
 import com.santimattius.template.ui.xml.home.models.HomeState
+import com.santimattius.template.ui.xml.home.models.MovieUiModel
 import com.santimattius.template.ui.xml.home.models.mapping.asUiModels
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,22 +20,23 @@ class HomeViewModel @Inject constructor(
     private val movieRepository: MovieRepository,
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow<HomeState>(HomeState.Loading)
-    val state: StateFlow<HomeState> = _state.asStateFlow()
-
-    private val exceptionHandler = CoroutineExceptionHandler { _, _ ->
-        _state.update { HomeState.Error }
-    }
-
-    init {
-        popularMovies()
-    }
-
-    private fun popularMovies() {
-        _state.update { HomeState.Loading }
-        viewModelScope.launch(exceptionHandler) {
-            val popularMovies = movieRepository.getAll()
-            _state.update { HomeState.Data(values = popularMovies.asUiModels()) }
+    val state: StateFlow<HomeState> = movieRepository.all
+        .map { it.asUiModels() }
+        .map {
+            if (it.isEmpty()) {
+                HomeState.Empty
+            } else {
+                HomeState.Data(it)
+            }
         }
-    }
+        .onStart {
+            emit(HomeState.Loading)
+            movieRepository.refresh()
+        }.catch {
+            emit(HomeState.Error)
+        }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = HomeState.Loading
+        )
 }
