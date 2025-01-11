@@ -1,4 +1,4 @@
-package com.santimattius.shared_test
+package com.santimattius.test
 
 import androidx.fragment.app.FragmentActivity
 import dagger.hilt.android.AndroidEntryPoint

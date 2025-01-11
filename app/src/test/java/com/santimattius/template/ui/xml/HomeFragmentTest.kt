@@ -3,8 +3,8 @@ package com.santimattius.template.ui.xml
 import android.os.Build
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.santimattius.shared_test.extensions.launchFragmentInHiltContainer
-import com.santimattius.shared_test.rules.MainCoroutinesTestRule
+import com.santimattius.test.extensions.launchFragmentInHiltContainer
+import com.santimattius.test.rules.MainCoroutinesTestRule
 import com.santimattius.template.di.DataModule
 import com.santimattius.template.ui.xml.home.HomeFragment
 import com.santimattius.template.ui.xml.home.components.viewholders.MovieViewHolder

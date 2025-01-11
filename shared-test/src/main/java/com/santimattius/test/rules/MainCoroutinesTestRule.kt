@@ -1,4 +1,4 @@
-package com.santimattius.shared_test.rules
+package com.santimattius.test.rules
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

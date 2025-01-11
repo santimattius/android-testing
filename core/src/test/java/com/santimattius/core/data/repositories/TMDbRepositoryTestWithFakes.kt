@@ -1,9 +1,9 @@
 package com.santimattius.core.data.repositories
 
-import com.santimattius.shared_test.data.FakeMovieLocalDataSource
-import com.santimattius.shared_test.data.FakeMovieNetworkDataSource
-import com.santimattius.shared_test.data.MovieMother
-import com.santimattius.shared_test.rules.MainCoroutinesTestRule
+import com.santimattius.test.data.FakeMovieLocalDataSource
+import com.santimattius.test.data.FakeMovieNetworkDataSource
+import com.santimattius.test.data.MovieMother
+import com.santimattius.test.rules.MainCoroutinesTestRule
 import kotlinx.coroutines.test.runTest
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat

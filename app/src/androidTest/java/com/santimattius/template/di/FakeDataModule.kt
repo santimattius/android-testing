@@ -1,7 +1,7 @@
 package com.santimattius.template.di
 
-import com.santimattius.shared_test.data.FakeMovieLocalDataSource
-import com.santimattius.shared_test.data.FakeMovieNetworkDataSource
+import com.santimattius.test.data.FakeMovieLocalDataSource
+import com.santimattius.test.data.FakeMovieNetworkDataSource
 import com.santimattius.core.data.datasources.MovieLocalDataSource
 import com.santimattius.core.data.datasources.MovieNetworkDataSource
 import com.santimattius.core.data.repositories.TMDbRepository

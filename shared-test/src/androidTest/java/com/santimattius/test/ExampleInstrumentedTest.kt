@@ -1,4 +1,4 @@
-package com.santimattius.shared_test
+package com.santimattius.test
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

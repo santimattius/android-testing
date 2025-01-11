@@ -1,4 +1,4 @@
-package com.santimattius.shared_test.extensions
+package com.santimattius.test.extensions
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer

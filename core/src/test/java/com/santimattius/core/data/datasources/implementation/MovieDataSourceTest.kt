@@ -2,8 +2,8 @@ package com.santimattius.core.data.datasources.implementation
 
 import com.santimattius.core.data.client.network.RetrofitServiceCreator
 import com.santimattius.core.data.client.network.TheMovieDBService
-import com.santimattius.shared_test.data.TheMovieDBServiceMother
-import com.santimattius.shared_test.rules.MockWebServerRule
+import com.santimattius.test.data.TheMovieDBServiceMother
+import com.santimattius.test.rules.MockWebServerRule
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat

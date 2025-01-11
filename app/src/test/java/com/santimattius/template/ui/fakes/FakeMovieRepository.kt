@@ -1,7 +1,7 @@
 package com.santimattius.template.ui.fakes
 
-import com.santimattius.shared_test.data.MovieMother
-import com.santimattius.shared_test.data.dtoToDomain
+import com.santimattius.test.data.MovieMother
+import com.santimattius.test.data.dtoToDomain
 import com.santimattius.core.domain.entities.Movie
 import com.santimattius.core.domain.repositories.MovieRepository
 import kotlinx.coroutines.flow.Flow

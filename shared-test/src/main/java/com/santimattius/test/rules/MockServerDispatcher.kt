@@ -1,6 +1,6 @@
-package com.santimattius.shared_test.rules
+package com.santimattius.test.rules
 
-import com.santimattius.shared_test.JsonLoader
+import com.santimattius.test.JsonLoader
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.RecordedRequest

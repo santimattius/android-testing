@@ -1,13 +1,10 @@
 package com.santimattius.template.ui
 
-import android.util.Log
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.compose.ui.test.ExperimentalTestApi
-import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.test.espresso.IdlingPolicies
-import com.santimattius.shared_test.rules.MainCoroutinesTestRule
+import com.santimattius.test.rules.MainCoroutinesTestRule
 import com.santimattius.template.di.DataModule
 import com.santimattius.template.ui.compose.HomeComposeActivity
 import dagger.hilt.android.testing.HiltAndroidRule

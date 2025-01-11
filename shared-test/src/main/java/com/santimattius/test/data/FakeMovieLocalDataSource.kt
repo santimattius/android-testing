@@ -1,4 +1,4 @@
-package com.santimattius.shared_test.data
+package com.santimattius.test.data
 
 import com.santimattius.core.data.datasources.MovieLocalDataSource
 import com.santimattius.core.data.datasources.implementation.MovieNoExists
@@ -7,7 +7,6 @@ import com.santimattius.core.data.models.MovieEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 

@@ -1,10 +1,10 @@
-package com.santimattius.shared_test.data
+package com.santimattius.test.data
 
 import okhttp3.mockwebserver.MockResponse
 import java.net.HttpURLConnection
 
 object TheMovieDBServiceMother {
-    private val jsonLoader = com.santimattius.shared_test.JsonLoader()
+    private val jsonLoader = com.santimattius.test.JsonLoader()
 
     fun createPopularMovieResponse(): MockResponse {
         return MockResponse()

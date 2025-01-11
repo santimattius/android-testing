@@ -5,7 +5,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.fragment.app.FragmentContainerView
 import androidx.test.core.app.ActivityScenario
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.santimattius.shared_test.rules.MainCoroutinesTestRule
+import com.santimattius.test.rules.MainCoroutinesTestRule
 import com.santimattius.template.R
 import com.santimattius.template.di.DataModule
 import com.santimattius.template.ui.xml.home.HomeFragment

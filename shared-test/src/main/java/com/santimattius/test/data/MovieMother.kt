@@ -1,4 +1,4 @@
-package com.santimattius.shared_test.data
+package com.santimattius.test.data
 
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
@@ -7,7 +7,7 @@ import com.santimattius.core.data.models.Response
 import com.santimattius.core.domain.entities.Movie
 
 object MovieMother {
-    private val jsonLoader = com.santimattius.shared_test.JsonLoader()
+    private val jsonLoader = com.santimattius.test.JsonLoader()
     private val gson = GsonBuilder().create()
 
     fun createMovies(): List<NetworkMovie> {

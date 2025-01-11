@@ -1,4 +1,4 @@
-package com.santimattius.shared_test.data
+package com.santimattius.test.data
 
 import com.santimattius.core.data.datasources.MovieNetworkDataSource
 import com.santimattius.core.data.models.NetworkMovie

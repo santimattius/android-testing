@@ -1,10 +1,10 @@
 package com.santimattius.template.ui.xml
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.santimattius.shared_test.data.MovieMother
-import com.santimattius.shared_test.data.dtoToDomain
-import com.santimattius.shared_test.extensions.getOrAwaitValue
-import com.santimattius.shared_test.rules.MainCoroutinesTestRule
+import com.santimattius.test.data.MovieMother
+import com.santimattius.test.data.dtoToDomain
+import com.santimattius.test.extensions.getOrAwaitValue
+import com.santimattius.test.rules.MainCoroutinesTestRule
 import com.santimattius.template.ui.fakes.FakeMovieRepository
 import com.santimattius.template.ui.xml.home.HomeViewModel
 import com.santimattius.template.ui.xml.home.models.HomeState

@@ -1,13 +1,10 @@
 package com.santimattius.template.ui.compose
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewmodel.CreationExtras
-import androidx.lifecycle.viewmodel.testing.ViewModelScenario
 import androidx.lifecycle.viewmodel.testing.viewModelScenario
 import app.cash.turbine.test
-import com.santimattius.shared_test.data.MovieMother
-import com.santimattius.shared_test.data.dtoToDomain
-import com.santimattius.shared_test.rules.MainCoroutinesTestRule
+import com.santimattius.test.data.MovieMother
+import com.santimattius.test.data.dtoToDomain
+import com.santimattius.test.rules.MainCoroutinesTestRule
 import com.santimattius.template.ui.fakes.FakeMovieRepository
 import com.santimattius.template.ui.xml.home.models.HomeState
 import com.santimattius.template.ui.xml.home.models.mapping.asUiModels
@@ -58,6 +55,7 @@ class HomeViewModelFlowsTest {
         }
     }
 
+    @Suppress("TooGenericExceptionThrown")
     @Test
     fun `Given result is error When popular movies Then return error`() {
         val repository = FakeMovieRepository(onPopularMovies = { throw Exception() })

@@ -1,4 +1,4 @@
-package com.santimattius.shared_test.rules
+package com.santimattius.test.rules
 
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
