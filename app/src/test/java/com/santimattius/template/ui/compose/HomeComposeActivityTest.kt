@@ -1,13 +1,17 @@
-package com.santimattius.template.ui.home.compose
+package com.santimattius.template.ui.compose
 
 import android.os.Build
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.isNotDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.runAndroidComposeUiTest
+import androidx.compose.ui.test.waitUntilDoesNotExist
+import androidx.lifecycle.Lifecycle
 import com.santimattius.shared_test.rules.MainCoroutinesTestRule
 import com.santimattius.template.di.DataModule
-import com.santimattius.template.ui.compose.HomeComposeActivity
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.HiltTestApplication
@@ -31,7 +35,7 @@ import org.robolectric.annotation.Config
 )
 class HomeComposeActivityTest {
 
-    @get:Rule
+    @get:Rule(order = 0)
     var hiltRule = HiltAndroidRule(this)
 
     @get:Rule
@@ -40,18 +44,17 @@ class HomeComposeActivityTest {
     @get:Rule
     val coroutinesTestRule = MainCoroutinesTestRule()
 
-    @get:Rule
-    val composeTestRule = createAndroidComposeRule(HomeComposeActivity::class.java)
-
     @Before
     fun init() {
         hiltRule.inject()
     }
 
+    @OptIn(ExperimentalTestApi::class)
     @Test
-    fun `verify first movie is spider-man`() {
-        composeTestRule
-            .onNodeWithTag("Spider-Man: No Way Home")
-            .assertIsDisplayed()
-    }
+    fun `verify first movie is spider-man`() =
+        runAndroidComposeUiTest(HomeComposeActivity::class.java) {
+            onNodeWithTag("Spider-Man: No Way Home")
+                .assertIsDisplayed()
+        }
+
 }

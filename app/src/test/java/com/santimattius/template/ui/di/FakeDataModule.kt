@@ -1,4 +1,4 @@
-package com.santimattius.template.ui.home.di
+package com.santimattius.template.ui.di
 
 import com.santimattius.shared_test.data.FakeMovieLocalDataSource
 import com.santimattius.shared_test.data.FakeMovieNetworkDataSource

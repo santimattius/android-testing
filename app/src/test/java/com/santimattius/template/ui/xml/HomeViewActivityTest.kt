@@ -1,4 +1,4 @@
-package com.santimattius.template.ui.home
+package com.santimattius.template.ui.xml
 
 import android.os.Build
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule

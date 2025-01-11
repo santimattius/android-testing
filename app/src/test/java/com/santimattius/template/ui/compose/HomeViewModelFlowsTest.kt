@@ -1,11 +1,10 @@
-package com.santimattius.template.ui.home
+package com.santimattius.template.ui.compose
 
 import app.cash.turbine.test
 import com.santimattius.shared_test.data.MovieMother
 import com.santimattius.shared_test.data.dtoToDomain
 import com.santimattius.shared_test.rules.MainCoroutinesTestRule
-import com.santimattius.template.ui.compose.HomeViewModel
-import com.santimattius.template.ui.home.fakes.FakeMovieRepository
+import com.santimattius.template.ui.fakes.FakeMovieRepository
 import com.santimattius.template.ui.xml.home.models.HomeState
 import com.santimattius.template.ui.xml.home.models.mapping.asUiModels
 import kotlinx.coroutines.test.runTest
@@ -20,13 +19,11 @@ class HomeViewModelFlowsTest {
     @get:Rule
     val mainCoroutinesTestRule = MainCoroutinesTestRule()
 
-    private val movieRepository = FakeMovieRepository()
-
     @Test
     fun `Given result is success When popular movies Then return movies`() {
         val movies = MovieMother.createMovies().dtoToDomain()
         runTest(mainCoroutinesTestRule.testDispatcher) {
-            val viewModel = HomeViewModel(movieRepository)
+            val viewModel = HomeViewModel(FakeMovieRepository())
             viewModel.state.test {
                 assertThat(
                     awaitItem(),
@@ -40,18 +37,30 @@ class HomeViewModelFlowsTest {
     @Test
     fun `Given result is empty When popular movies Then return empty list`() {
         runTest(mainCoroutinesTestRule.testDispatcher) {
-            val viewModel = HomeViewModel(FakeMovieRepository { emptyList() })
+            val viewModel = HomeViewModel(FakeMovieRepository(onPopularMovies = { emptyList() }))
             viewModel.state.test {
                 assertThat(
                     awaitItem(),
-                    equalTo(HomeState.Data(emptyList()))
+                    equalTo(HomeState.Empty)
+
                 )
+                cancelAndIgnoreRemainingEvents()
             }
         }
     }
 
     @Test
     fun `Given result is error When popular movies Then return error`() {
-
+        runTest(mainCoroutinesTestRule.testDispatcher) {
+            val viewModel =
+                HomeViewModel(FakeMovieRepository(onPopularMovies = { throw Exception() }))
+            viewModel.state.test {
+                assertThat(
+                    awaitItem(),
+                    equalTo(HomeState.Error)
+                )
+                cancelAndIgnoreRemainingEvents()
+            }
+        }
     }
 }

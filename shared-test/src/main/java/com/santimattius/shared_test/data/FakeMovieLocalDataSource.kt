@@ -5,6 +5,8 @@ import com.santimattius.core.data.datasources.implementation.MovieNoExists
 import com.santimattius.core.data.datasources.implementation.MovieNoSaved
 import com.santimattius.core.data.models.MovieEntity
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -14,8 +16,10 @@ class FakeMovieLocalDataSource : MovieLocalDataSource {
     private val mutex = Mutex()
     private val movies = mutableListOf<MovieEntity>()
 
+    private val moviesFlow = MutableStateFlow<List<MovieEntity>>(movies)
+
     override val all: Flow<List<MovieEntity>>
-        get() = emptyFlow()
+        get() = moviesFlow.asStateFlow()
 
     override suspend fun getAll(): List<MovieEntity> {
         return mutex.withLock {
@@ -33,6 +37,7 @@ class FakeMovieLocalDataSource : MovieLocalDataSource {
         return mutex.withLock {
             val result = this@FakeMovieLocalDataSource.movies.addAll(movies)
             if (result) {
+                moviesFlow.value = this@FakeMovieLocalDataSource.movies
                 Result.success(value = true)
             } else {
                 Result.failure(MovieNoSaved())
@@ -50,7 +55,12 @@ class FakeMovieLocalDataSource : MovieLocalDataSource {
     override suspend fun delete(movie: MovieEntity): Result<Boolean> {
         return mutex.withLock {
             val result = movies.remove(movie)
-            if (result) Result.success(true) else Result.failure(MovieNoExists())
+            if (result) {
+                moviesFlow.value = this@FakeMovieLocalDataSource.movies
+                Result.success(true)
+            } else {
+                Result.failure(MovieNoExists())
+            }
         }
     }
 
@@ -62,6 +72,7 @@ class FakeMovieLocalDataSource : MovieLocalDataSource {
             } else {
                 movies.removeAt(index)
                 movies.add(movie)
+                moviesFlow.value = this@FakeMovieLocalDataSource.movies
                 Result.success(true)
             }
         }

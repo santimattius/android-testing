@@ -1,15 +1,13 @@
-package com.santimattius.template.ui.home
+package com.santimattius.template.ui.xml
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.santimattius.core.domain.entities.Movie
 import com.santimattius.shared_test.data.MovieMother
 import com.santimattius.shared_test.data.dtoToDomain
 import com.santimattius.shared_test.extensions.getOrAwaitValue
 import com.santimattius.shared_test.rules.MainCoroutinesTestRule
-import com.santimattius.template.ui.home.fakes.FakeMovieRepository
+import com.santimattius.template.ui.fakes.FakeMovieRepository
 import com.santimattius.template.ui.xml.home.HomeViewModel
 import com.santimattius.template.ui.xml.home.models.HomeState
-import com.santimattius.template.ui.xml.home.models.MovieUiModel
 import com.santimattius.template.ui.xml.home.models.mapping.asUiModels
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
