@@ -59,7 +59,6 @@ class HomeFragment : Fragment() {
         when (state) {
             is HomeState.Data -> {
                 loading(visible = false)
-                viewBinding.textEmptyResult.isVisible = state.values.isEmpty()
                 homeAdapter.submitList(state.values)
             }
 
@@ -74,6 +73,10 @@ class HomeFragment : Fragment() {
 
             HomeState.Refreshing -> refresh(true)
             HomeState.Completed -> refresh(false)
+            HomeState.Empty -> {
+                loading(visible = false)
+                viewBinding.textEmptyResult.isVisible = true
+            }
         }
     }
 

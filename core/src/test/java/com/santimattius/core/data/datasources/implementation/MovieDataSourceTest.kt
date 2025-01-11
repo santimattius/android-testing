@@ -1,27 +1,28 @@
 package com.santimattius.core.data.datasources.implementation
 
-import com.santimattius.shared_test.data.TheMovieDBServiceMother
+import com.santimattius.core.data.client.network.RetrofitServiceCreator
 import com.santimattius.core.data.client.network.TheMovieDBService
-import com.santimattius.core.data.client.network.createRetrofitService
+import com.santimattius.test.data.TheMovieDBServiceMother
+import com.santimattius.test.rules.MockWebServerRule
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import retrofit2.create
 
 class MovieDataSourceTest {
 
     @get:Rule
-    val mockWebServerRule = com.santimattius.shared_test.rules.MockWebServerRule()
+    val mockWebServerRule = MockWebServerRule()
+
     private lateinit var dataSource: MovieDataSource
 
     @Before
     fun setUp() {
         val baseUrl = mockWebServerRule.baseUrl
-        val service =
-            createRetrofitService(baseUrl = baseUrl, apiKey = "").create<TheMovieDBService>()
+        val service = RetrofitServiceCreator(baseUrl = baseUrl, apiKey = "")
+            .createService(TheMovieDBService::class.java)
         dataSource = MovieDataSource(service)
     }
 

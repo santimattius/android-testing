@@ -1,26 +1,25 @@
 package com.santimattius.core.data.repositories
 
-import com.santimattius.shared_test.data.MovieMother
-import com.santimattius.core.data.datasources.LocalDataSource
-import com.santimattius.core.data.datasources.RemoteDataSource
+import com.santimattius.test.data.MovieMother
+import com.santimattius.core.data.datasources.MovieLocalDataSource
+import com.santimattius.core.data.datasources.MovieNetworkDataSource
 import com.santimattius.core.data.dtoToEntity
 import io.mockk.*
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.*
 
 class TMDbRepositoryTestWithMock {
 
     @get:Rule
-    val coroutinesTestRule = com.santimattius.shared_test.rules.MainCoroutinesTestRule()
+    val coroutinesTestRule = com.santimattius.test.rules.MainCoroutinesTestRule()
 
-    private val remoteDataSource: RemoteDataSource = mockk(relaxed = true)
-    private val localDataSource: LocalDataSource = mockk(relaxed = true)
-    private val repository: TMDbRepository = TMDbRepository(remoteDataSource, localDataSource)
+    private val movieNetworkDataSource: MovieNetworkDataSource = mockk(relaxed = true)
+    private val movieLocalDataSource: MovieLocalDataSource = mockk(relaxed = true)
+    private val repository: TMDbRepository = TMDbRepository(movieNetworkDataSource, movieLocalDataSource)
 
     @After
     fun tearDown() {
-        clearMocks(remoteDataSource, localDataSource)
+        clearMocks(movieNetworkDataSource, movieLocalDataSource)
     }
 
     @Test
@@ -28,31 +27,31 @@ class TMDbRepositoryTestWithMock {
         val movies = MovieMother.createMovies()
         //Given
         coEvery {
-            remoteDataSource.getPopularMovies()
+            movieNetworkDataSource.getPopularMovies()
         } returns Result.success(movies)
 
         coEvery {
-            localDataSource.save(any())
+            movieLocalDataSource.save(any())
         } returns Result.success(true)
 
         coEvery {
-            localDataSource.getAll()
+            movieLocalDataSource.getAll()
         } returns movies.dtoToEntity()
 
         //When
         runTest(coroutinesTestRule.testDispatcher) {
-            repository.fetchPopular()
+            repository.refresh()
         }
 
         //Then
         coVerify {
-            remoteDataSource.getPopularMovies()
+            movieNetworkDataSource.getPopularMovies()
         }
         coVerify {
-            localDataSource.save(any())
+            movieLocalDataSource.save(any())
         }
         coVerify {
-            localDataSource.getAll()
+            movieLocalDataSource.getAll()
         }
     }
 }

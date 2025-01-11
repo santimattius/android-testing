@@ -31,7 +31,7 @@ class HomeViewModel @Inject constructor(
     fun popularMovies() {
         _state.postValue(HomeState.Loading)
         viewModelScope.launch(exceptionHandler) {
-            val popularMovies = movieRepository.getPopular()
+            val popularMovies = movieRepository.getAll()
             _state.postValue(HomeState.Data(values = popularMovies.asUiModels()))
         }
     }
@@ -44,7 +44,7 @@ class HomeViewModel @Inject constructor(
     private fun fetch() {
         job?.cancel()
         job = viewModelScope.launch(exceptionHandler) {
-            val result = movieRepository.fetchPopular()
+            val result = movieRepository.refresh()
             result.onSuccess { popularMovies ->
                 _state.postValue(HomeState.Data(values = popularMovies.asUiModels()))
             }.onFailure {

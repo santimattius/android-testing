@@ -1,10 +1,10 @@
 package com.santimattius.template.ui
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.compose.ui.test.ExperimentalTestApi
-import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import com.santimattius.shared_test.rules.MainCoroutinesTestRule
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.test.espresso.IdlingPolicies
+import com.santimattius.test.rules.MainCoroutinesTestRule
 import com.santimattius.template.di.DataModule
 import com.santimattius.template.ui.compose.HomeComposeActivity
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -13,6 +13,7 @@ import dagger.hilt.android.testing.UninstallModules
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import java.util.concurrent.TimeUnit
 
 
 @UninstallModules(DataModule::class)
@@ -34,11 +35,14 @@ class HomeComposeActivityTest {
     @Before
     fun init() {
         hiltRule.inject()
+        composeTestRule.mainClock.autoAdvance = false
+        IdlingPolicies.setIdlingResourceTimeout(10, TimeUnit.SECONDS)
     }
 
-    @OptIn(ExperimentalTestApi::class)
     @Test
     fun showsTitleOfImageIfThereAreImages() {
-        composeTestRule.waitUntilExactlyOneExists(matcher = hasTestTag("Spider-Man: No Way Home"))
+        composeTestRule.mainClock.advanceTimeBy(5000)
+        composeTestRule.onNodeWithTag("Spider-Man: No Way Home")
+            .assertExists("The image title tag was not found.")
     }
 }

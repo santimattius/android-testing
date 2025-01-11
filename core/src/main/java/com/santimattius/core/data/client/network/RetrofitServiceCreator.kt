@@ -4,7 +4,7 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-internal fun createRetrofitService(baseUrl: String, apiKey: String): Retrofit {
+private fun createRetrofitService(baseUrl: String, apiKey: String): Retrofit {
     val client = OkHttpClient().newBuilder()
         .addInterceptor(RequestInterceptor(apiKey))
         .build()

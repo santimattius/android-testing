@@ -104,6 +104,12 @@ fun HomeScreenContent(state: HomeState, onMovieClicked: (MovieUiModel) -> Unit) 
             }
         }
 
+        HomeState.Empty -> {
+            Center {
+                Text(text = stringResource(id = R.string.message_text_empty_result))
+            }
+        }
+
         else -> {
             Center(modifier = Modifier.testTag("loading")) {
                 CircularProgressIndicator()

@@ -7,9 +7,8 @@ import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
 import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.filters.MediumTest
-import com.santimattius.core.domain.entities.Movie
-import com.santimattius.shared_test.data.MovieMother
-import com.santimattius.shared_test.rules.MainCoroutinesTestRule
+import com.santimattius.test.data.MovieMother
+import com.santimattius.test.rules.MainCoroutinesTestRule
 import com.santimattius.template.R
 import com.santimattius.template.di.DataModule
 import com.santimattius.template.espresso.RecyclerViewInteraction

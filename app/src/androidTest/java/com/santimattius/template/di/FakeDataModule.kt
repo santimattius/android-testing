@@ -1,11 +1,10 @@
 package com.santimattius.template.di
 
-import com.santimattius.shared_test.data.FakeLocalDataSource
-import com.santimattius.shared_test.data.FakeRemoteDataSource
-import com.santimattius.core.data.datasources.LocalDataSource
-import com.santimattius.core.data.datasources.RemoteDataSource
+import com.santimattius.test.data.FakeMovieLocalDataSource
+import com.santimattius.test.data.FakeMovieNetworkDataSource
+import com.santimattius.core.data.datasources.MovieLocalDataSource
+import com.santimattius.core.data.datasources.MovieNetworkDataSource
 import com.santimattius.core.data.repositories.TMDbRepository
-import com.santimattius.template.di.DataModule
 import com.santimattius.core.domain.repositories.MovieRepository
 import dagger.Module
 import dagger.Provides
@@ -22,22 +21,22 @@ class FakeDataModule {
 
     @Provides
     fun provideMovieRepository(
-        @Named("fake_remote_data_source") remoteDataSource: RemoteDataSource,
-        @Named("fake_local_data_source") localDataSource: LocalDataSource,
+        @Named("fake_remote_data_source") movieNetworkDataSource: MovieNetworkDataSource,
+        @Named("fake_local_data_source") movieLocalDataSource: MovieLocalDataSource,
     ): MovieRepository = TMDbRepository(
-        remoteDataSource = remoteDataSource,
-        localDataSource = localDataSource
+        movieNetworkDataSource = movieNetworkDataSource,
+        movieLocalDataSource = movieLocalDataSource
     )
 
     @Named("fake_local_data_source")
     @Provides
-    fun provideFakeLocalDataSource(): LocalDataSource {
-        return FakeLocalDataSource()
+    fun provideFakeLocalDataSource(): MovieLocalDataSource {
+        return FakeMovieLocalDataSource()
     }
 
     @Named("fake_remote_data_source")
     @Provides
-    fun provideRemoteDataSource(): RemoteDataSource {
-        return FakeRemoteDataSource()
+    fun provideRemoteDataSource(): MovieNetworkDataSource {
+        return FakeMovieNetworkDataSource()
     }
 }

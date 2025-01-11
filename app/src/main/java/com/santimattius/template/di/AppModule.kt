@@ -1,7 +1,7 @@
 package com.santimattius.template.di
 
 import android.content.Context
-import com.santimattius.core.data.client.database.AppDataBase
+import com.santimattius.core.data.client.database.TheMovieDataBase
 import com.santimattius.core.data.client.network.RetrofitServiceCreator
 import com.santimattius.core.data.client.network.TheMovieDBService
 import com.santimattius.template.BuildConfig
@@ -18,8 +18,8 @@ import javax.inject.Singleton
 class AppModule {
 
     @Provides
-    fun provideAppDatabase(@ApplicationContext context: Context): AppDataBase =
-        AppDataBase.get(context)
+    fun provideAppDatabase(@ApplicationContext context: Context): TheMovieDataBase =
+        TheMovieDataBase.get(context)
 
     @Provides
     fun provideMovieDBService(serviceCreator: RetrofitServiceCreator): TheMovieDBService =

@@ -1,28 +1,34 @@
 package com.santimattius.core.data.repositories
 
-import com.santimattius.core.data.datasources.LocalDataSource
-import com.santimattius.core.data.datasources.RemoteDataSource
+import com.santimattius.core.data.datasources.MovieLocalDataSource
+import com.santimattius.core.data.datasources.MovieNetworkDataSource
 import com.santimattius.core.data.dtoToEntity
 import com.santimattius.core.data.entityToDomain
 import com.santimattius.core.domain.entities.Movie
 import com.santimattius.core.domain.repositories.MovieRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class TMDbRepository(
-    private val remoteDataSource: RemoteDataSource,
-    private val localDataSource: LocalDataSource,
+    private val movieNetworkDataSource: MovieNetworkDataSource,
+    private val movieLocalDataSource: MovieLocalDataSource,
 ) : MovieRepository {
 
-    override suspend fun getPopular(): List<Movie> {
-        if (localDataSource.isEmpty()) {
-            val movies = remoteDataSource.getPopularMovies().getOrDefault(emptyList())
-            localDataSource.save(movies.dtoToEntity())
-        }
-        return localDataSource.getAll().entityToDomain()
+    override val all: Flow<List<Movie>> = movieLocalDataSource.all.map {
+        it.entityToDomain()
     }
 
-    override suspend fun fetchPopular() = remoteDataSource.getPopularMovies().fold(onSuccess = {
-        localDataSource.save(it.dtoToEntity())
-        Result.success(localDataSource.getAll().entityToDomain())
+    override suspend fun getAll(): List<Movie> {
+        if (movieLocalDataSource.isEmpty()) {
+            val movies = movieNetworkDataSource.getPopularMovies().getOrDefault(emptyList())
+            movieLocalDataSource.save(movies.dtoToEntity())
+        }
+        return movieLocalDataSource.getAll().entityToDomain()
+    }
+
+    override suspend fun refresh() = movieNetworkDataSource.getPopularMovies().fold(onSuccess = {
+        movieLocalDataSource.save(it.dtoToEntity())
+        Result.success(movieLocalDataSource.getAll().entityToDomain())
     }, onFailure = {
         Result.failure(RefreshMovieFailed())
     })

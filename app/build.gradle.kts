@@ -112,6 +112,7 @@ dependencies {
 
     implementation(libs.bundles.ui)
     implementation(libs.bundles.lifecycle)
+    testImplementation(libs.lifecycle.viewmodel.testing)
 
     implementation(libs.room.ktx)
     implementation(libs.room.runtime)

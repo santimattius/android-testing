@@ -1,9 +1,9 @@
 package com.santimattius.core.data.repositories
 
-import com.santimattius.shared_test.data.FakeLocalDataSource
-import com.santimattius.shared_test.data.FakeRemoteDataSource
-import com.santimattius.shared_test.data.MovieMother
-import com.santimattius.shared_test.rules.MainCoroutinesTestRule
+import com.santimattius.test.data.FakeMovieLocalDataSource
+import com.santimattius.test.data.FakeMovieNetworkDataSource
+import com.santimattius.test.data.MovieMother
+import com.santimattius.test.rules.MainCoroutinesTestRule
 import kotlinx.coroutines.test.runTest
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
@@ -15,8 +15,8 @@ class TMDbRepositoryTestWithFakes {
     @get:Rule
     val coroutinesTestRule = MainCoroutinesTestRule()
 
-    private val remoteDataSource = FakeRemoteDataSource()
-    private val localDataSource = FakeLocalDataSource()
+    private val remoteDataSource = FakeMovieNetworkDataSource()
+    private val localDataSource = FakeMovieLocalDataSource()
     private val repository: TMDbRepository = TMDbRepository(remoteDataSource, localDataSource)
 
     @Test
@@ -27,7 +27,7 @@ class TMDbRepositoryTestWithFakes {
 
         //When
         runTest(coroutinesTestRule.testDispatcher) {
-            val result = repository.fetchPopular()
+            val result = repository.refresh()
             //Then
             assertThat(result.getOrNull().isNullOrEmpty(), equalTo(false))
         }

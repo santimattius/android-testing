@@ -3,7 +3,7 @@
 
     <application>
         <activity
-            android:name="com.santimattius.shared_test.HiltTestActivity"
+            android:name="com.santimattius.test.HiltTestActivity"
             android:exported="true" />
     </application>
 </manifest>

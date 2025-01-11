@@ -1,7 +1,7 @@
 package com.santimattius.core.data
 
-import com.santimattius.core.data.entities.MovieDto
-import com.santimattius.core.data.entities.MovieEntity
+import com.santimattius.core.data.models.NetworkMovie
+import com.santimattius.core.data.models.MovieEntity
 import com.santimattius.core.domain.entities.Movie
 
 /**
@@ -20,7 +20,7 @@ internal fun List<MovieEntity>.entityToDomain(): List<Movie> {
     }
 }
 
-internal fun List<MovieDto>.dtoToEntity(): List<MovieEntity> {
+internal fun List<NetworkMovie>.dtoToEntity(): List<MovieEntity> {
     return map {
         MovieEntity(
             id = it.id,
