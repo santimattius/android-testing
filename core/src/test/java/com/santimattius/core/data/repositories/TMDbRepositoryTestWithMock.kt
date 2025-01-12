@@ -4,6 +4,7 @@ import com.santimattius.test.data.MovieMother
 import com.santimattius.core.data.datasources.MovieLocalDataSource
 import com.santimattius.core.data.datasources.MovieNetworkDataSource
 import com.santimattius.core.data.dtoToEntity
+import com.santimattius.test.rules.MainCoroutinesTestRule
 import io.mockk.*
 import kotlinx.coroutines.test.runTest
 import org.junit.*
@@ -11,11 +12,18 @@ import org.junit.*
 class TMDbRepositoryTestWithMock {
 
     @get:Rule
-    val coroutinesTestRule = com.santimattius.test.rules.MainCoroutinesTestRule()
+    val coroutinesTestRule = MainCoroutinesTestRule()
 
-    private val movieNetworkDataSource: MovieNetworkDataSource = mockk(relaxed = true)
-    private val movieLocalDataSource: MovieLocalDataSource = mockk(relaxed = true)
-    private val repository: TMDbRepository = TMDbRepository(movieNetworkDataSource, movieLocalDataSource)
+    private lateinit var movieNetworkDataSource: MovieNetworkDataSource
+    private lateinit var movieLocalDataSource: MovieLocalDataSource
+    private lateinit var repository: TMDbRepository
+
+    @Before
+    fun setUp() {
+        movieNetworkDataSource = mockk(relaxed = true)
+        movieLocalDataSource = mockk(relaxed = true)
+        repository = TMDbRepository(movieNetworkDataSource, movieLocalDataSource)
+    }
 
     @After
     fun tearDown() {

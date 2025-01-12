@@ -1,4 +1,4 @@
-package com.santimattius.core.strategies
+package com.santimattius.test.data.strategies
 
 import com.santimattius.core.domain.entities.Movie
 

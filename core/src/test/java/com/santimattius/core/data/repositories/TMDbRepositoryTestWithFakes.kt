@@ -6,7 +6,10 @@ import com.santimattius.test.data.MovieMother
 import com.santimattius.test.rules.MainCoroutinesTestRule
 import kotlinx.coroutines.test.runTest
 import org.hamcrest.CoreMatchers.equalTo
+import org.hamcrest.CoreMatchers.not
 import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.Matchers
+import org.hamcrest.core.IsNot
 import org.junit.Rule
 import org.junit.Test
 
@@ -29,7 +32,7 @@ class TMDbRepositoryTestWithFakes {
         runTest(coroutinesTestRule.testDispatcher) {
             val result = repository.refresh()
             //Then
-            assertThat(result.getOrNull().isNullOrEmpty(), equalTo(false))
+            assertThat(result.getOrNull(), not(Matchers.empty()))
         }
     }
 }

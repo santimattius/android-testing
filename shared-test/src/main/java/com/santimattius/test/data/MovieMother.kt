@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken
 import com.santimattius.core.data.models.NetworkMovie
 import com.santimattius.core.data.models.Response
 import com.santimattius.core.domain.entities.Movie
+import com.santimattius.test.data.strategies.MovieBuilder
 
 object MovieMother {
     private val jsonLoader = com.santimattius.test.JsonLoader()
@@ -18,7 +19,7 @@ object MovieMother {
         ).results
     }
 
-    fun createDomainMovies(): List<Movie>{
+    fun createDomainMovies(): List<Movie> {
         return createMovies().dtoToDomain()
     }
 
@@ -28,5 +29,17 @@ object MovieMother {
         overview: String = "Spider-Man: No Way Home",
         poster: String = "/fOy2Jurz9k6RnJnMUMRDAgBwru2.jpg"
     ) = Movie(id, overview, title, poster)
+
+    fun buildMovie(
+        id: Int = 508947,
+        title: String = "Spider-Man: No Way Home",
+        overview: String = "Spider-Man: No Way Home",
+        poster: String = "/fOy2Jurz9k6RnJnMUMRDAgBwru2.jpg"
+    ) = MovieBuilder()
+        .withId(id)
+        .withTitle(title)
+        .withOverview(overview)
+        .withPoster(poster)
+        .build()
 }
 

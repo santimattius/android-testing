@@ -78,6 +78,7 @@ dependencies {
     testImplementation(libs.bundles.robolectric)
     testImplementation(libs.junit)
     testImplementation(libs.turbine)
+    testImplementation(libs.hamcrest)
 
     testImplementation(libs.hilt.test)
     kspTest(libs.hilt.android.compiler)

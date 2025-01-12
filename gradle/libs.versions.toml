@@ -1,6 +1,7 @@
 [versions]
 # Plugins
 androidGradlePlugin = "8.7.3"
+hamcrest = "2.2"
 kotlin = "2.1.0"
 hilt = "2.54"
 detektGradlePlugin = "1.23.7"
@@ -121,7 +122,7 @@ test-espresso-contrib = { module = "androidx.test.espresso:espresso-contrib", ve
 okHttp3-idling-resource = { module = "com.jakewharton.espresso:okhttp3-idling-resource", version.ref = "okhttp3IdlingResource" }
 
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
-
+hamcrest = { module = "org.hamcrest:hamcrest", version.ref = "hamcrest" }
 ##Plugins
 dep-google-secrets-gradle-plugin = { module = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin", version.ref = "googleSecretsPlugin" }
 

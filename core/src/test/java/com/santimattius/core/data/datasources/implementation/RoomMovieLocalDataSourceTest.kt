@@ -24,7 +24,7 @@ import java.io.IOException
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
 @Config(manifest = Config.NONE, sdk = [Build.VERSION_CODES.R])
-class RoomDataSourceTest {
+class RoomMovieLocalDataSourceTest {
 
     @get:Rule
     val coroutinesTestRule = MainCoroutinesTestRule()

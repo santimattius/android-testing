@@ -4,7 +4,7 @@ import com.santimattius.core.data.client.network.TheMovieDBService
 import com.santimattius.core.data.datasources.MovieNetworkDataSource
 import com.santimattius.core.data.models.NetworkMovie as TheMovieDbMovie
 
-class MovieDataSource(
+class RetrofitMovieNetworkDataSource(
     private val service: TheMovieDBService,
 ) : MovieNetworkDataSource {
 

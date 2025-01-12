@@ -11,19 +11,19 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-class MovieDataSourceTest {
+class RetrofitMovieNetworkDataSourceTest {
 
     @get:Rule
     val mockWebServerRule = MockWebServerRule()
 
-    private lateinit var dataSource: MovieDataSource
+    private lateinit var dataSource: RetrofitMovieNetworkDataSource
 
     @Before
     fun setUp() {
         val baseUrl = mockWebServerRule.baseUrl
         val service = RetrofitServiceCreator(baseUrl = baseUrl, apiKey = "")
             .createService(TheMovieDBService::class.java)
-        dataSource = MovieDataSource(service)
+        dataSource = RetrofitMovieNetworkDataSource(service)
     }
 
     @Test

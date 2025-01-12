@@ -4,7 +4,7 @@ import com.santimattius.core.data.client.database.TheMovieDataBase
 import com.santimattius.core.data.client.network.TheMovieDBService
 import com.santimattius.core.data.datasources.MovieLocalDataSource
 import com.santimattius.core.data.datasources.MovieNetworkDataSource
-import com.santimattius.core.data.datasources.implementation.MovieDataSource
+import com.santimattius.core.data.datasources.implementation.RetrofitMovieNetworkDataSource
 import com.santimattius.core.data.datasources.implementation.RoomMovieLocalDataSource
 import com.santimattius.core.data.repositories.TMDbRepository
 import com.santimattius.core.domain.repositories.MovieRepository
@@ -33,6 +33,6 @@ class DataModule {
 
     @Provides
     fun provideRemoteDataSource(service: TheMovieDBService): MovieNetworkDataSource {
-        return MovieDataSource(service = service)
+        return RetrofitMovieNetworkDataSource(service = service)
     }
 }
