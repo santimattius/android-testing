@@ -1,18 +1,19 @@
-# Android Testing 
-
+# 🧨​ Android Testing [update in progress] 🧨​
+<!-- 
 This is a template to build an Android app applying good practices and testable architecture.
 
 ![pyramid](https://github.com/santimattius/android-testing/assets/22333101/2c4b30e2-b31c-4fe4-bb67-c947dedb4ca8)
 
 
 ## Screenshot
-
+ -->
 <p align="center">
 
   <img wight="280" src="https://github.com/santimattius/android-testing/blob/master/screenshoot/entertainment_app.png?raw=true" alt="App Capture"/>
 
 </p>
 
+<!-- 
 ## Unit Tests to Avoid
 Some unit tests should be avoided because of their low value:
 
@@ -25,7 +26,7 @@ Some unit tests should be avoided because of their low value:
 Integration or intermediate level tests are tests that validate the interactions between stack levels within a module or the interactions between related modules.
 
 Check more content, here: [Intro to Integration Testing on Android (Spanish)](https://github.com/santimattius/android-testing/files/11521077/Intro.a.Tests.de.Integracion.en.Android-1.pdf)
-
+ -->
 ## Content
 
 TheMovieDB API: Check this [documentation](https://www.themoviedb.org/documentation/api).
@@ -51,7 +52,7 @@ Run tests project:
 ```shell
 > ./gradlew test
 ```
-
+<!-- 
 ## Dependencies
 
 Below you will find the libraries used to build the template and according to my criteria the most
@@ -70,7 +71,7 @@ used in android development so far.
   -  [Robolectric](https://robolectric.org/)
   -  [Espresso](https://developer.android.com/training/testing/espresso)
   -  [Jetpack Compose Testing API](https://developer.android.com/jetpack/compose/testing) 
-
+-->
 ## References
 
 - [Guide to app architecture](https://developer.android.com/jetpack/guide)
