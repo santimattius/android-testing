@@ -5,10 +5,11 @@ import com.google.gson.reflect.TypeToken
 import com.santimattius.core.data.models.NetworkMovie
 import com.santimattius.core.data.models.Response
 import com.santimattius.core.domain.entities.Movie
+import com.santimattius.test.JsonLoader
 import com.santimattius.test.data.strategies.MovieBuilder
 
 object MovieMother {
-    private val jsonLoader = com.santimattius.test.JsonLoader()
+    private val jsonLoader = JsonLoader()
     private val gson = GsonBuilder().create()
 
     fun createMovies(): List<NetworkMovie> {
@@ -18,6 +19,10 @@ object MovieMother {
             object : TypeToken<Response<NetworkMovie>>() {}.type
         ).results
     }
+
+    fun createMovie() = createMovies().random()
+
+    fun singleMovie() = listOf(createMovie())
 
     fun createDomainMovies(): List<Movie> {
         return createMovies().dtoToDomain()

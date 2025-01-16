@@ -5,7 +5,7 @@ import com.santimattius.test.data.MovieMother
 import com.santimattius.test.data.dtoToDomain
 import com.santimattius.test.extensions.getOrAwaitValue
 import com.santimattius.test.rules.MainCoroutinesTestRule
-import com.santimattius.template.ui.fakes.FakeMovieRepository
+import com.santimattius.template.ui.fakes.MockMovieRepository
 import com.santimattius.template.ui.xml.home.HomeViewModel
 import com.santimattius.template.ui.xml.home.models.HomeState
 import com.santimattius.template.ui.xml.home.models.mapping.asUiModels
@@ -22,7 +22,7 @@ class HomeViewModelLiveDataTest {
     @get:Rule
     val mainCoroutinesTestRule = MainCoroutinesTestRule()
 
-    private val movieRepository = FakeMovieRepository()
+    private val movieRepository = MockMovieRepository()
     private val viewModel = HomeViewModel(movieRepository)
 
     @Test

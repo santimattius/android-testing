@@ -79,6 +79,7 @@ dependencies {
     testImplementation(libs.junit)
     testImplementation(libs.turbine)
     testImplementation(libs.hamcrest)
+    testImplementation(libs.mockito.kotlin)
 
     testImplementation(libs.hilt.test)
     kspTest(libs.hilt.android.compiler)

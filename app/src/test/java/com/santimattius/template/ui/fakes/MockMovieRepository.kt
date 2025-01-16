@@ -7,7 +7,7 @@ import com.santimattius.core.domain.repositories.MovieRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-class FakeMovieRepository(
+class MockMovieRepository(
     var onPopularMovies: () -> List<Movie> = {
         MovieMother.createMovies().dtoToDomain()
     },

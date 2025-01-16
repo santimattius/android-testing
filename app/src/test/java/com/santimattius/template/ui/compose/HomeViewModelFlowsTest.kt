@@ -5,7 +5,7 @@ import app.cash.turbine.test
 import com.santimattius.test.data.MovieMother
 import com.santimattius.test.data.dtoToDomain
 import com.santimattius.test.rules.MainCoroutinesTestRule
-import com.santimattius.template.ui.fakes.FakeMovieRepository
+import com.santimattius.template.ui.fakes.MockMovieRepository
 import com.santimattius.template.ui.xml.home.models.HomeState
 import com.santimattius.template.ui.xml.home.models.mapping.asUiModels
 import kotlinx.coroutines.test.runTest
@@ -22,7 +22,7 @@ class HomeViewModelFlowsTest {
     @Test
     fun `Given result is success When popular movies Then return movies`() {
         val movies = MovieMother.createMovies().dtoToDomain()
-        val repository = FakeMovieRepository(onPopularMovies = { movies })
+        val repository = MockMovieRepository(onPopularMovies = { movies })
         viewModelScenario { HomeViewModel(repository) }.use { scenario ->
             val viewModel = scenario.viewModel
             runTest(mainCoroutinesTestRule.testDispatcher) {
@@ -39,7 +39,7 @@ class HomeViewModelFlowsTest {
 
     @Test
     fun `Given result is empty When popular movies Then return empty list`() {
-        val repository = FakeMovieRepository(onPopularMovies = { emptyList() })
+        val repository = MockMovieRepository(onPopularMovies = { emptyList() })
         viewModelScenario { HomeViewModel(repository) }.use {
             val viewModel = it.viewModel
             runTest(mainCoroutinesTestRule.testDispatcher) {
@@ -58,7 +58,7 @@ class HomeViewModelFlowsTest {
     @Suppress("TooGenericExceptionThrown")
     @Test
     fun `Given result is error When popular movies Then return error`() {
-        val repository = FakeMovieRepository(onPopularMovies = { throw Exception() })
+        val repository = MockMovieRepository(onPopularMovies = { throw Exception() })
         viewModelScenario { HomeViewModel(repository) }.use { scenario ->
             val viewModel = scenario.viewModel
             runTest(mainCoroutinesTestRule.testDispatcher) {
