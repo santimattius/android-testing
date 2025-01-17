@@ -5,15 +5,13 @@ import com.santimattius.test.data.FakeMovieNetworkDataSource
 import com.santimattius.test.data.MovieMother
 import com.santimattius.test.rules.MainCoroutinesTestRule
 import kotlinx.coroutines.test.runTest
-import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.CoreMatchers.not
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers
-import org.hamcrest.core.IsNot
 import org.junit.Rule
 import org.junit.Test
 
-class TMDbRepositoryTestWithFakes {
+class TMDbRepositoryUsingFakesTest {
 
     @get:Rule
     val coroutinesTestRule = MainCoroutinesTestRule()
@@ -23,7 +21,7 @@ class TMDbRepositoryTestWithFakes {
     private val repository: TMDbRepository = TMDbRepository(remoteDataSource, localDataSource)
 
     @Test
-    fun `Given there are movies when make the request the result is not empty`() {
+    fun `refresh updates local data on success`() {
         //Given
         val movies = MovieMother.createMovies()
         remoteDataSource.onMovies = { movies }
