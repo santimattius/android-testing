@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.santimattius.core.domain.repositories.MovieRepository
-import com.santimattius.template.ui.xml.home.models.HomeState
-import com.santimattius.template.ui.xml.home.models.mapping.asUiModels
+import com.santimattius.template.ui.xml.models.HomeState
+import com.santimattius.template.ui.models.mapping.asUiModels
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Job

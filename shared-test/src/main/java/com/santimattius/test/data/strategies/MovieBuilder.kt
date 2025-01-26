@@ -3,13 +3,13 @@ package com.santimattius.test.data.strategies
 import com.santimattius.core.domain.entities.Movie
 
 class MovieBuilder(
-    private var id: Int = -1,
+    private var id: Long = -1,
     private var overview: String = "",
     private var title: String = "",
     private var poster: String = "",
 ) {
 
-    fun withId(value: Int) = apply {
+    fun withId(value: Long) = apply {
         this.id = value
     }
 

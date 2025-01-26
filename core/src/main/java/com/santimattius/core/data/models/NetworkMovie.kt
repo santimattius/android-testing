@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class NetworkMovie(
     @SerializedName("id")
-    val id: Int = 0,
+    val id: Long = 0,
     @SerializedName("overview")
     val overview: String = "",
     @SerializedName("original_language")

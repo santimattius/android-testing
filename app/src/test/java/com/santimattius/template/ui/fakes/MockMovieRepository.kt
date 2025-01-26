@@ -25,4 +25,12 @@ class MockMovieRepository(
     override suspend fun refresh(): Result<List<Movie>> {
         return runCatching { onFetchPopularMovies() }
     }
+
+    override suspend fun addToFavorite(movieId: Long): Result<Unit> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun removeFromFavorite(movieId: Long): Result<Unit> {
+        TODO("Not yet implemented")
+    }
 }

@@ -1,7 +1,7 @@
 package com.santimattius.template.ui.xml.home.components.diff
 
 import androidx.recyclerview.widget.DiffUtil
-import com.santimattius.template.ui.xml.home.models.MovieUiModel
+import com.santimattius.template.ui.models.MovieUiModel
 
 object MovieDiffItem : DiffUtil.ItemCallback<MovieUiModel>() {
     override fun areItemsTheSame(oldItem: MovieUiModel, newItem: MovieUiModel): Boolean {

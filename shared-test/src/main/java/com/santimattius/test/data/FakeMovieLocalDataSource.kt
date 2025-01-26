@@ -44,7 +44,7 @@ class FakeMovieLocalDataSource : MovieLocalDataSource {
         }
     }
 
-    override suspend fun find(id: Int): Result<MovieEntity> {
+    override suspend fun find(id: Long): Result<MovieEntity> {
         return mutex.withLock {
             val movie = movies.firstOrNull { it.id == id }
             if (movie == null) Result.failure(MovieNoExists()) else Result.success(movie)
@@ -75,6 +75,14 @@ class FakeMovieLocalDataSource : MovieLocalDataSource {
                 Result.success(true)
             }
         }
+    }
+
+    override suspend fun addToFavorite(movieId: Long): Result<Unit> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun removeFromFavorite(movieId: Long): Result<Unit> {
+        TODO("Not yet implemented")
     }
 
 }
