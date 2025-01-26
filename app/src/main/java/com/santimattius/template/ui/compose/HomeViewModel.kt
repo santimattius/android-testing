@@ -30,7 +30,7 @@ class HomeViewModel @Inject constructor(
     }.onStart {
         movieRepository.refresh()
     }.catch {
-       emit(HomeUiState(loadingError = true))
+        emit(HomeUiState(loadingError = true))
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
@@ -39,22 +39,33 @@ class HomeViewModel @Inject constructor(
 
     fun onFavorite(movie: MovieUiModel) {
         viewModelScope.launch {
-            if (movie.favorite) {
+            val result = if (movie.favorite) {
                 movieRepository.removeFromFavorite(movie.id).fold(
                     onSuccess = {
-                        _state.update { it.copy(successMessages = Messages.Success("Remove ${movie.title} from favorite")) }
+                        Messages.Success("Remove ${movie.title} from favorite")
                     }, onFailure = {
-                        _state.update { it.copy(errorMessages = Messages.Error("Failed to remove ${movie.title} from favorite")) }
+                        Messages.Error("Failed to remove ${movie.title} from favorite")
                     }
                 )
             } else {
                 movieRepository.addToFavorite(movie.id).fold(
                     onSuccess = {
-                        _state.update { it.copy(successMessages = Messages.Success("Add ${movie.title}  to favorite")) }
+                        Messages.Success("Add ${movie.title}  to favorite")
                     }, onFailure = {
-                        _state.update { it.copy(errorMessages = Messages.Error("Failed to add ${movie.title} to favorite")) }
+                        Messages.Error("Failed to add ${movie.title} to favorite")
                     }
                 )
+            }
+            when (result) {
+                is Messages.Error -> {
+                    _state.update { it.copy(errorMessages = result) }
+                }
+
+                is Messages.Success -> {
+                    _state.update { it.copy(successMessages = result) }
+                }
+
+                Messages.None -> {}
             }
         }
     }
