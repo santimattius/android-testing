@@ -13,9 +13,14 @@ interface MovieLocalDataSource {
 
     suspend fun save(movies: List<MovieEntity>): Result<Boolean>
 
-    suspend fun find(id: Int): Result<MovieEntity>
+    suspend fun find(id: Long): Result<MovieEntity>
 
     suspend fun delete(movie: MovieEntity): Result<Boolean>
 
     suspend fun update(movie: MovieEntity): Result<Boolean>
+
+    suspend fun addToFavorite(movieId: Long): Result<Unit>
+
+    suspend fun removeFromFavorite(movieId: Long): Result<Unit>
+
 }

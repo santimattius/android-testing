@@ -15,7 +15,7 @@ import com.santimattius.template.core.presentation.DialogAction
 import com.santimattius.template.databinding.PopularMoviesFragmentBinding
 import com.santimattius.template.ui.xml.components.showDialog
 import com.santimattius.template.ui.xml.home.components.PopularMoviesAdapter
-import com.santimattius.template.ui.xml.home.models.HomeState
+import com.santimattius.template.ui.xml.models.HomeState
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

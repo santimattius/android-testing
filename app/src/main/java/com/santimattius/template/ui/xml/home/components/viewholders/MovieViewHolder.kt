@@ -7,7 +7,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.santimattius.template.databinding.ItemMovieBinding
 import com.santimattius.template.ui.xml.components.load
-import com.santimattius.template.ui.xml.home.models.MovieUiModel
+import com.santimattius.template.ui.models.MovieUiModel
 
 class MovieViewHolder(
     @get:VisibleForTesting internal val viewBinding: ItemMovieBinding,

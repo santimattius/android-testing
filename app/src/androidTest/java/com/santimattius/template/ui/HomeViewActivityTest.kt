@@ -13,8 +13,8 @@ import com.santimattius.template.R
 import com.santimattius.template.di.DataModule
 import com.santimattius.template.espresso.RecyclerViewInteraction
 import com.santimattius.template.ui.xml.home.HomeViewActivity
-import com.santimattius.template.ui.xml.home.models.MovieUiModel
-import com.santimattius.template.ui.xml.home.models.mapping.asUiModels
+import com.santimattius.template.ui.models.MovieUiModel
+import com.santimattius.template.ui.models.mapping.asUiModels
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules

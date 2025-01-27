@@ -7,8 +7,8 @@ import com.santimattius.test.extensions.getOrAwaitValue
 import com.santimattius.test.rules.MainCoroutinesTestRule
 import com.santimattius.template.ui.fakes.MockMovieRepository
 import com.santimattius.template.ui.xml.home.HomeViewModel
-import com.santimattius.template.ui.xml.home.models.HomeState
-import com.santimattius.template.ui.xml.home.models.mapping.asUiModels
+import com.santimattius.template.ui.xml.models.HomeState
+import com.santimattius.template.ui.models.mapping.asUiModels
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Rule

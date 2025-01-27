@@ -9,13 +9,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import com.santimattius.template.R
-import com.santimattius.template.ui.xml.home.models.MovieUiModel
+import com.santimattius.template.ui.models.MovieUiModel
 
 @Composable
 fun MoviesGrid(
     modifier: Modifier = Modifier,
     movies: List<MovieUiModel>,
-    onItemClick: (MovieUiModel) -> Unit,
+    onItemClick: (MoviesGridAction) -> Unit,
 ) {
     LazyVerticalGrid(
         columns = GridCells.Adaptive(dimensionResource(R.dimen.item_min_width)),
@@ -25,8 +25,14 @@ fun MoviesGrid(
         items(movies, key = { it.id }) { item ->
             MovieCard(
                 item = item,
-                modifier = Modifier.clickable { onItemClick(item) }
+                modifier = Modifier.clickable { onItemClick(MoviesGridAction.OnClick(item)) },
+                onFavoriteClick = { onItemClick(MoviesGridAction.OnFavorite(it)) }
             )
         }
     }
+}
+
+sealed class MoviesGridAction{
+    data class OnClick(val movie: MovieUiModel) : MoviesGridAction()
+    data class OnFavorite(val movie: MovieUiModel) : MoviesGridAction()
 }

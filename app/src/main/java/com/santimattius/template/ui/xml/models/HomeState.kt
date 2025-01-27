@@ -1,4 +1,6 @@
-package com.santimattius.template.ui.xml.home.models
+package com.santimattius.template.ui.xml.models
+
+import com.santimattius.template.ui.models.MovieUiModel
 
 sealed interface HomeState {
     data object Loading : HomeState

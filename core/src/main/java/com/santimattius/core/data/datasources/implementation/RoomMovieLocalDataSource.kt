@@ -1,7 +1,7 @@
 package com.santimattius.core.data.datasources.implementation
 
-import com.santimattius.core.data.client.database.TheMovieDataBase
 import com.santimattius.core.data.client.database.MovieDao
+import com.santimattius.core.data.client.database.TheMovieDataBase
 import com.santimattius.core.data.datasources.MovieLocalDataSource
 import com.santimattius.core.data.models.MovieEntity
 import kotlinx.coroutines.flow.Flow
@@ -20,12 +20,11 @@ class RoomMovieLocalDataSource(
     override suspend fun isEmpty() = runSafe { count() == 0 }
         .getOrDefault(defaultValue = true)
 
-    override suspend fun save(movies: List<MovieEntity>): Result<Boolean> =
-        runSafe {
-            deleteAndInsert(*movies.toTypedArray()); true
-        }
+    override suspend fun save(movies: List<MovieEntity>): Result<Boolean> = runSafe {
+        upsert(movies); true
+    }
 
-    override suspend fun find(id: Int) = runSafe {
+    override suspend fun find(id: Long) = runSafe {
         findById(id)
     }.fold(onSuccess = {
         if (it == null) Result.failure(MovieNoExists())
@@ -37,6 +36,14 @@ class RoomMovieLocalDataSource(
     override suspend fun delete(movie: MovieEntity) = runSafe { delete(movie); true }
 
     override suspend fun update(movie: MovieEntity) = runSafe { update(movie); true }
+
+    override suspend fun addToFavorite(movieId: Long): Result<Unit> {
+        return runSafe { addToFavorite(movieId) }
+    }
+
+    override suspend fun removeFromFavorite(movieId: Long): Result<Unit> {
+        return runSafe { removeFromFavorite(movieId) }
+    }
 
     private suspend fun <R> runSafe(block: suspend MovieDao.() -> R) =
         dao.runCatching { block() }

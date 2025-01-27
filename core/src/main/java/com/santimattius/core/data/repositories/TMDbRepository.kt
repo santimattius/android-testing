@@ -32,4 +32,12 @@ class TMDbRepository(
     }, onFailure = {
         Result.failure(RefreshMovieFailed())
     })
+
+    override suspend fun addToFavorite(movieId: Long): Result<Unit> {
+        return movieLocalDataSource.addToFavorite(movieId)
+    }
+
+    override suspend fun removeFromFavorite(movieId: Long): Result<Unit> {
+        return movieLocalDataSource.removeFromFavorite(movieId)
+    }
 }

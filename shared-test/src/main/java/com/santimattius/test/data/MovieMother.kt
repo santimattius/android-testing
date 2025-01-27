@@ -29,14 +29,14 @@ object MovieMother {
     }
 
     fun createMovie(
-        id: Int = 508947,
+        id: Long = 508947,
         title: String = "Spider-Man: No Way Home",
         overview: String = "Spider-Man: No Way Home",
         poster: String = "/fOy2Jurz9k6RnJnMUMRDAgBwru2.jpg"
     ) = Movie(id, overview, title, poster)
 
     fun buildMovie(
-        id: Int = 508947,
+        id: Long = 508947,
         title: String = "Spider-Man: No Way Home",
         overview: String = "Spider-Man: No Way Home",
         poster: String = "/fOy2Jurz9k6RnJnMUMRDAgBwru2.jpg"

@@ -4,7 +4,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.santimattius.template.ui.xml.home.components.diff.MovieDiffItem
 import com.santimattius.template.ui.xml.home.components.viewholders.MovieViewHolder
-import com.santimattius.template.ui.xml.home.models.MovieUiModel
+import com.santimattius.template.ui.models.MovieUiModel
 
 class PopularMoviesAdapter(private val onItemClick: (MovieUiModel) -> Unit = {}) :
     ListAdapter<MovieUiModel, MovieViewHolder>(MovieDiffItem) {
