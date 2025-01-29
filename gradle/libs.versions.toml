@@ -2,8 +2,7 @@
 # Plugins
 androidGradlePlugin = "8.7.3"
 hamcrest = "2.2"
-kotlin = "2.1.0"
-hilt = "2.54"
+kotlin = "2.1.10"
 detektGradlePlugin = "1.23.7"
 ksp = "2.1.0-1.0.29"
 googleSecretsPlugin = "2.0.1"
@@ -28,11 +27,11 @@ glide = "4.12.0"
 coil = "2.7.0"
 room = "2.6.1"
 
-hiltCompiler = "1.2.0"
-hiltNavigationCompose = "1.2.0"
-
 androidxComposeBom = "2025.01.00"
 activityCompose = "1.10.0"
+
+koinBom = "4.1.0-Beta5"
+koinAnnotations = "2.0.0-Beta3"
 
 #Testing
 junit = "4.13.2"
@@ -96,13 +95,16 @@ coroutine-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", ver
 room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
-#Hilt
-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
-hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt" }
-hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
-hilt-test = { module = "com.google.dagger:hilt-android-testing", version.ref = "hilt" }
-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
-androidx-hilt-compiler = { module = "androidx.hilt:hilt-compiler", version.ref = "hiltCompiler" }
+
+koin-bom = { module = "io.insert-koin:koin-bom", version.ref = "koinBom" }
+koin-android = { group = "io.insert-koin", name = "koin-android" }
+koin-androidx-compose = { group = "io.insert-koin", name = "koin-androidx-compose" }
+koin-androidx-startup = { group = "io.insert-koin", name = "koin-androidx-startup" }
+koin-annotations-core = { group = "io.insert-koin", name = "koin-annotations" , version.ref= "koinAnnotations" }
+koin-annotations-compiler = { group = "io.insert-koin", name = "koin-ksp-compiler", version.ref= "koinAnnotations" }
+koin-test-core = { group = "io.insert-koin", name = "koin-test"}
+koin-test-junit4 = { group = "io.insert-koin", name = "koin-test-junit4"}
+koin-android-test = { group = "io.insert-koin", name = "koin-android-test"}
 
 # Test
 junit = { module = "junit:junit", version.ref = "junit" }
@@ -114,6 +116,8 @@ robolectric-core = { module = "org.robolectric:robolectric", version.ref = "robo
 robolectric-httpclient = { module = "org.robolectric:shadows-httpclient", version.ref = "robolectric" }
 androidx-core-ktx = { module = "androidx.test:core-ktx", version.ref = "coreKtxVersion" }
 androidx-fragment-testing-manifest = { module = "androidx.fragment:fragment-testing-manifest", version.ref = "fragmentKtx" }
+androidx-fragment-testing = { module = "androidx.fragment:fragment-testing", version.ref = "fragmentKtx" }
+
 # AndroidTest
 test-ext = { module = "androidx.test.ext:junit", version.ref = "junitExt" }
 test-ext-ktx = { module = "androidx.test.ext:junit-ktx", version.ref = "junitExt" }
@@ -149,7 +153,6 @@ kotlin = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 room = { id = "androidx.room", version.ref = "room"}
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detektGradlePlugin" }
 google-secrets-gradle-plugin = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "googleSecretsPlugin" }
 automattic-measure-builds = { id = "com.automattic.android.measure-builds", version.ref = "automatticMeasureBuilds" }

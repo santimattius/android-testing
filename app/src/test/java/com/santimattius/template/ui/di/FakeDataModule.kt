@@ -1,26 +1,19 @@
 package com.santimattius.template.ui.di
 
-import com.santimattius.test.data.FakeMovieLocalDataSource
-import com.santimattius.test.data.FakeMovieNetworkDataSource
 import com.santimattius.core.data.datasources.MovieLocalDataSource
 import com.santimattius.core.data.datasources.MovieNetworkDataSource
 import com.santimattius.core.data.repositories.TMDbRepository
-import com.santimattius.template.di.DataModule
 import com.santimattius.core.domain.repositories.MovieRepository
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.components.SingletonComponent
-import dagger.hilt.testing.TestInstallIn
-import javax.inject.Named
+import com.santimattius.test.data.FakeMovieLocalDataSource
+import com.santimattius.test.data.FakeMovieNetworkDataSource
+import org.koin.core.annotation.Factory
+import org.koin.core.annotation.Module
+import org.koin.core.annotation.Named
 
 @Module
-@TestInstallIn(
-    components = [SingletonComponent::class],
-    replaces = [DataModule::class]
-)
 class FakeDataModule {
 
-    @Provides
+    @Factory
     fun provideMovieRepository(
         @Named("fake_remote_data_source") movieNetworkDataSource: MovieNetworkDataSource,
         @Named("fake_local_data_source") movieLocalDataSource: MovieLocalDataSource,
@@ -30,13 +23,13 @@ class FakeDataModule {
     )
 
     @Named("fake_local_data_source")
-    @Provides
+    @Factory
     fun provideFakeLocalDataSource(): MovieLocalDataSource {
         return FakeMovieLocalDataSource()
     }
 
     @Named("fake_remote_data_source")
-    @Provides
+    @Factory
     fun provideRemoteDataSource(): MovieNetworkDataSource {
         return FakeMovieNetworkDataSource()
     }

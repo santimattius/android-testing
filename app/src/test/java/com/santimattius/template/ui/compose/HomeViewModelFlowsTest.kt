@@ -25,7 +25,7 @@ class HomeViewModelFlowsTest {
         val movies = MovieMother.createMovies().dtoToDomain()
         val repository = MockMovieRepository(onPopularMovies = { movies })
         val expectedState = HomeUiState(movies = movies.asUiModels())
-        viewModelScenario { HomeViewModel(repository) }.use { scenario ->
+        viewModelScenario { HomeComposeViewModel(repository) }.use { scenario ->
             val viewModel = scenario.viewModel
             runTest(mainCoroutinesTestRule.testDispatcher) {
                 viewModel.state.test {
@@ -42,7 +42,7 @@ class HomeViewModelFlowsTest {
     @Test
     fun `Given result is empty When popular movies Then return empty list`() {
         val repository = MockMovieRepository(onPopularMovies = { emptyList() })
-        viewModelScenario { HomeViewModel(repository) }.use {
+        viewModelScenario { HomeComposeViewModel(repository) }.use {
             val viewModel = it.viewModel
             runTest(mainCoroutinesTestRule.testDispatcher) {
                 viewModel.state.test {
@@ -61,7 +61,7 @@ class HomeViewModelFlowsTest {
     @Test
     fun `Given result is error When popular movies Then return error`() {
         val repository = MockMovieRepository(onPopularMovies = { throw Exception() })
-        viewModelScenario { HomeViewModel(repository) }.use { scenario ->
+        viewModelScenario { HomeComposeViewModel(repository) }.use { scenario ->
             val viewModel = scenario.viewModel
             runTest(mainCoroutinesTestRule.testDispatcher) {
                 viewModel.state.test {

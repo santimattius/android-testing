@@ -4,24 +4,32 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.test.espresso.IdlingPolicies
-import com.santimattius.test.rules.MainCoroutinesTestRule
-import com.santimattius.template.di.DataModule
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.filters.MediumTest
+import com.santimattius.template.rules.KoinAndroidTestRule
 import com.santimattius.template.ui.compose.HomeComposeActivity
-import dagger.hilt.android.testing.HiltAndroidRule
-import dagger.hilt.android.testing.HiltAndroidTest
-import dagger.hilt.android.testing.UninstallModules
+import com.santimattius.test.rules.MainCoroutinesTestRule
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.koin.ksp.generated.com_santimattius_template_di_AppModule
+import org.koin.ksp.generated.com_santimattius_template_di_FakeDataModule
+import org.koin.ksp.generated.defaultModule
 import java.util.concurrent.TimeUnit
 
-
-@UninstallModules(DataModule::class)
-@HiltAndroidTest
+@MediumTest
+@RunWith(AndroidJUnit4::class)
 class HomeComposeActivityTest {
 
     @get:Rule(order = 0)
-    var hiltRule = HiltAndroidRule(this)
+    var koinTestRule = KoinAndroidTestRule(
+        listOf(
+            com_santimattius_template_di_FakeDataModule,
+            com_santimattius_template_di_AppModule,
+            defaultModule
+        )
+    )
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -34,7 +42,6 @@ class HomeComposeActivityTest {
 
     @Before
     fun init() {
-        hiltRule.inject()
         composeTestRule.mainClock.autoAdvance = false
         IdlingPolicies.setIdlingResourceTimeout(10, TimeUnit.SECONDS)
     }

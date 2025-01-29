@@ -49,6 +49,12 @@ android {
             }
         }
     }
+
+    libraryVariants.forEach { variant ->
+        variant.sourceSets.forEach {
+            it.javaDirectories += files("build/generated/ksp/${variant.name}/kotlin")
+        }
+    }
 }
 
 dependencies {
@@ -67,11 +73,10 @@ dependencies {
     implementation(libs.room.runtime)
     ksp(libs.room.compiler)
 
-    //DI
-    implementation(libs.hilt.android)
-    implementation(libs.hilt.navigation.compose)
-    ksp(libs.hilt.compiler)
-    ksp(libs.androidx.hilt.compiler)
+    //Koin
+    implementation(platform(libs.koin.bom))
+    implementation(libs.koin.android)
+    implementation(libs.koin.androidx.compose)
 
     testImplementation(project(path = ":shared-test"))
     testImplementation(libs.bundles.unitTesting)
@@ -81,8 +86,8 @@ dependencies {
     testImplementation(libs.hamcrest)
     testImplementation(libs.mockito.kotlin)
 
-    testImplementation(libs.hilt.test)
-    kspTest(libs.hilt.android.compiler)
+    testImplementation(libs.koin.test.core)
+    testImplementation(libs.koin.test.junit4)
 
     androidTestImplementation(libs.test.ext)
     androidTestImplementation(libs.test.espresso)

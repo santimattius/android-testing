@@ -6,7 +6,6 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.ksp)
     alias(libs.plugins.detekt)
-    alias(libs.plugins.hilt)
     alias(libs.plugins.google.secrets.gradle.plugin)
     alias(libs.plugins.automattic.measure.builds)
 }
@@ -23,7 +22,7 @@ android {
         versionCode = extraString("version_code").toInt()
         versionName = extraString("version_name")
 
-        testInstrumentationRunner = "com.santimattius.template.CustomTestRunner"
+        testInstrumentationRunner = "com.santimattius.template.InstrumentationTestRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -71,6 +70,11 @@ android {
             excludes.add("/META-INF/{AL2.0,LGPL2.1}")
         }
     }
+    applicationVariants.forEach { variant ->
+        variant.sourceSets.forEach {
+            it.javaDirectories += files("build/generated/ksp/${variant.name}/kotlin")
+        }
+    }
 }
 
 composeCompiler {
@@ -105,6 +109,10 @@ measureBuilds {
     }
 }
 
+ksp {
+    arg("KOIN_CONFIG_CHECK","true")
+}
+
 dependencies {
     implementation(project(":core"))
     implementation(libs.kotlin.stdlib)
@@ -112,6 +120,8 @@ dependencies {
 
     implementation(libs.bundles.ui)
     implementation(libs.bundles.lifecycle)
+    implementation(libs.activity.compose)
+
     testImplementation(libs.lifecycle.viewmodel.testing)
 
     implementation(libs.room.ktx)
@@ -119,6 +129,7 @@ dependencies {
     //Compose
     implementation(platform(libs.compose.bom))
     implementation(libs.bundles.compose)
+    androidTestImplementation(project(":app"))
     debugImplementation(libs.bundles.compose.debug)
 
     testImplementation(platform(libs.compose.bom))
@@ -131,19 +142,25 @@ dependencies {
     implementation(libs.glide.core)
     implementation(libs.coil.core)
 
-    //Hilt
-    implementation(libs.hilt.android)
-    implementation(libs.hilt.navigation.compose)
-    ksp(libs.hilt.compiler)
-    ksp(libs.androidx.hilt.compiler)
+    //Koin
+    implementation(platform(libs.koin.bom))
+    implementation(libs.koin.android)
+    implementation(libs.koin.androidx.compose)
+    implementation(libs.koin.androidx.startup)
 
-    // For Robolectric tests.
-    testImplementation(libs.hilt.test)
-    kspTest(libs.hilt.android.compiler)
+    compileOnly(libs.koin.annotations.core)
+    ksp(libs.koin.annotations.compiler)
 
-    // For instrumented tests.
-    androidTestImplementation(libs.hilt.test)
-    kspAndroidTest(libs.hilt.android.compiler)
+    testImplementation(libs.koin.annotations.core)
+    kspTest(libs.koin.annotations.compiler)
+
+    testImplementation(libs.koin.test.core)
+    testImplementation(libs.koin.test.junit4)
+
+    androidTestImplementation(libs.koin.test.junit4)
+    androidTestImplementation(libs.koin.android.test)
+    androidTestImplementation(libs.koin.annotations.core)
+    kspAndroidTest(libs.koin.annotations.compiler)
 
     //Unit Testing
     testImplementation(project(path = ":shared-test"))
@@ -154,6 +171,7 @@ dependencies {
 
     //Android Testing
     debugImplementation(libs.androidx.fragment.testing.manifest)
+    testImplementation(libs.androidx.fragment.testing)
 
     androidTestImplementation(libs.junit)
     androidTestImplementation(libs.androidx.core.ktx)

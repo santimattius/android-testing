@@ -8,7 +8,6 @@ import android.widget.Toast
 import androidx.annotation.VisibleForTesting
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.santimattius.template.R
 import com.santimattius.template.core.presentation.DialogAction
@@ -16,12 +15,11 @@ import com.santimattius.template.databinding.PopularMoviesFragmentBinding
 import com.santimattius.template.ui.xml.components.showDialog
 import com.santimattius.template.ui.xml.home.components.PopularMoviesAdapter
 import com.santimattius.template.ui.xml.models.HomeState
-import dagger.hilt.android.AndroidEntryPoint
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-@AndroidEntryPoint
 class HomeFragment : Fragment() {
 
-    private val viewModel: HomeViewModel by viewModels()
+    private val viewModel: HomeViewModel by viewModel()
 
     private val homeAdapter: PopularMoviesAdapter by lazy {
         PopularMoviesAdapter {

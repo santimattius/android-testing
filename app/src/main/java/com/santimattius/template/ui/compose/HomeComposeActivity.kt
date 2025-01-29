@@ -13,7 +13,6 @@ import androidx.compose.material.icons.filled.Android
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -25,7 +24,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.santimattius.template.R
 import com.santimattius.template.ui.compose.models.HomeUiState
@@ -40,9 +38,9 @@ import com.santimattius.template.ui.compose.ui.components.snackbar.CustomSnackBa
 import com.santimattius.template.ui.compose.ui.components.snackbar.SnackBarVisualsWithError
 import com.santimattius.template.ui.compose.ui.theme.AndroidTestingTheme
 import com.santimattius.template.ui.xml.home.HomeViewActivity
-import dagger.hilt.android.AndroidEntryPoint
+import org.koin.androidx.compose.koinViewModel
 
-@AndroidEntryPoint
+
 class HomeComposeActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,7 +59,7 @@ class HomeComposeActivity : ComponentActivity() {
 
 @Composable
 fun HomeRoute(
-    viewModel: HomeViewModel = hiltViewModel()
+    viewModel: HomeComposeViewModel = koinViewModel()
 ) {
     val snackBarHostState = remember { SnackbarHostState() }
     Scaffold(
