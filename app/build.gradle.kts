@@ -171,7 +171,7 @@ dependencies {
 
     //Android Testing
     debugImplementation(libs.androidx.fragment.testing.manifest)
-    testImplementation(libs.androidx.fragment.testing)
+    implementation(libs.androidx.fragment.testing)
 
     androidTestImplementation(libs.junit)
     androidTestImplementation(libs.androidx.core.ktx)

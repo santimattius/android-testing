@@ -1,10 +1,10 @@
 [versions]
 # Plugins
-androidGradlePlugin = "8.7.3"
+androidGradlePlugin = "8.8.0"
 hamcrest = "2.2"
 kotlin = "2.1.10"
 detektGradlePlugin = "1.23.7"
-ksp = "2.1.0-1.0.29"
+ksp = "2.1.10-1.0.29"
 googleSecretsPlugin = "2.0.1"
 automatticMeasureBuilds = "3.1.1"
 
@@ -16,7 +16,7 @@ fragmentKtx = "1.8.5"
 constraintLayout = "2.2.0"
 recyclerView = "1.4.0"
 materialVersion = "1.12.0"
-lifecycle = "2.9.0-alpha08"
+lifecycle = "2.9.0-alpha09"
 
 retrofit = "2.11.0"
 okHttp = "4.12.0"
@@ -27,11 +27,11 @@ glide = "4.12.0"
 coil = "2.7.0"
 room = "2.6.1"
 
-androidxComposeBom = "2025.01.00"
+androidxComposeBom = "2025.01.01"
 activityCompose = "1.10.0"
 
 koinBom = "4.1.0-Beta5"
-koinAnnotations = "2.0.0-Beta3"
+koinAnnotations = "2.0.0-RC1"
 
 #Testing
 junit = "4.13.2"
@@ -115,8 +115,8 @@ mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "
 robolectric-core = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
 robolectric-httpclient = { module = "org.robolectric:shadows-httpclient", version.ref = "robolectric" }
 androidx-core-ktx = { module = "androidx.test:core-ktx", version.ref = "coreKtxVersion" }
-androidx-fragment-testing-manifest = { module = "androidx.fragment:fragment-testing-manifest", version.ref = "fragmentKtx" }
-androidx-fragment-testing = { module = "androidx.fragment:fragment-testing", version.ref = "fragmentKtx" }
+androidx-fragment-testing-manifest = { module = "androidx.fragment:fragment-testing-manifest", version.ref = "fragmentTesting" }
+androidx-fragment-testing = { module = "androidx.fragment:fragment-testing", version.ref = "fragmentTesting" }
 
 # AndroidTest
 test-ext = { module = "androidx.test.ext:junit", version.ref = "junitExt" }

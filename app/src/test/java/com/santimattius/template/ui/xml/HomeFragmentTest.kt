@@ -5,7 +5,6 @@ import android.os.Build
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.lifecycle.Lifecycle
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.santimattius.template.ui.xml.home.HomeFragment
 import com.santimattius.template.ui.xml.home.components.viewholders.MovieViewHolder
 import com.santimattius.test.rules.MainCoroutinesTestRule
@@ -18,9 +17,10 @@ import org.koin.ksp.generated.com_santimattius_template_di_AppModule
 import org.koin.ksp.generated.com_santimattius_template_ui_di_FakeDataModule
 import org.koin.ksp.generated.defaultModule
 import org.koin.test.KoinTestRule
+import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 
-@RunWith(AndroidJUnit4::class)
+@RunWith(RobolectricTestRunner::class)
 @Config(
     manifest = Config.NONE,
     sdk = [Build.VERSION_CODES.R],
