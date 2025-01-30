@@ -12,7 +12,7 @@ import org.koin.ksp.generated.defaultModule
 class TestApplication : Application(), KoinStartup {
     override fun onKoinStartup(): KoinConfiguration {
         return KoinConfiguration {
-            //TODO: kspAndroidTest no generate FakeDataModule
+            //kspAndroidTest no generate FakeDataModule
             val fakeDataModule = com.santimattius.template.di.FakeDataModule()
             modules(
                 com_santimattius_template_di_AppModule,
