@@ -6,40 +6,41 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
 import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
-import com.santimattius.test.data.MovieMother
-import com.santimattius.test.rules.MainCoroutinesTestRule
 import com.santimattius.template.R
-import com.santimattius.template.di.DataModule
 import com.santimattius.template.espresso.RecyclerViewInteraction
-import com.santimattius.template.ui.xml.home.HomeViewActivity
+import com.santimattius.template.rules.KoinAndroidTestRule
 import com.santimattius.template.ui.models.MovieUiModel
 import com.santimattius.template.ui.models.mapping.asUiModels
-import dagger.hilt.android.testing.HiltAndroidRule
-import dagger.hilt.android.testing.HiltAndroidTest
-import dagger.hilt.android.testing.UninstallModules
-import org.junit.Before
+import com.santimattius.template.ui.xml.home.HomeViewActivity
+import com.santimattius.test.data.MovieMother
+import com.santimattius.test.rules.MainCoroutinesTestRule
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.koin.ksp.generated.com_santimattius_template_di_AppModule
+import org.koin.ksp.generated.com_santimattius_template_di_FakeDataModule
+import org.koin.ksp.generated.defaultModule
 
 @MediumTest
-@UninstallModules(DataModule::class)
-@HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class HomeViewActivityTest {
 
     @get:Rule(order = 0)
-    var hiltRule = HiltAndroidRule(this)
+    var koinTestRule = KoinAndroidTestRule(
+        listOf(
+            com_santimattius_template_di_FakeDataModule,
+            com_santimattius_template_di_AppModule,
+            defaultModule
+        )
+    )
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @get:Rule(order = 1)
     val coroutinesTestRule = MainCoroutinesTestRule()
-
-    @Before
-    fun setUp() {
-        hiltRule.inject()
-    }
 
     @Test
     fun showsTitleOfImageIfThereAreImages() {

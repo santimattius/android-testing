@@ -7,7 +7,6 @@ import com.santimattius.template.ui.compose.models.HomeUiState
 import com.santimattius.template.ui.compose.models.Messages
 import com.santimattius.template.ui.models.MovieUiModel
 import com.santimattius.template.ui.models.mapping.asUiModels
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -17,10 +16,10 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+import org.koin.android.annotation.KoinViewModel
 
-@HiltViewModel
-class HomeViewModel @Inject constructor(
+@KoinViewModel
+class HomeComposeViewModel(
     private val movieRepository: MovieRepository,
 ) : ViewModel() {
 

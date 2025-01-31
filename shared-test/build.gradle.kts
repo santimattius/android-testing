@@ -4,7 +4,6 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin)
     alias(libs.plugins.ksp)
-    alias(libs.plugins.hilt)
 }
 
 android {
@@ -33,6 +32,11 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_17.toString()
     }
+    libraryVariants.forEach { variant ->
+        variant.sourceSets.forEach {
+            it.javaDirectories += files("build/generated/ksp/${variant.name}/kotlin")
+        }
+    }
 }
 
 dependencies {
@@ -44,8 +48,9 @@ dependencies {
     implementation(libs.bundles.serializable)
 
     implementation(libs.androidx.fragment.testing.manifest)
-    implementation(libs.hilt.android)
-    implementation(libs.hilt.test)
-    ksp(libs.hilt.compiler)
+
+    implementation(platform(libs.koin.bom))
+    implementation(libs.koin.test.core)
+
     implementation(libs.bundles.unitTesting)
 }

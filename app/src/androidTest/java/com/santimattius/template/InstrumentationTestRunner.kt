@@ -3,15 +3,13 @@ package com.santimattius.template
 import android.app.Application
 import android.content.Context
 import androidx.test.runner.AndroidJUnitRunner
-import dagger.hilt.android.testing.HiltTestApplication
 
-class CustomTestRunner : AndroidJUnitRunner() {
-
+class InstrumentationTestRunner : AndroidJUnitRunner() {
     override fun newApplication(
-        cl: ClassLoader?,
+        classLoader: ClassLoader?,
         className: String?,
         context: Context?
     ): Application {
-        return super.newApplication(cl, HiltTestApplication::class.java.name, context)
+        return super.newApplication(classLoader, TestApplication::class.java.name, context)
     }
 }

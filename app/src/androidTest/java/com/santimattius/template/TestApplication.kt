@@ -1,26 +1,29 @@
 package com.santimattius.template
 
 import android.app.Application
-import org.koin.android.ext.koin.androidContext
-import org.koin.android.logger.AndroidLogger
 import org.koin.androix.startup.KoinStartup
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.dsl.KoinConfiguration
+import org.koin.dsl.module
 import org.koin.ksp.generated.com_santimattius_template_di_AppModule
-import org.koin.ksp.generated.com_santimattius_template_di_DataModule
 import org.koin.ksp.generated.defaultModule
 
 @OptIn(KoinExperimentalAPI::class)
-class MainApplication : Application(), KoinStartup {
+class TestApplication : Application(), KoinStartup {
     override fun onKoinStartup(): KoinConfiguration {
         return KoinConfiguration {
-            androidContext(this@MainApplication)
-            logger(AndroidLogger())
+            //kspAndroidTest no generate FakeDataModule
+            val fakeDataModule = com.santimattius.template.di.FakeDataModule()
             modules(
-                com_santimattius_template_di_DataModule,
                 com_santimattius_template_di_AppModule,
-                defaultModule
+                defaultModule,
+                module {
+                    single { fakeDataModule.provideMovieRepository(get(), get()) }
+                    single { fakeDataModule.provideFakeLocalDataSource() }
+                    single { fakeDataModule.provideRemoteDataSource() }
+                }
             )
         }
     }
+
 }

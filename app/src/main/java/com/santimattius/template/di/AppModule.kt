@@ -5,28 +5,23 @@ import com.santimattius.core.data.client.database.TheMovieDataBase
 import com.santimattius.core.data.client.network.RetrofitServiceCreator
 import com.santimattius.core.data.client.network.TheMovieDBService
 import com.santimattius.template.BuildConfig
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
+import org.koin.core.annotation.Factory
+import org.koin.core.annotation.Module
+import org.koin.core.annotation.Singleton
 
-import javax.inject.Singleton
 
 @Module
-@InstallIn(SingletonComponent::class)
 class AppModule {
 
-    @Provides
-    fun provideAppDatabase(@ApplicationContext context: Context): TheMovieDataBase =
+    @Factory
+    fun provideAppDatabase(context: Context): TheMovieDataBase =
         TheMovieDataBase.get(context)
 
-    @Provides
+    @Factory
     fun provideMovieDBService(serviceCreator: RetrofitServiceCreator): TheMovieDBService =
         serviceCreator.createService(TheMovieDBService::class.java)
 
 
-    @Provides
     @Singleton
     fun provideRetrofit(): RetrofitServiceCreator {
         return RetrofitServiceCreator(
