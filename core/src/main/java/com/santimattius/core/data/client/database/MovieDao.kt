@@ -7,7 +7,6 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
-import androidx.room.Upsert
 import com.santimattius.core.data.models.MovieEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -36,10 +35,10 @@ interface MovieDao {
     suspend fun update(movies: MovieEntity)
 
     @Query("UPDATE movie SET favorite = 1 WHERE id = :movieId")
-    suspend fun addToFavorite(movieId: Long)
+    suspend fun addToFavorite(movieId: Long): Int
 
     @Query("UPDATE movie SET favorite = 0 WHERE id = :movieId")
-    suspend fun removeFromFavorite(movieId: Long)
+    suspend fun removeFromFavorite(movieId: Long): Int
 
     @Query(
         """
