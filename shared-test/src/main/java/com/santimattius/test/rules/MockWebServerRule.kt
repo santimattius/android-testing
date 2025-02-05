@@ -7,7 +7,8 @@ import org.junit.runner.Description
 
 class MockWebServerRule(
     private val server: MockWebServer = MockWebServer(),
-    private val port: Int = 0
+    private val port: Int = 0,
+    private val initialResponse: (() -> MockResponse)? = null
 ) : TestWatcher() {
 
     val baseUrl: String
@@ -17,6 +18,7 @@ class MockWebServerRule(
     override fun starting(description: Description) {
         super.starting(description)
         server.start(port)
+        initialResponse?.let { server.enqueue(it.invoke()) }
     }
 
     override fun finished(description: Description) {
