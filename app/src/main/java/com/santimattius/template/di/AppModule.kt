@@ -32,5 +32,6 @@ class AppModule {
 
     @Named("base_url")
     @Singleton
+    @Suppress("FunctionOnlyReturningConstant")
     fun provideBaseUrl() = "https://api.themoviedb.org"
 }

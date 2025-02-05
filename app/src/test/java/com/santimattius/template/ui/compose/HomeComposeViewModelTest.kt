@@ -58,7 +58,7 @@ class HomeComposeViewModelTest {
     val roomTestRule = RoomTestRule(appContext, TheMovieDataBase::class.java)
 
 
-    @get:Rule
+    @get:Rule(order = 2)
     val mainCoroutinesTestRule = MainCoroutinesTestRule()
 
     @Before

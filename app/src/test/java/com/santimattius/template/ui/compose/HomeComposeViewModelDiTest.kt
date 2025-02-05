@@ -62,7 +62,7 @@ class HomeComposeViewModelDiTest : KoinTest {
     }
 
 
-    @get:Rule
+    @get:Rule(order = 3)
     val mainCoroutinesTestRule = MainCoroutinesTestRule()
 
     @Before

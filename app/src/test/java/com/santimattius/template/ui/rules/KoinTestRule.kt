@@ -10,8 +10,10 @@ import org.koin.test.KoinTestRule
  * It delegates the actual loading process to Koin's `loadModules` function.
  *
  * @param module The Koin [Module] to be loaded.
- * @param allowOverride If `true`, allows definitions in the loaded module to override existing definitions. Defaults to `true`.
- * @param createEagerInstances If `true`, forces the creation of all eager instances defined in the loaded module. Defaults to `false`.
+ * @param allowOverride If `true`, allows definitions in the loaded module to override
+ * existing definitions. Defaults to `true`.
+ * @param createEagerInstances If `true`, forces the creation of all eager instances
+ * defined in the loaded module. Defaults to `false`.
  *
  * @see org.koin.core.Koin.loadModules
  * @see org.koin.core.module.Module
