@@ -100,7 +100,6 @@ class HomeComposeViewModelTest {
     }
 
     @Test
-    @Ignore("ignore this test for now")
     fun `onFavorite should update state with success message when removing from favorite succeeds`() {
         viewModelScenario { HomeComposeViewModel(movieRepository = movieRepository) }.use {
             val dto = MovieMother.createMovie()

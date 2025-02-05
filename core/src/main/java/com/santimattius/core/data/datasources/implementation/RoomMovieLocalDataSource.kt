@@ -38,21 +38,11 @@ class RoomMovieLocalDataSource(
     override suspend fun update(movie: MovieEntity) = runSafe { update(movie); true }
 
     override suspend fun addToFavorite(movieId: Long): Result<Unit> {
-        return runSafe {
-            if (findById(movieId) == null) {
-                throw Throwable("Movie with id $movieId not found")
-            }
-            addToFavorite(movieId)
-        }
+        return runSafe { addToFavorite(movieId) }
     }
 
     override suspend fun removeFromFavorite(movieId: Long): Result<Unit> {
-        return runSafe {
-            if (findById(movieId) == null) {
-                throw Throwable("Movie not found")
-            }
-            removeFromFavorite(movieId)
-        }
+        return runSafe { removeFromFavorite(movieId) }
     }
 
     private suspend fun <R> runSafe(block: suspend MovieDao.() -> R) =
