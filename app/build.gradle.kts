@@ -95,7 +95,7 @@ detekt {
 
 configurations {
     androidTestImplementation {
-        exclude(  "io.mockk",  "mockk-agent-jvm")
+        exclude("io.mockk", "mockk-agent-jvm")
     }
 }
 
@@ -110,7 +110,7 @@ measureBuilds {
 }
 
 ksp {
-    arg("KOIN_CONFIG_CHECK","true")
+    arg("KOIN_CONFIG_CHECK", "true")
 }
 
 dependencies {
