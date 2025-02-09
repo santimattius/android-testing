@@ -25,7 +25,12 @@ class HomeComposeViewModel(
 
     private val _state = MutableStateFlow(HomeUiState(isLoading = true))
     val state: StateFlow<HomeUiState> = movieRepository.all.combine(_state) { movies, state ->
-        state.copy(movies = movies.asUiModels(), isLoading = false, loadingError = false)
+        val newMovies = movies.asUiModels()
+        if (newMovies != state.movies) {
+            state.copy(movies = newMovies, isLoading = false)
+        } else {
+            state // Si no ha cambiado nada, retorna el mismo estado
+        }
     }.onStart {
         movieRepository.refresh()
     }.catch {

@@ -5,6 +5,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import org.junit.rules.TestWatcher
 import org.junit.runner.Description
+import java.util.concurrent.Executors
 
 /**
  * A JUnit TestRule for testing Room database interactions.
@@ -25,7 +26,9 @@ class RoomTestRule<T : RoomDatabase>(
 
     override fun starting(description: Description?) {
         db = Room.inMemoryDatabaseBuilder(appContext, klass)
-            .allowMainThreadQueries().build()
+            .allowMainThreadQueries()
+//            .setTransactionExecutor(Executors.newSingleThreadExecutor())
+            .build()
     }
 
     override fun finished(description: Description?) {

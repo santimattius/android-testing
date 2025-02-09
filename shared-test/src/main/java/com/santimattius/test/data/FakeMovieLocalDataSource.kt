@@ -78,11 +78,29 @@ class FakeMovieLocalDataSource : MovieLocalDataSource {
     }
 
     override suspend fun addToFavorite(movieId: Long): Result<Unit> {
-        TODO("Not yet implemented")
+        return find(movieId).fold(
+            onSuccess = {
+                val movie = it.copy(favorite = true)
+                update(movie)
+                Result.success(Unit)
+            },
+            onFailure = {
+                return Result.failure(it)
+            }
+        )
     }
 
     override suspend fun removeFromFavorite(movieId: Long): Result<Unit> {
-        TODO("Not yet implemented")
+        return find(movieId).fold(
+            onSuccess = {
+                val movie = it.copy(favorite = false)
+                update(movie)
+                Result.success(Unit)
+            },
+            onFailure = {
+                return Result.failure(it)
+            }
+        )
     }
 
 }

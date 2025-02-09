@@ -168,6 +168,7 @@ dependencies {
     testImplementation(libs.bundles.robolectric)
     testImplementation(libs.junit)
     testImplementation(libs.turbine)
+    testImplementation(libs.okHttp3.idling.resource)
 
     //Android Testing
     debugImplementation(libs.androidx.fragment.testing.manifest)
