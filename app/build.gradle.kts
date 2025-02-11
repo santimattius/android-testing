@@ -95,7 +95,7 @@ detekt {
 
 configurations {
     androidTestImplementation {
-        exclude(  "io.mockk",  "mockk-agent-jvm")
+        exclude("io.mockk", "mockk-agent-jvm")
     }
 }
 
@@ -110,7 +110,7 @@ measureBuilds {
 }
 
 ksp {
-    arg("KOIN_CONFIG_CHECK","true")
+    arg("KOIN_CONFIG_CHECK", "true")
 }
 
 dependencies {
@@ -168,6 +168,7 @@ dependencies {
     testImplementation(libs.bundles.robolectric)
     testImplementation(libs.junit)
     testImplementation(libs.turbine)
+    testImplementation(libs.okHttp3.idling.resource)
 
     //Android Testing
     debugImplementation(libs.androidx.fragment.testing.manifest)

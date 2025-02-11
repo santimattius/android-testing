@@ -36,7 +36,7 @@ fun MovieCard(
 ) {
     Card(
         modifier = modifier
-            .testTag(item.title)
+            .testTag("card_${item.title}")
             .padding(dimensionResource(R.dimen.item_movie_padding)),
     ) {
         Box {
@@ -59,11 +59,13 @@ fun MovieCard(
             )
             IconButton(
                 onClick = { onFavoriteClick(item) },
-                modifier = Modifier.align(Alignment.BottomEnd)
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .testTag("favorite_${item.title}")
             ) {
                 Icon(
                     imageVector = if (item.favorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-                    contentDescription = null,
+                    contentDescription = "Add ${item.title} to Favorite",
                     tint = if (item.favorite) Color.Red else Color.White
                 )
             }

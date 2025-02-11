@@ -6,6 +6,9 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.runAndroidComposeUiTest
 import com.santimattius.test.rules.MainCoroutinesTestRule
 import org.junit.Rule
@@ -43,13 +46,33 @@ class HomeComposeActivityTest {
     @get:Rule
     val coroutinesTestRule = MainCoroutinesTestRule()
 
-
     @OptIn(ExperimentalTestApi::class)
     @Test
     fun `verify first movie is spider-man`() =
         runAndroidComposeUiTest(HomeComposeActivity::class.java) {
-            onNodeWithTag("Spider-Man: No Way Home")
+            onNodeWithTag("card_Spider-Man: No Way Home")
                 .assertIsDisplayed()
+        }
+
+    @OptIn(ExperimentalTestApi::class)
+    @Test
+    fun `onFavorite should update state with success message when adding to favorite succeeds`() =
+        runAndroidComposeUiTest(HomeComposeActivity::class.java) {
+            val title = "Spider-Man: No Way Home"
+
+            onNodeWithTag("favorite_${title}")
+                .assertExists()
+                .performScrollTo()
+                .assertIsDisplayed()
+                .performClick()
+
+            onNodeWithText("Add $title  to favorite")
+                .assertIsDisplayed()
+
+            onNodeWithText("OK").assertIsDisplayed().performClick()
+
+            onNodeWithText("Add $title  to favorite")
+                .assertDoesNotExist()
         }
 
 }
