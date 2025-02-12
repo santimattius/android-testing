@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -12,6 +13,22 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.EntertainmentApp">
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            android:exported="false"
+            tools:node="merge">
+            <meta-data
+                android:name="org.koin.androix.startup.KoinInitializer"
+                tools:node="remove" />
+            <meta-data
+                android:name="com.santimattius.template.koin.KotzillaInitializer"
+                android:value="androidx.startup" />
+            <meta-data
+                android:name="com.santimattius.template.koin.KoinInitializer"
+                android:value="androidx.startup" />
+        </provider>
+
         <activity
             android:name=".ui.compose.HomeComposeActivity"
             android:exported="true"
@@ -24,8 +41,8 @@
         </activity>
         <activity
             android:name=".ui.xml.home.HomeViewActivity"
-            android:label="@string/title_activity_home_view"
-            android:exported="true" />
+            android:exported="true"
+            android:label="@string/title_activity_home_view" />
     </application>
 
 </manifest>
