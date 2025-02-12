@@ -1,6 +1,7 @@
 package com.santimattius.template
 
 import android.app.Application
+import io.kotzilla.sdk.analytics.koin.analytics
 import io.kotzilla.sdk.analytics.koin.analyticsLogger
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.logger.AndroidLogger
@@ -16,7 +17,7 @@ class MainApplication : Application(), KoinStartup {
     override fun onKoinStartup(): KoinConfiguration {
         return KoinConfiguration {
             androidContext(this@MainApplication)
-            analyticsLogger()
+            analytics(this@MainApplication)
             logger(AndroidLogger())
             modules(
                 com_santimattius_template_di_DataModule,
