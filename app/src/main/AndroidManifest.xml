@@ -24,8 +24,8 @@
         </activity>
         <activity
             android:name=".ui.xml.home.HomeViewActivity"
-            android:label="@string/title_activity_home_view"
-            android:exported="true" />
+            android:exported="true"
+            android:label="@string/title_activity_home_view" />
     </application>
 
 </manifest>
