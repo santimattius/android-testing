@@ -1,37 +1,37 @@
 [versions]
 # Plugins
-androidGradlePlugin = "8.8.0"
-hamcrest = "2.2"
-kotlin = "2.1.10"
-detektGradlePlugin = "1.23.7"
-ksp = "2.1.10-1.0.29"
+androidGradlePlugin = "8.11.1"
+hamcrest = "3.0"
+kotlin = "2.2.0"
+detektGradlePlugin = "1.23.8"
+ksp = "2.2.0-2.0.2"
 googleSecretsPlugin = "2.0.1"
-automatticMeasureBuilds = "3.1.1"
+automatticMeasureBuilds = "3.2.1"
 
 # Define the dependency versions
-coreKtx = "1.15.0"
+coreKtx = "1.16.0"
 legacySupport = "1.0.0"
-appCompat = "1.7.0"
-fragmentKtx = "1.8.5"
-constraintLayout = "2.2.0"
+appCompat = "1.7.1"
+fragmentKtx = "1.8.8"
+constraintLayout = "2.2.1"
 recyclerView = "1.4.0"
 materialVersion = "1.12.0"
-lifecycle = "2.9.0-alpha09"
+lifecycle = "2.9.2"
 
-retrofit = "2.11.0"
-okHttp = "4.12.0"
+retrofit = "3.0.0"
+okHttp = "5.1.0"
 
-coroutine = "1.10.1"
-gson = "2.11.0"
-glide = "4.12.0"
+coroutine = "1.10.2"
+gson = "2.13.1"
+glide = "4.16.0"
 coil = "2.7.0"
-room = "2.6.1"
+room = "2.7.2"
 
-androidxComposeBom = "2025.01.01"
-activityCompose = "1.10.0"
+androidxComposeBom = "2025.07.00"
+activityCompose = "1.10.1"
 
-koinBom = "4.1.0-Beta5"
-koinAnnotations = "2.0.0-RC1"
+koinBom = "4.1.0"
+koinAnnotations = "2.1.0"
 
 #Testing
 junit = "4.13.2"
@@ -44,10 +44,10 @@ fragmentTesting = "1.8.5"
 espressoCore = "3.6.1"
 okhttp3IdlingResource = "1.0.0"
 
-mockk = "1.12.3"
-robolectric = "4.12.2"
-turbine = "0.12.3"
-mockitoKotlin = "5.4.0"
+mockk = "1.14.5"
+robolectric = "4.15.1"
+turbine = "1.2.1"
+mockitoKotlin = "6.0.0"
 
 [libraries]
 # Define the libraries

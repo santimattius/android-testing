@@ -39,9 +39,12 @@ import com.santimattius.template.ui.compose.ui.components.snackbar.SnackBarVisua
 import com.santimattius.template.ui.compose.ui.theme.AndroidTestingTheme
 import com.santimattius.template.ui.xml.home.HomeViewActivity
 import org.koin.androidx.compose.koinViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class HomeComposeActivity : ComponentActivity() {
+    val viewModel: HomeComposeViewModel by viewModel()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -50,7 +53,7 @@ class HomeComposeActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    HomeRoute()
+                    HomeRoute(viewModel)
                 }
             }
         }
@@ -59,7 +62,7 @@ class HomeComposeActivity : ComponentActivity() {
 
 @Composable
 fun HomeRoute(
-    viewModel: HomeComposeViewModel = koinViewModel()
+    viewModel: HomeComposeViewModel
 ) {
     val snackBarHostState = remember { SnackbarHostState() }
     Scaffold(
