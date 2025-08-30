@@ -16,3 +16,4 @@ local.properties
 /.kotlin/
 /.idea/
 /app/kotzilla.json
+/app/src/main/assets/kotzilla.key

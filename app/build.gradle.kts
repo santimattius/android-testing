@@ -148,7 +148,7 @@ dependencies {
     implementation(libs.koin.android)
     implementation(libs.koin.androidx.compose)
     implementation(libs.koin.androidx.startup)
-    implementation("io.kotzilla:kotzilla-sdk:0.13.6")
+    implementation("io.kotzilla:kotzilla-sdk:1.2.1")
 
     compileOnly(libs.koin.annotations.core)
     ksp(libs.koin.annotations.compiler)
