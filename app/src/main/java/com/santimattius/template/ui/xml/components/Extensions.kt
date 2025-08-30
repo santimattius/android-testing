@@ -11,8 +11,7 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
-import com.santimattius.template.core.presentation.AlertDialog.Companion.alertDialog
-import com.santimattius.template.core.presentation.DialogAction
+import com.santimattius.template.ui.xml.components.AlertDialog.Companion.alertDialog
 
 /**
  * open link in to browser
