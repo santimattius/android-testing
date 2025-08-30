@@ -11,8 +11,7 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
-import com.santimattius.template.core.presentation.AlertDialog.Companion.alertDialog
-import com.santimattius.template.core.presentation.DialogAction
+import com.santimattius.template.ui.xml.components.AlertDialog.Companion.alertDialog
 
 /**
  * open link in to browser
@@ -55,7 +54,7 @@ fun ImageView.load(url: String, onComplete: () -> Unit = {}) {
             override fun onLoadFailed(
                 e: GlideException?,
                 model: Any?,
-                target: Target<Drawable>?,
+                target: Target<Drawable>,
                 isFirstResource: Boolean,
             ): Boolean {
                 onComplete()
@@ -63,10 +62,10 @@ fun ImageView.load(url: String, onComplete: () -> Unit = {}) {
             }
 
             override fun onResourceReady(
-                resource: Drawable?,
-                model: Any?,
+                resource: Drawable,
+                model: Any,
                 target: Target<Drawable>?,
-                dataSource: DataSource?,
+                dataSource: DataSource,
                 isFirstResource: Boolean,
             ): Boolean {
                 onComplete()

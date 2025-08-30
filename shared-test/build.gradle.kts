@@ -51,6 +51,7 @@ dependencies {
 
     implementation(platform(libs.koin.bom))
     implementation(libs.koin.test.core)
+    implementation(libs.koin.android)
 
     implementation(libs.bundles.unitTesting)
 }

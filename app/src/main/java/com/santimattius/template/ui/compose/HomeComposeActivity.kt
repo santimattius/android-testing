@@ -17,6 +17,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -39,18 +40,32 @@ import com.santimattius.template.ui.compose.ui.components.snackbar.SnackBarVisua
 import com.santimattius.template.ui.compose.ui.theme.AndroidTestingTheme
 import com.santimattius.template.ui.xml.home.HomeViewActivity
 import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.LocalKoinApplication
+import org.koin.compose.LocalKoinScope
+import org.koin.core.annotation.KoinInternalApi
+import org.koin.mp.KoinPlatformTools
 
 
 class HomeComposeActivity : ComponentActivity() {
+
+    @OptIn(KoinInternalApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            AndroidTestingTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    HomeRoute()
+            // This shouldn't be needed, but allows robolectric tests to run successfully
+            // TODO remove once a solution is found or a fix in koin?
+            CompositionLocalProvider(
+                LocalKoinScope provides KoinPlatformTools.defaultContext()
+                    .get().scopeRegistry.rootScope,
+                LocalKoinApplication provides KoinPlatformTools.defaultContext().get()
+            ) {
+                AndroidTestingTheme {
+                    Surface(
+                        modifier = Modifier.fillMaxSize(),
+                        color = MaterialTheme.colorScheme.background
+                    ) {
+                        HomeRoute()
+                    }
                 }
             }
         }

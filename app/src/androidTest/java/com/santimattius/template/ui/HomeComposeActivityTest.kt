@@ -6,7 +6,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.test.espresso.IdlingPolicies
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
-import com.santimattius.template.rules.KoinAndroidTestRule
+import com.santimattius.test.rules.KoinAndroidTestRule
 import com.santimattius.template.ui.compose.HomeComposeActivity
 import com.santimattius.test.rules.MainCoroutinesTestRule
 import org.junit.Before

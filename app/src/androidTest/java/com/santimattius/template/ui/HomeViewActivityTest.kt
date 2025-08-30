@@ -10,7 +10,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
 import com.santimattius.template.R
 import com.santimattius.template.espresso.RecyclerViewInteraction
-import com.santimattius.template.rules.KoinAndroidTestRule
+import com.santimattius.test.rules.KoinAndroidTestRule
 import com.santimattius.template.ui.models.MovieUiModel
 import com.santimattius.template.ui.models.mapping.asUiModels
 import com.santimattius.template.ui.xml.home.HomeViewActivity

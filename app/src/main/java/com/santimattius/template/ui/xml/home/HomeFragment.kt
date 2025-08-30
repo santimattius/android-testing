@@ -10,7 +10,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.santimattius.template.R
-import com.santimattius.template.core.presentation.DialogAction
+import com.santimattius.template.ui.xml.components.DialogAction
 import com.santimattius.template.databinding.PopularMoviesFragmentBinding
 import com.santimattius.template.ui.xml.components.showDialog
 import com.santimattius.template.ui.xml.home.components.PopularMoviesAdapter
