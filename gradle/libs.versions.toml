@@ -1,33 +1,33 @@
 [versions]
 # Plugins
-androidGradlePlugin = "8.11.1"
+androidGradlePlugin = "8.12.2"
 hamcrest = "3.0"
-kotlin = "2.2.0"
+kotlin = "2.2.10"
 detektGradlePlugin = "1.23.8"
-ksp = "2.2.0-2.0.2"
+ksp = "2.2.10-2.0.2"
 googleSecretsPlugin = "2.0.1"
 automatticMeasureBuilds = "3.2.1"
 
 # Define the dependency versions
-coreKtx = "1.16.0"
+coreKtx = "1.17.0"
 legacySupport = "1.0.0"
 appCompat = "1.7.1"
-fragmentKtx = "1.8.8"
+fragmentKtx = "1.8.9"
 constraintLayout = "2.2.1"
 recyclerView = "1.4.0"
 materialVersion = "1.12.0"
-lifecycle = "2.9.2"
+lifecycle = "2.9.3"
 
 retrofit = "3.0.0"
 okHttp = "5.1.0"
 
 coroutine = "1.10.2"
 gson = "2.13.1"
-glide = "4.16.0"
+glide = "5.0.0-rc01"
 coil = "2.7.0"
 room = "2.7.2"
 
-androidxComposeBom = "2025.07.00"
+androidxComposeBom = "2025.08.01"
 activityCompose = "1.10.1"
 
 koinBom = "4.1.0"
@@ -35,17 +35,17 @@ koinAnnotations = "2.1.0"
 
 #Testing
 junit = "4.13.2"
-junitExt = "1.2.1"
-testRunner = "1.6.2"
-testRule = "1.6.1"
-coreKtxVersion = "1.6.1"
+junitExt = "1.3.0"
+testRunner = "1.7.0"
+testRule = "1.7.0"
+coreKtxVersion = "1.7.0"
 coreTesting = "2.2.0"
-fragmentTesting = "1.8.5"
-espressoCore = "3.6.1"
+fragmentTesting = "1.8.9"
+espressoCore = "3.7.0"
 okhttp3IdlingResource = "1.0.0"
 
 mockk = "1.14.5"
-robolectric = "4.15.1"
+robolectric = "4.16"
 turbine = "1.2.1"
 mockitoKotlin = "6.0.0"
 

@@ -8,7 +8,7 @@ plugins {
 
 android {
     namespace = "com.santimattius.shared_test"
-    compileSdk = 34
+    compileSdk = 36
 
     defaultConfig {
         minSdk = 24

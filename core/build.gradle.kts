@@ -9,7 +9,7 @@ apply("$rootDir/gradle/report.gradle")
 
 android {
     namespace = "com.santimattius.core"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         minSdk = 24
@@ -42,11 +42,6 @@ android {
         unitTests {
             isReturnDefaultValues = true
             isIncludeAndroidResources = true
-        }
-        unitTests.all {
-            testCoverage {
-                version = "0.8.8"
-            }
         }
     }
 

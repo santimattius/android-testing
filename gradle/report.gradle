@@ -1,9 +1,5 @@
 apply plugin: 'jacoco'
 
-jacoco {
-    toolVersion = "0.8.8"
-}
-
 project.afterEvaluate {
     if (android.hasProperty("applicationVariants")) {
         android.applicationVariants.all { variant ->
