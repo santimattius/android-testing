@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.detekt)
     alias(libs.plugins.google.secrets.gradle.plugin)
     alias(libs.plugins.automattic.measure.builds)
+    id("io.kotzilla.kotzilla-plugin")
 }
 apply("$rootDir/gradle/report.gradle")
 
@@ -147,6 +148,7 @@ dependencies {
     implementation(libs.koin.android)
     implementation(libs.koin.androidx.compose)
     implementation(libs.koin.androidx.startup)
+    implementation("io.kotzilla:kotzilla-sdk:1.2.1")
 
     compileOnly(libs.koin.annotations.core)
     ksp(libs.koin.annotations.compiler)

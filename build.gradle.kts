@@ -14,5 +14,6 @@ plugins {
 buildscript {
     dependencies {
         classpath(libs.dep.google.secrets.gradle.plugin)
+        classpath("io.kotzilla:kotzilla-plugin:1.2.1")
     }
 }
