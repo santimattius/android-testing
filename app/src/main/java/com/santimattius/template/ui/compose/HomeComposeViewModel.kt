@@ -29,7 +29,7 @@ class HomeComposeViewModel(
         if (newMovies != state.movies) {
             state.copy(movies = newMovies, isLoading = false)
         } else {
-            state // Si no ha cambiado nada, retorna el mismo estado
+            state
         }
     }.onStart {
         movieRepository.refresh()

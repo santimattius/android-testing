@@ -7,31 +7,36 @@ import com.santimattius.core.data.client.network.TheMovieDBService
 import com.santimattius.template.BuildConfig
 import org.koin.core.annotation.Module
 import org.koin.core.annotation.Named
+import org.koin.core.annotation.Single
 import org.koin.core.annotation.Singleton
 
 
-@Module
+@Module(createdAtStart = true)
 class AppModule {
 
-    @Singleton
+    @Single
     fun provideAppDatabase(context: Context): TheMovieDataBase =
         TheMovieDataBase.get(context)
 
-    @Singleton
+    @Single
+    fun provideMovieDBService(): TheMovieDBService {
+        return RetrofitServiceCreator.createService(
+            baseUrl = "https://api.themoviedb.org", apiKey = BuildConfig.apiKey
+        )
+    }
+
+    /*@Single
     fun provideMovieDBService(serviceCreator: RetrofitServiceCreator): TheMovieDBService =
         serviceCreator.createService(TheMovieDBService::class.java)
 
 
-    @Singleton
-    fun provideRetrofit(@Named("base_url") baseUrl: String): RetrofitServiceCreator {
+    //TODO: com.santimattius.core.data.client.network.RetrofitServiceCreator
+       resolution performance is slow regarding the number of dependencies to retrieve.
+    @Single(createdAtStart = true)
+    fun provideRetrofit(): RetrofitServiceCreator {
         return RetrofitServiceCreator(
-            baseUrl = baseUrl,
+            baseUrl = "https://api.themoviedb.org",
             apiKey = BuildConfig.apiKey
         )
-    }
-
-    @Named("base_url")
-    @Singleton
-    @Suppress("FunctionOnlyReturningConstant")
-    fun provideBaseUrl() = "https://api.themoviedb.org"
+    }*/
 }

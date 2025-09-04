@@ -15,11 +15,12 @@ import org.koin.ksp.generated.defaultModule
 
 @OptIn(KoinExperimentalAPI::class)
 class MainApplication : Application(), KoinStartup {
+
     override fun onKoinStartup(): KoinConfiguration {
         Log.d(this::class.simpleName, "onKoinStartup: ${Thread.currentThread().name}")
         return KoinConfiguration {
             androidContext(this@MainApplication)
-            analytics(this@MainApplication)
+            analytics()
             modules(
                 com_santimattius_template_di_DataModule,
                 com_santimattius_template_di_AppModule,
