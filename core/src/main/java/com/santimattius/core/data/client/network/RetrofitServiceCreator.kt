@@ -4,6 +4,7 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+//TODO:only for testing
 class RetrofitServiceCreator(baseUrl: String, apiKey: String) {
 
     // Use 'by lazy' for client
@@ -24,28 +25,5 @@ class RetrofitServiceCreator(baseUrl: String, apiKey: String) {
 
     fun <T> createService(serviceClass: Class<T>): T {
         return retrofit.create(serviceClass)
-    }
-
-    companion object {
-        private val services: TheMovieDBService? = null
-        private var instance: RetrofitServiceCreator? = null
-
-        fun getInstance(baseUrl: String, apiKey: String): RetrofitServiceCreator {
-            if (instance == null) {
-                instance = RetrofitServiceCreator(baseUrl, apiKey)
-            }
-            return instance!!
-        }
-
-
-        fun createService(baseUrl: String, apiKey: String): TheMovieDBService {
-            if (services == null) {
-                return getInstance(
-                    baseUrl,
-                    apiKey,
-                ).createService(TheMovieDBService::class.java)
-            }
-            return services
-        }
     }
 }
