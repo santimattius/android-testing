@@ -13,17 +13,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.EntertainmentApp">
-        <provider
-            android:name="androidx.startup.InitializationProvider"
-            android:authorities="${applicationId}.androidx-startup"
-            android:exported="false"
-            tools:node="merge">
-            <!-- This entry makes DependenciesInitializer discoverable. -->
-            <meta-data
-                android:name="com.santimattius.template.startup.RetrofitServiceInitializer"
-                android:value="androidx.startup" />
-        </provider>
-
         <activity
             android:name=".ui.compose.HomeComposeActivity"
             android:exported="true"
