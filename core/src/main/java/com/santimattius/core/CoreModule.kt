@@ -14,14 +14,14 @@ import retrofit2.converter.gson.GsonConverterFactory
 @Module
 class CoreModule {
 
-    @Single
+    @Single(createdAtStart = true)
     fun provideOkHttpClient(@Named("apiKey") apiKey: String): OkHttpClient {
         return OkHttpClient().newBuilder()
             .addInterceptor(RequestInterceptor(apiKey))
             .build()
     }
 
-    @Single
+    @Single(createdAtStart = true)
     fun provideRetrofit(
         @Named("baseUrl") baseUrl: String,
         client: OkHttpClient
@@ -33,12 +33,12 @@ class CoreModule {
             .build()
     }
 
-    @Single
+    @Single(createdAtStart = true)
     fun provideService(retrofit: Retrofit): TheMovieDBService {
         return retrofit.create(TheMovieDBService::class.java)
     }
 
-    @Single
+    @Single(createdAtStart = true)
     fun provideAppDatabase(context: Context): TheMovieDataBase =
         TheMovieDataBase.get(context)
 }
