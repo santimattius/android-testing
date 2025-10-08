@@ -8,10 +8,12 @@ import com.santimattius.core.data.datasources.implementation.RetrofitMovieNetwor
 import com.santimattius.core.data.datasources.implementation.RoomMovieLocalDataSource
 import com.santimattius.core.data.repositories.TMDbRepository
 import com.santimattius.core.domain.repositories.MovieRepository
+import org.koin.core.annotation.Configuration
 import org.koin.core.annotation.Module
 import org.koin.core.annotation.Single
 
 @Module
+@Configuration
 class DataModule {
 
     @Single

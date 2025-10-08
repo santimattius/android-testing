@@ -1,12 +1,14 @@
 package com.santimattius.template.di
 
 import com.santimattius.template.BuildConfig
+import org.koin.core.annotation.Configuration
 import org.koin.core.annotation.Module
 import org.koin.core.annotation.Named
 import org.koin.core.annotation.Single
 
 
 @Module
+@Configuration
 class AppModule {
 
     @Single(createdAtStart = true)
