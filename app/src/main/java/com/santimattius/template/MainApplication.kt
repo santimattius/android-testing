@@ -16,6 +16,12 @@ import org.koin.ksp.generated.defineComSantimattiusTemplateUiComposeHomeComposeV
 import org.koin.ksp.generated.defineComSantimattiusTemplateUiXmlHomeHomeViewModel
 import org.koin.ksp.generated.koinConfiguration
 
+@KoinApplication(
+    configurations = ["default"],
+    modules = [CoreModule::class, DataModule::class, AppModule::class]
+)
+object MainKoinApplication
+
 @OptIn(KoinExperimentalAPI::class)
 class MainApplication : Application(), KoinStartup {
 
@@ -32,9 +38,3 @@ class MainApplication : Application(), KoinStartup {
         return KoinConfiguration(configuration)
     }
 }
-
-@KoinApplication(
-    configurations = ["default"],
-    modules = [CoreModule::class, DataModule::class, AppModule::class]
-)
-object MainKoinApplication
