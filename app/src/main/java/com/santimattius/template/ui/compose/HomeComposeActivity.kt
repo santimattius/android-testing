@@ -56,18 +56,19 @@ class HomeComposeActivity : ComponentActivity() {
         setContent {
             // This shouldn't be needed, but allows robolectric tests to run successfully
             // TODO remove once a solution is found or a fix in koin?
-            CompositionLocalProvider(
-                LocalKoinScope provides KoinPlatformTools.defaultContext()
-                    .get().scopeRegistry.rootScope,
-                LocalKoinApplication provides KoinPlatformTools.defaultContext().get()
-            ) {
-                AndroidTestingTheme {
-                    Surface(
-                        modifier = Modifier.fillMaxSize(),
-                        color = MaterialTheme.colorScheme.background
-                    ) {
-                        HomeRoute(viewModel)
-                    }
+//            CompositionLocalProvider(
+//                LocalKoinScope provides KoinPlatformTools.defaultContext()
+//                    .get().scopeRegistry.rootScope,
+//                LocalKoinApplication provides KoinPlatformTools.defaultContext().get()
+//            ) {
+//
+//            }
+            AndroidTestingTheme {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    HomeRoute(viewModel)
                 }
             }
         }

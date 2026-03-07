@@ -17,8 +17,12 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
+import org.koin.core.annotation.Configuration
+import org.koin.core.annotation.Monitor
 
 @KoinViewModel
+@Monitor
+@Configuration
 class HomeComposeViewModel(
     private val movieRepository: MovieRepository,
 ) : ViewModel() {

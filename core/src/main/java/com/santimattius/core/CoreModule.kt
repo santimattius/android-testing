@@ -5,6 +5,7 @@ import com.santimattius.core.data.client.database.TheMovieDataBase
 import com.santimattius.core.data.client.network.RequestInterceptor
 import com.santimattius.core.data.client.network.TheMovieDBService
 import okhttp3.OkHttpClient
+import org.koin.core.annotation.Configuration
 import org.koin.core.annotation.Module
 import org.koin.core.annotation.Named
 import org.koin.core.annotation.Single
@@ -12,6 +13,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 @Module
+@Configuration
 class CoreModule {
 
     @Single(createdAtStart = true)
