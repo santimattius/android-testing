@@ -8,11 +8,13 @@ plugins {
     alias(libs.plugins.detekt) apply false
     alias(libs.plugins.google.secrets.gradle.plugin) apply false
     alias(libs.plugins.automattic.measure.builds) apply false
+    alias(libs.plugins.allopen) apply false
     alias(libs.plugins.room) apply false
 }
 
 buildscript {
     dependencies {
         classpath(libs.dep.google.secrets.gradle.plugin)
+        classpath("io.kotzilla:kotzilla-plugin:1.2.3")
     }
 }

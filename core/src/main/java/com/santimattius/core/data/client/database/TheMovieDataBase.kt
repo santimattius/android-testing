@@ -13,7 +13,17 @@ abstract class TheMovieDataBase : RoomDatabase() {
 
         private const val DATABASE_NAME = "tmdb_database"
 
-        fun get(context: Context) =
+        /*@Volatile
+        private var INSTANCE: TheMovieDataBase? = null
+
+        fun get(context: Context) = INSTANCE ?: synchronized(this) {
+            INSTANCE ?: create(context).also { INSTANCE = it }
+        }
+        */
+
+        fun get(context: Context) = create(context)
+
+        private fun create(context: Context) =
             Room.databaseBuilder(context, TheMovieDataBase::class.java, DATABASE_NAME)
                 .build()
     }

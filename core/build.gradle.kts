@@ -72,6 +72,8 @@ dependencies {
     implementation(platform(libs.koin.bom))
     implementation(libs.koin.android)
     implementation(libs.koin.androidx.compose)
+    compileOnly(libs.koin.annotations.core)
+    ksp(libs.koin.annotations.compiler)
 
     testImplementation(project(path = ":shared-test"))
     testImplementation(libs.bundles.unitTesting)

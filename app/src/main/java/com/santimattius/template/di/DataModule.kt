@@ -8,13 +8,15 @@ import com.santimattius.core.data.datasources.implementation.RetrofitMovieNetwor
 import com.santimattius.core.data.datasources.implementation.RoomMovieLocalDataSource
 import com.santimattius.core.data.repositories.TMDbRepository
 import com.santimattius.core.domain.repositories.MovieRepository
+import org.koin.core.annotation.Configuration
 import org.koin.core.annotation.Module
-import org.koin.core.annotation.Singleton
+import org.koin.core.annotation.Single
 
 @Module
+@Configuration
 class DataModule {
 
-    @Singleton
+    @Single
     fun provideMovieRepository(
         movieNetworkDataSource: MovieNetworkDataSource,
         movieLocalDataSource: MovieLocalDataSource,
@@ -23,12 +25,12 @@ class DataModule {
         movieLocalDataSource = movieLocalDataSource
     )
 
-    @Singleton
+    @Single
     fun provideLocalDataSource(theMovieDataBase: TheMovieDataBase): MovieLocalDataSource {
         return RoomMovieLocalDataSource(theMovieDataBase = theMovieDataBase)
     }
 
-    @Singleton
+    @Single
     fun provideRemoteDataSource(service: TheMovieDBService): MovieNetworkDataSource {
         return RetrofitMovieNetworkDataSource(service = service)
     }

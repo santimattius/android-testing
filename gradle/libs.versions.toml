@@ -1,10 +1,10 @@
 [versions]
 # Plugins
-androidGradlePlugin = "8.12.2"
+androidGradlePlugin = "8.13.0"
 hamcrest = "3.0"
-kotlin = "2.2.10"
+kotlin = "2.2.20"
 detektGradlePlugin = "1.23.8"
-ksp = "2.2.10-2.0.2"
+ksp = "2.2.20-2.0.2"
 googleSecretsPlugin = "2.0.1"
 automatticMeasureBuilds = "3.2.1"
 
@@ -15,23 +15,23 @@ appCompat = "1.7.1"
 fragmentKtx = "1.8.9"
 constraintLayout = "2.2.1"
 recyclerView = "1.4.0"
-materialVersion = "1.12.0"
-lifecycle = "2.9.3"
+materialVersion = "1.13.0"
+lifecycle = "2.9.4"
 
 retrofit = "3.0.0"
-okHttp = "5.1.0"
+okHttp = "5.2.0"
 
 coroutine = "1.10.2"
-gson = "2.13.1"
-glide = "5.0.0-rc01"
+gson = "2.13.2"
+glide = "5.0.5"
 coil = "2.7.0"
-room = "2.7.2"
+room = "2.8.1"
 
-androidxComposeBom = "2025.08.01"
-activityCompose = "1.10.1"
+androidxComposeBom = "2025.09.01"
+activityCompose = "1.11.0"
 
-koinBom = "4.1.0"
-koinAnnotations = "2.1.0"
+koinBom = "4.1.1"
+koinAnnotations = "2.2.0"
 
 #Testing
 junit = "4.13.2"
@@ -44,10 +44,10 @@ fragmentTesting = "1.8.9"
 espressoCore = "3.7.0"
 okhttp3IdlingResource = "1.0.0"
 
-mockk = "1.14.5"
+mockk = "1.14.6"
 robolectric = "4.16"
 turbine = "1.2.1"
-mockitoKotlin = "6.0.0"
+mockitoKotlin = "6.1.0"
 
 [libraries]
 # Define the libraries
@@ -153,6 +153,7 @@ kotlin = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 room = { id = "androidx.room", version.ref = "room"}
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+allopen = { id = "org.jetbrains.kotlin.plugin.allopen", version.ref = "kotlin" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detektGradlePlugin" }
 google-secrets-gradle-plugin = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "googleSecretsPlugin" }
 automattic-measure-builds = { id = "com.automattic.android.measure-builds", version.ref = "automatticMeasureBuilds" }

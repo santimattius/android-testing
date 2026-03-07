@@ -8,6 +8,8 @@ plugins {
     alias(libs.plugins.detekt)
     alias(libs.plugins.google.secrets.gradle.plugin)
     alias(libs.plugins.automattic.measure.builds)
+    alias(libs.plugins.allopen)
+    id("io.kotzilla.kotzilla-plugin")
 }
 apply("$rootDir/gradle/report.gradle")
 
@@ -113,6 +115,10 @@ ksp {
     arg("KOIN_CONFIG_CHECK", "true")
 }
 
+allOpen {
+    annotation("org.koin.core.annotation.Monitor")
+}
+
 dependencies {
     implementation(project(":core"))
     implementation(libs.kotlin.stdlib)
@@ -147,6 +153,8 @@ dependencies {
     implementation(libs.koin.android)
     implementation(libs.koin.androidx.compose)
     implementation(libs.koin.androidx.startup)
+    implementation("io.kotzilla:kotzilla-sdk:1.2.3")
+    //implementation("io.kotzilla:kotzilla-sdk-compose:1.2.3")
 
     compileOnly(libs.koin.annotations.core)
     ksp(libs.koin.annotations.compiler)
