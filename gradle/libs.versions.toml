@@ -1,35 +1,36 @@
 [versions]
 # Plugins
-androidGradlePlugin = "8.12.2"
+androidGradlePlugin = "9.1.0"
 hamcrest = "3.0"
-kotlin = "2.2.10"
+kotlin = "2.3.10"
 detektGradlePlugin = "1.23.8"
-ksp = "2.2.10-2.0.2"
+ksp = "2.3.6"
 googleSecretsPlugin = "2.0.1"
-automatticMeasureBuilds = "3.2.1"
+automatticMeasureBuilds = "3.2.2"
 
 # Define the dependency versions
-coreKtx = "1.17.0"
+coreKtx = "1.18.0"
 legacySupport = "1.0.0"
 appCompat = "1.7.1"
 fragmentKtx = "1.8.9"
 constraintLayout = "2.2.1"
 recyclerView = "1.4.0"
-materialVersion = "1.12.0"
-lifecycle = "2.9.3"
+materialVersion = "1.13.0"
+lifecycle = "2.10.0"
 
 retrofit = "3.0.0"
-okHttp = "5.1.0"
+okHttp = "5.3.2"
 
 coroutine = "1.10.2"
-gson = "2.13.1"
-glide = "5.0.0-rc01"
+gson = "2.13.2"
+glide = "5.0.5"
 coil = "2.7.0"
-room = "2.7.2"
+room = "2.8.4"
 
-androidxComposeBom = "2025.08.01"
-activityCompose = "1.10.1"
+androidxComposeBom = "2026.03.00"
+activityCompose = "1.13.0"
 
+#TODO: pending for migration
 koinBom = "4.1.0"
 koinAnnotations = "2.1.0"
 
@@ -44,10 +45,10 @@ fragmentTesting = "1.8.9"
 espressoCore = "3.7.0"
 okhttp3IdlingResource = "1.0.0"
 
-mockk = "1.14.5"
-robolectric = "4.16"
+mockk = "1.14.9"
+robolectric = "4.16.1"
 turbine = "1.2.1"
-mockitoKotlin = "6.0.0"
+mockitoKotlin = "6.2.3"
 
 [libraries]
 # Define the libraries
@@ -117,7 +118,6 @@ robolectric-httpclient = { module = "org.robolectric:shadows-httpclient", versio
 androidx-core-ktx = { module = "androidx.test:core-ktx", version.ref = "coreKtxVersion" }
 androidx-fragment-testing-manifest = { module = "androidx.fragment:fragment-testing-manifest", version.ref = "fragmentTesting" }
 androidx-fragment-testing = { module = "androidx.fragment:fragment-testing", version.ref = "fragmentTesting" }
-
 # AndroidTest
 test-ext = { module = "androidx.test.ext:junit", version.ref = "junitExt" }
 test-ext-ktx = { module = "androidx.test.ext:junit-ktx", version.ref = "junitExt" }
@@ -137,7 +137,7 @@ dep-google-secrets-gradle-plugin = { module = "com.google.android.libraries.maps
 ui = ["legacy-support", "app-compart", "fragment-ktx", "constraint-layout", "recycler-view", "material"]
 compose = ["compose_ui", "compose_material3", "compose_tooling_preview", "compose_icons"]
 compose_debug = ["compose_tooling", "compose_ui_test_manifest"]
-lifecycle = [ "lifecycle-runtime-ktx", "lifecycle-viewmodel-ktx", "lifecycle-livedata-ktx"]
+lifecycle = ["lifecycle-runtime-ktx", "lifecycle-viewmodel-ktx", "lifecycle-livedata-ktx"]
 coroutine = ["coroutine-core", "coroutine-android"]
 retrofit = ["retrofit-core", "retrofit-gson", "logging-interceptor"]
 serializable = ["gson-core"]
@@ -150,7 +150,7 @@ androidTesting = ["core-testing", "mockwebserver", "okHttp3-idling-resource", "j
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
 kotlin = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-room = { id = "androidx.room", version.ref = "room"}
+room = { id = "androidx.room", version.ref = "room" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detektGradlePlugin" }
