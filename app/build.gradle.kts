@@ -1,4 +1,5 @@
 import com.automattic.android.measure.reporters.SlowSlowTasksMetricsReporter
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.android.application)
@@ -57,17 +58,22 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
+    kotlin {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_17)
+        }
     }
     buildFeatures {
         viewBinding = true
         compose = true
+        buildConfig = true
     }
 
     packaging {
         resources {
             excludes.add("/META-INF/{AL2.0,LGPL2.1}")
+            excludes.add("META-INF/LICENSE.md")
+            excludes.add("META-INF/LICENSE-notice.md")
         }
     }
     applicationVariants.forEach { variant ->
@@ -78,8 +84,7 @@ android {
 }
 
 composeCompiler {
-    enableStrongSkippingMode = true
-    reportsDestination = layout.buildDirectory.dir("compose_compiler")
+    reportsDestination.set(layout.buildDirectory.dir("compose_compiler"))
 }
 
 fun extraString(key: String): String {
@@ -88,7 +93,7 @@ fun extraString(key: String): String {
 
 detekt {
     toolVersion = "1.22.0"
-    config = files("${project.rootDir}/config/detekt/detekt.yml")
+    config.from("${project.rootDir}/config/detekt/detekt.yml")
     baseline = file("$rootDir/detekt-baseline.xml")
     autoCorrect = true
 }
@@ -98,6 +103,17 @@ configurations {
         exclude("io.mockk", "mockk-agent-jvm")
     }
 }
+
+// compose-bom:2026.03.00 strictly pins monitor:1.6.0, but espresso-core:3.7.0 was compiled
+// against monitor:1.8.0 (ReflectiveMethod(Class,String,Class[]) constructor added in 1.8.0).
+// Force 1.8.0 across all androidTest configurations to override the BOM strict constraint
+// and prevent NoSuchMethodError at runtime.
+configurations.matching { it.name.contains("AndroidTest") || it.name.contains("androidTest") }
+    .configureEach {
+        resolutionStrategy {
+            force("androidx.test:monitor:1.8.0")
+        }
+    }
 
 
 measureBuilds {
