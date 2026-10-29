@@ -42,6 +42,15 @@ android {
         }
     }
     testOptions {
+        managedDevices {
+            localDevices {
+                create("pixel9api35") {
+                    device = "Pixel 9"
+                    apiLevel = 35
+                    systemImageSource = "aosp-atd"
+                }
+            }
+        }
         unitTests {
             isReturnDefaultValues = true
             isIncludeAndroidResources = true
