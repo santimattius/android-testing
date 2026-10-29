@@ -42,6 +42,7 @@ android {
         }
     }
     testOptions {
+        execution = "ANDROIDX_TEST_ORCHESTRATOR"
         managedDevices {
             localDevices {
                 create("pixel9api35") {
@@ -174,6 +175,7 @@ dependencies {
     testImplementation(libs.koin.test.core)
     testImplementation(libs.koin.test.junit4)
 
+    androidTestUtil(libs.test.orchestrator)
     androidTestImplementation(libs.coil.test)
     androidTestImplementation(libs.koin.test.junit4)
     androidTestImplementation(libs.koin.android.test)

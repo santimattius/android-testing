@@ -35,6 +35,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
     testOptions {
+        execution = "ANDROIDX_TEST_ORCHESTRATOR"
         managedDevices {
             localDevices {
                 create("pixel9api35") {
@@ -84,6 +85,7 @@ dependencies {
     testImplementation(libs.koin.test.core)
     testImplementation(libs.koin.test.junit4)
 
+    androidTestUtil(libs.test.orchestrator)
     androidTestImplementation(libs.test.ext)
     androidTestImplementation(libs.test.espresso)
     androidTestImplementation(libs.test.runner)
