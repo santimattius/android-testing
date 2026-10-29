@@ -165,6 +165,7 @@ dependencies {
     testImplementation(libs.koin.test.core)
     testImplementation(libs.koin.test.junit4)
 
+    androidTestImplementation(libs.coil.test)
     androidTestImplementation(libs.koin.test.junit4)
     androidTestImplementation(libs.koin.android.test)
     androidTestImplementation(libs.koin.annotations.core)

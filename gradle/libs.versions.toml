@@ -88,6 +88,7 @@ gson-core = { module = "com.google.code.gson:gson", version.ref = "gson" }
 #ImageLoader
 glide-core = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 coil-core = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
+coil-test = { module = "io.coil-kt:coil-test", version.ref = "coil" }
 # Coroutines
 coroutine-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutine" }
 coroutine-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutine" }
