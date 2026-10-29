@@ -93,10 +93,13 @@ fun extraString(key: String): String {
 }
 
 detekt {
-    toolVersion = "1.22.0"
     config.from("${project.rootDir}/config/detekt/detekt.yml")
     baseline = file("$rootDir/detekt-baseline.xml")
-    autoCorrect = true
+}
+
+// Detekt 1.23 rejects newer JDK targets, so pin it to the project's Java target.
+tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
+    jvmTarget = "17"
 }
 
 configurations {
