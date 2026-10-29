@@ -3,7 +3,7 @@ import com.automattic.android.measure.reporters.SlowSlowTasksMetricsReporter
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.compose.compiler)
-    alias(libs.plugins.ksp)
+    alias(libs.plugins.koin.compiler)
     alias(libs.plugins.detekt)
     alias(libs.plugins.google.secrets.gradle.plugin)
     alias(libs.plugins.automattic.measure.builds)
@@ -129,9 +129,9 @@ measureBuilds {
     }
 }
 
-ksp {
-    arg("KOIN_CONFIG_CHECK", "true")
-    arg("KOIN_DEFAULT_MODULE", "true")
+koinCompiler {
+    // Fails the build when a definition cannot be resolved (replaces KOIN_CONFIG_CHECK).
+    compileSafety = true
 }
 
 dependencies {
@@ -167,11 +167,7 @@ dependencies {
     implementation(libs.koin.androidx.compose)
     implementation(libs.koin.androidx.startup)
 
-    compileOnly(libs.koin.annotations.core)
-    ksp(libs.koin.annotations.compiler)
-
-    testImplementation(libs.koin.annotations.core)
-    kspTest(libs.koin.annotations.compiler)
+    implementation(libs.koin.annotations.core)
 
     testImplementation(libs.koin.test.core)
     testImplementation(libs.koin.test.junit4)
@@ -180,8 +176,6 @@ dependencies {
     androidTestImplementation(libs.coil.test)
     androidTestImplementation(libs.koin.test.junit4)
     androidTestImplementation(libs.koin.android.test)
-    androidTestImplementation(libs.koin.annotations.core)
-    kspAndroidTest(libs.koin.annotations.compiler)
 
     //Unit Testing
     testImplementation(project(path = ":shared-test"))
