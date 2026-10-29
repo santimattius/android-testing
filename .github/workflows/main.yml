@@ -1,21 +1,29 @@
-# This is a basic workflow to help you get started with Actions
 name: Checks
-# Controls when the workflow will run
+
+# Cadence follows the Android CI guidance: fast, small tests on every change; slower device
+# tests on the main branch and nightly.
+# https://developer.android.com/training/testing/continuous-integration/automation
 on:
-  # Triggers the workflow on push or pull request events but only for the master branch
   push:
     branches: [ master ]
   pull_request:
     branches: [ master ]
-
-  # Allows you to run this workflow manually from the Actions tab
+  schedule:
+    - cron: '0 5 * * *'
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
 jobs:
   detekt:
     name: Detekt - Lint
     runs-on: ubuntu-latest
+    if: github.event_name != 'schedule'
 
     steps:
       - name: Checkout code
@@ -27,27 +35,81 @@ jobs:
         uses: natiginfo/action-detekt-all@1.23.7
         with:
           args: --config config/detekt/detekt.yml
-  tests:
-    # The type of runner that the job will run on
-    name: Tests
-    runs-on: macos-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
+  unit-tests:
+    name: Unit tests, lint and coverage
+    runs-on: ubuntu-latest
+    if: github.event_name != 'schedule'
+
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set Up JDK
+      - name: Set up JDK
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: '17'
-      - name: Setup API Key
-        env:
-          APIKEY: ${{ secrets.APIKEY }}
-        run: echo apiKey="$APIKEY" > ./local.properties
-      - name: Set gradlew permissions
-        run: chmod +x gradlew
-      - name: Run Tests
-        run: ./gradlew check
+          cache: gradle
+
+      - name: Unit tests and lint
+        run: ./gradlew test lint --stacktrace
+
+      - name: Unit test coverage reports
+        run: ./gradlew createDebugUnitTestCoverageReport
+
+      - name: Coverage regression check
+        run: ./gradlew coverageRegressionCheck -PcoverageKinds=test
+
+      - name: Upload reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit-test-reports
+          path: |
+            **/build/reports/tests/
+            **/build/reports/lint-results-*.html
+            **/build/reports/coverage/test/
+          if-no-files-found: ignore
+
+  instrumented-tests:
+    name: Instrumented tests (Gradle-managed device)
+    runs-on: ubuntu-latest
+    # Device tests are slower, so they run on the main branch, nightly and on demand.
+    if: github.event_name != 'pull_request'
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+          cache: gradle
+
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      # GitHub-hosted runners lack hardware rendering, so the emulator needs a software GPU.
+      # https://developer.android.com/studio/test/gradle-managed-devices
+      - name: Instrumented tests
+        run: >
+          ./gradlew pixel9api35DebugAndroidTest
+          -Pandroid.testoptions.manageddevices.emulator.gpu=swiftshader_indirect
+          --stacktrace
+
+      - name: Upload reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: instrumented-test-reports
+          path: |
+            **/build/reports/androidTests/
+            **/build/outputs/androidTest-results/
+          if-no-files-found: ignore
