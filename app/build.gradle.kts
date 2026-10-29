@@ -152,7 +152,6 @@ dependencies {
     testImplementation(libs.compose.ui.test.junit)
     testImplementation(libs.bundles.compose.debug)
 
-    androidTestImplementation(project(":app"))
     androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.compose.ui.test.junit)
 
