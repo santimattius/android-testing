@@ -10,52 +10,46 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
+/**
+ * In-memory [MovieLocalDataSource] that publishes an immutable snapshot on every change,
+ * so collectors never observe later mutations of a list they already received.
+ */
 class FakeMovieLocalDataSource : MovieLocalDataSource {
 
     private val mutex = Mutex()
-    private val movies = mutableListOf<MovieEntity>()
-
-    private val moviesFlow = MutableStateFlow<List<MovieEntity>>(movies)
+    private val moviesFlow = MutableStateFlow<List<MovieEntity>>(emptyList())
 
     override val all: Flow<List<MovieEntity>>
         get() = moviesFlow.asStateFlow()
 
     override suspend fun getAll(): List<MovieEntity> {
-        return mutex.withLock {
-            movies
-        }
+        return mutex.withLock { moviesFlow.value }
     }
 
     override suspend fun isEmpty(): Boolean {
-        return mutex.withLock {
-            movies.isEmpty()
-        }
+        return mutex.withLock { moviesFlow.value.isEmpty() }
     }
 
     override suspend fun save(movies: List<MovieEntity>): Result<Boolean> {
         return mutex.withLock {
-            val result = this@FakeMovieLocalDataSource.movies.addAll(movies)
-            if (result) {
-                moviesFlow.value = this@FakeMovieLocalDataSource.movies
-                Result.success(value = true)
-            } else {
+            if (movies.isEmpty()) {
                 Result.failure(MovieNoSaved())
+            } else {
+                moviesFlow.value = moviesFlow.value + movies
+                Result.success(value = true)
             }
         }
     }
 
     override suspend fun find(id: Long): Result<MovieEntity> {
-        return mutex.withLock {
-            val movie = movies.firstOrNull { it.id == id }
-            if (movie == null) Result.failure(MovieNoExists()) else Result.success(movie)
-        }
+        return mutex.withLock { findLocked(id) }
     }
 
     override suspend fun delete(movie: MovieEntity): Result<Boolean> {
         return mutex.withLock {
-            val result = movies.remove(movie)
-            if (result) {
-                moviesFlow.value = this@FakeMovieLocalDataSource.movies
+            val current = moviesFlow.value
+            if (movie in current) {
+                moviesFlow.value = current - movie
                 Result.success(true)
             } else {
                 Result.failure(MovieNoExists())
@@ -64,43 +58,39 @@ class FakeMovieLocalDataSource : MovieLocalDataSource {
     }
 
     override suspend fun update(movie: MovieEntity): Result<Boolean> {
-        return mutex.withLock {
-            val index = movies.indexOfFirst { it.id == movie.id }
-            if (index == -1) {
-                Result.failure(MovieNoExists())
-            } else {
-                movies.removeAt(index)
-                movies.add(movie)
-                moviesFlow.value = this@FakeMovieLocalDataSource.movies
-                Result.success(true)
-            }
-        }
+        return mutex.withLock { updateLocked(movie) }
     }
 
     override suspend fun addToFavorite(movieId: Long): Result<Unit> {
-        return find(movieId).fold(
-            onSuccess = {
-                val movie = it.copy(favorite = true)
-                update(movie)
-                Result.success(Unit)
-            },
-            onFailure = {
-                return Result.failure(it)
-            }
-        )
+        return setFavorite(movieId, favorite = true)
     }
 
     override suspend fun removeFromFavorite(movieId: Long): Result<Unit> {
-        return find(movieId).fold(
-            onSuccess = {
-                val movie = it.copy(favorite = false)
-                update(movie)
-                Result.success(Unit)
-            },
-            onFailure = {
-                return Result.failure(it)
-            }
-        )
+        return setFavorite(movieId, favorite = false)
     }
 
+    private suspend fun setFavorite(movieId: Long, favorite: Boolean): Result<Unit> {
+        return mutex.withLock {
+            findLocked(movieId).fold(
+                onSuccess = { updateLocked(it.copy(favorite = favorite)).map { } },
+                onFailure = { Result.failure(it) },
+            )
+        }
+    }
+
+    private fun findLocked(id: Long): Result<MovieEntity> {
+        val movie = moviesFlow.value.firstOrNull { it.id == id }
+        return if (movie == null) Result.failure(MovieNoExists()) else Result.success(movie)
+    }
+
+    private fun updateLocked(movie: MovieEntity): Result<Boolean> {
+        val current = moviesFlow.value
+        val index = current.indexOfFirst { it.id == movie.id }
+        return if (index == -1) {
+            Result.failure(MovieNoExists())
+        } else {
+            moviesFlow.value = current.toMutableList().also { it[index] = movie }
+            Result.success(true)
+        }
+    }
 }

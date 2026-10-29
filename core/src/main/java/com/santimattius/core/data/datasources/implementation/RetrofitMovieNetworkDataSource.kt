@@ -2,6 +2,7 @@ package com.santimattius.core.data.datasources.implementation
 
 import com.santimattius.core.data.client.network.TheMovieDBService
 import com.santimattius.core.data.datasources.MovieNetworkDataSource
+import kotlinx.coroutines.CancellationException
 import com.santimattius.core.data.models.NetworkMovie as TheMovieDbMovie
 
 class RetrofitMovieNetworkDataSource(
@@ -13,6 +14,8 @@ class RetrofitMovieNetworkDataSource(
         return try {
             val response = service.getMoviePopular(version = DEFAULT_VERSION, page = SINGLE_PAGE)
             Result.success(response.results)
+        } catch (ex: CancellationException) {
+            throw ex
         } catch (ex: Throwable) {
             Result.failure(ex)
         }
