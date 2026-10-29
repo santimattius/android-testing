@@ -8,7 +8,6 @@ plugins {
     alias(libs.plugins.google.secrets.gradle.plugin)
     alias(libs.plugins.automattic.measure.builds)
 }
-apply("$rootDir/gradle/report.gradle")
 
 android {
     namespace = "com.santimattius.template"
@@ -147,13 +146,13 @@ dependencies {
     //Compose
     implementation(platform(libs.compose.bom))
     implementation(libs.bundles.compose)
-    androidTestImplementation(project(":app"))
     debugImplementation(libs.bundles.compose.debug)
 
     testImplementation(platform(libs.compose.bom))
     testImplementation(libs.compose.ui.test.junit)
     testImplementation(libs.bundles.compose.debug)
 
+    androidTestImplementation(project(":app"))
     androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.compose.ui.test.junit)
 
