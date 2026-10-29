@@ -1,9 +1,7 @@
 import com.automattic.android.measure.reporters.SlowSlowTasksMetricsReporter
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.ksp)
     alias(libs.plugins.detekt)
@@ -50,18 +48,13 @@ android {
         }
         unitTests.all {
             testCoverage {
-                version = "0.8.8"
+                version = "0.8.16"
             }
         }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlin {
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_17)
-        }
     }
     buildFeatures {
         viewBinding = true
@@ -76,11 +69,10 @@ android {
             excludes.add("META-INF/LICENSE-notice.md")
         }
     }
-    applicationVariants.forEach { variant ->
-        variant.sourceSets.forEach {
-            it.javaDirectories += files("build/generated/ksp/${variant.name}/kotlin")
-        }
-    }
+}
+
+secrets {
+    defaultPropertiesFileName = "local.defaults.properties"
 }
 
 composeCompiler {
@@ -127,11 +119,11 @@ measureBuilds {
 
 ksp {
     arg("KOIN_CONFIG_CHECK", "true")
+    arg("KOIN_DEFAULT_MODULE", "true")
 }
 
 dependencies {
     implementation(project(":core"))
-    implementation(libs.kotlin.stdlib)
     implementation(libs.core.ktx)
 
     implementation(libs.bundles.ui)
