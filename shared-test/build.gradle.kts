@@ -64,6 +64,8 @@ dependencies {
     implementation(libs.koin.android)
 
     implementation(libs.bundles.unitTesting)
+    implementation(libs.coil.core)
+    implementation(libs.coil.test)
 
     androidTestImplementation(libs.test.runner)
     androidTestImplementation(libs.test.ext)

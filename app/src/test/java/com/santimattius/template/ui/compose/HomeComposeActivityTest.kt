@@ -13,6 +13,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.runAndroidComposeUiTest
+import com.santimattius.test.rules.FakeImageLoaderRule
 import com.santimattius.test.rules.MainCoroutinesTestRule
 import org.junit.Rule
 import org.junit.Test
@@ -35,6 +36,9 @@ class HomeComposeActivityTest {
     var koinTestRule = KoinTestRule.create {
         modules(DataModule::class, FakeDataModule::class)
     }
+
+    @get:Rule
+    val fakeImageLoaderRule = FakeImageLoaderRule()
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()

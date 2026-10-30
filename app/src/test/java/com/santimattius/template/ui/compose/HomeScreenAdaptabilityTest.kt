@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import com.santimattius.template.ui.compose.models.HomeUiState
 import com.santimattius.template.ui.models.MovieUiModel
 import org.junit.Assert.assertEquals
+import com.santimattius.test.rules.FakeImageLoaderRule
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -32,6 +33,9 @@ import org.robolectric.annotation.Config
 @RunWith(RobolectricTestRunner::class)
 @Config(manifest = Config.NONE, sdk = [Build.VERSION_CODES.R], application = Application::class)
 class HomeScreenAdaptabilityTest {
+
+    @get:Rule
+    val fakeImageLoaderRule = FakeImageLoaderRule()
 
     @get:Rule
     val composeTestRule = createComposeRule()
