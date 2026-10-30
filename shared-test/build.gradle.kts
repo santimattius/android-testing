@@ -27,6 +27,18 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
+    testOptions {
+        managedDevices {
+            localDevices {
+                create("pixel9api35") {
+                    device = "Pixel 9"
+                    apiLevel = 35
+                    systemImageSource = "aosp-atd"
+                }
+            }
+        }
+    }
+
     packaging {
         resources {
             excludes.add("/META-INF/{AL2.0,LGPL2.1}")
@@ -52,4 +64,8 @@ dependencies {
     implementation(libs.koin.android)
 
     implementation(libs.bundles.unitTesting)
+
+    androidTestImplementation(libs.test.runner)
+    androidTestImplementation(libs.test.ext)
+    androidTestImplementation(libs.junit)
 }
