@@ -82,7 +82,7 @@ artifacts.
 
 ## Known limitations
 
-- Instrumented coverage regression is checked locally only. The managed-device job runs the 13
+- Instrumented coverage regression is checked locally only. The managed-device job runs the 14
   instrumented tests on GitHub-hosted runners (about 10 minutes), but it does not generate a
   coverage report, and its results land under `build/outputs/androidTest-results/managedDevice/`
   rather than `connected/`, so the regression check does not read them yet.
