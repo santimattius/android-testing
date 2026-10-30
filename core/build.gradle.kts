@@ -4,7 +4,6 @@ plugins {
     alias(libs.plugins.room)
 }
 
-apply("$rootDir/gradle/report.gradle")
 
 android {
     namespace = "com.santimattius.core"
@@ -22,6 +21,10 @@ android {
     }
 
     buildTypes {
+        getByName("debug") {
+            enableUnitTestCoverage = true
+            enableAndroidTestCoverage = true
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(

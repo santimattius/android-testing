@@ -8,7 +8,6 @@ plugins {
     alias(libs.plugins.google.secrets.gradle.plugin)
     alias(libs.plugins.automattic.measure.builds)
 }
-apply("$rootDir/gradle/report.gradle")
 
 android {
     namespace = "com.santimattius.template"
@@ -94,10 +93,13 @@ fun extraString(key: String): String {
 }
 
 detekt {
-    toolVersion = "1.22.0"
     config.from("${project.rootDir}/config/detekt/detekt.yml")
     baseline = file("$rootDir/detekt-baseline.xml")
-    autoCorrect = true
+}
+
+// Detekt 1.23 rejects newer JDK targets, so pin it to the project's Java target.
+tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
+    jvmTarget = "17"
 }
 
 configurations {
@@ -147,7 +149,6 @@ dependencies {
     //Compose
     implementation(platform(libs.compose.bom))
     implementation(libs.bundles.compose)
-    androidTestImplementation(project(":app"))
     debugImplementation(libs.bundles.compose.debug)
 
     testImplementation(platform(libs.compose.bom))
