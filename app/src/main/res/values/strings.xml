@@ -7,6 +7,7 @@
     <string name="message_text_empty_result">No hay resultados</string>
     <string name="text_desc_movie_poster">Movie poster</string>
     <string name="title_activity_home_compose">Example Compose</string>
+    <string name="action_open_views_screen">Open the Views version</string>
     <string name="title_activity_home_view">Example View</string>
 
 </resources>

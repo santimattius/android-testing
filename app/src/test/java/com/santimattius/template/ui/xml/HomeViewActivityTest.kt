@@ -1,5 +1,8 @@
 package com.santimattius.template.ui.xml
 
+import org.koin.plugin.module.dsl.modules
+import com.santimattius.template.ui.di.FakeDataModule
+import com.santimattius.template.di.DataModule
 import android.app.Application
 import android.os.Build
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
@@ -16,9 +19,6 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.koin.ksp.generated.com_santimattius_template_di_AppModule
-import org.koin.ksp.generated.com_santimattius_template_ui_di_FakeDataModule
-import org.koin.ksp.generated.defaultModule
 import org.koin.test.KoinTestRule
 import org.robolectric.annotation.Config
 
@@ -33,11 +33,7 @@ class HomeViewActivityTest {
 
     @get:Rule
     var koinTestRule = KoinTestRule.create {
-        modules(
-            com_santimattius_template_ui_di_FakeDataModule,
-            com_santimattius_template_di_AppModule,
-            defaultModule
-        )
+        modules(DataModule::class, FakeDataModule::class)
     }
 
     @get:Rule

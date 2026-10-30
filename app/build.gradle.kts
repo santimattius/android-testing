@@ -1,16 +1,13 @@
 import com.automattic.android.measure.reporters.SlowSlowTasksMetricsReporter
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin)
     alias(libs.plugins.compose.compiler)
-    alias(libs.plugins.ksp)
+    alias(libs.plugins.koin.compiler)
     alias(libs.plugins.detekt)
     alias(libs.plugins.google.secrets.gradle.plugin)
     alias(libs.plugins.automattic.measure.builds)
 }
-apply("$rootDir/gradle/report.gradle")
 
 android {
     namespace = "com.santimattius.template"
@@ -44,24 +41,29 @@ android {
         }
     }
     testOptions {
+        execution = "ANDROIDX_TEST_ORCHESTRATOR"
+        managedDevices {
+            localDevices {
+                create("pixel9api35") {
+                    device = "Pixel 9"
+                    apiLevel = 35
+                    systemImageSource = "aosp-atd"
+                }
+            }
+        }
         unitTests {
             isReturnDefaultValues = true
             isIncludeAndroidResources = true
         }
         unitTests.all {
             testCoverage {
-                version = "0.8.8"
+                version = "0.8.16"
             }
         }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlin {
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_17)
-        }
     }
     buildFeatures {
         viewBinding = true
@@ -76,11 +78,10 @@ android {
             excludes.add("META-INF/LICENSE-notice.md")
         }
     }
-    applicationVariants.forEach { variant ->
-        variant.sourceSets.forEach {
-            it.javaDirectories += files("build/generated/ksp/${variant.name}/kotlin")
-        }
-    }
+}
+
+secrets {
+    defaultPropertiesFileName = "local.defaults.properties"
 }
 
 composeCompiler {
@@ -92,10 +93,13 @@ fun extraString(key: String): String {
 }
 
 detekt {
-    toolVersion = "1.22.0"
     config.from("${project.rootDir}/config/detekt/detekt.yml")
     baseline = file("$rootDir/detekt-baseline.xml")
-    autoCorrect = true
+}
+
+// Detekt 1.23 rejects newer JDK targets, so pin it to the project's Java target.
+tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
+    jvmTarget = "17"
 }
 
 configurations {
@@ -125,13 +129,13 @@ measureBuilds {
     }
 }
 
-ksp {
-    arg("KOIN_CONFIG_CHECK", "true")
+koinCompiler {
+    // Fails the build when a definition cannot be resolved (replaces KOIN_CONFIG_CHECK).
+    compileSafety = true
 }
 
 dependencies {
     implementation(project(":core"))
-    implementation(libs.kotlin.stdlib)
     implementation(libs.core.ktx)
 
     implementation(libs.bundles.ui)
@@ -145,7 +149,6 @@ dependencies {
     //Compose
     implementation(platform(libs.compose.bom))
     implementation(libs.bundles.compose)
-    androidTestImplementation(project(":app"))
     debugImplementation(libs.bundles.compose.debug)
 
     testImplementation(platform(libs.compose.bom))
@@ -164,19 +167,15 @@ dependencies {
     implementation(libs.koin.androidx.compose)
     implementation(libs.koin.androidx.startup)
 
-    compileOnly(libs.koin.annotations.core)
-    ksp(libs.koin.annotations.compiler)
-
-    testImplementation(libs.koin.annotations.core)
-    kspTest(libs.koin.annotations.compiler)
+    implementation(libs.koin.annotations.core)
 
     testImplementation(libs.koin.test.core)
     testImplementation(libs.koin.test.junit4)
 
+    androidTestUtil(libs.test.orchestrator)
+    androidTestImplementation(libs.coil.test)
     androidTestImplementation(libs.koin.test.junit4)
     androidTestImplementation(libs.koin.android.test)
-    androidTestImplementation(libs.koin.annotations.core)
-    kspAndroidTest(libs.koin.annotations.compiler)
 
     //Unit Testing
     testImplementation(project(path = ":shared-test"))

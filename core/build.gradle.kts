@@ -1,17 +1,13 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
     alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin)
     alias(libs.plugins.ksp)
     alias(libs.plugins.room)
 }
 
-apply("$rootDir/gradle/report.gradle")
 
 android {
     namespace = "com.santimattius.core"
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         minSdk = 24
@@ -25,6 +21,10 @@ android {
     }
 
     buildTypes {
+        getByName("debug") {
+            enableUnitTestCoverage = true
+            enableAndroidTestCoverage = true
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(
@@ -37,23 +37,23 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlin {
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_17)
-        }
-    }
     testOptions {
+        execution = "ANDROIDX_TEST_ORCHESTRATOR"
+        managedDevices {
+            localDevices {
+                create("pixel9api35") {
+                    device = "Pixel 9"
+                    apiLevel = 35
+                    systemImageSource = "aosp-atd"
+                }
+            }
+        }
         unitTests {
             isReturnDefaultValues = true
             isIncludeAndroidResources = true
         }
     }
 
-    libraryVariants.forEach { variant ->
-        variant.sourceSets.forEach {
-            it.javaDirectories += files("build/generated/ksp/${variant.name}/kotlin")
-        }
-    }
 }
 
 dependencies {
@@ -88,6 +88,11 @@ dependencies {
     testImplementation(libs.koin.test.core)
     testImplementation(libs.koin.test.junit4)
 
+    androidTestUtil(libs.test.orchestrator)
     androidTestImplementation(libs.test.ext)
     androidTestImplementation(libs.test.espresso)
+    androidTestImplementation(libs.test.runner)
+    androidTestImplementation(libs.junit)
+    androidTestImplementation(libs.coroutine.test)
+    androidTestImplementation(libs.turbine)
 }

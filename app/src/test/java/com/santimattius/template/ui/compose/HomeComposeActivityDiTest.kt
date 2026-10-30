@@ -1,5 +1,7 @@
 package com.santimattius.template.ui.compose
 
+import org.koin.plugin.module.dsl.modules
+import com.santimattius.template.di.DataModule
 import android.app.Application
 import android.os.Build
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
@@ -27,9 +29,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
-import org.koin.ksp.generated.com_santimattius_template_di_AppModule
-import org.koin.ksp.generated.com_santimattius_template_di_DataModule
-import org.koin.ksp.generated.defaultModule
 import org.koin.test.KoinTest
 import org.koin.test.KoinTestRule
 import org.koin.test.get
@@ -60,10 +59,8 @@ class HomeComposeActivityDiTest : KoinTest {
 
     @get:Rule(order = 2)
     var koinTestRule = KoinTestRule.create {
+        modules(DataModule::class)
         modules(
-            com_santimattius_template_di_DataModule,
-            com_santimattius_template_di_AppModule,
-            defaultModule,
             module {
                 //override base url and database
                 factory(named("base_url")) { mockWebServerRule.baseUrl }

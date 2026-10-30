@@ -28,9 +28,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
-import org.koin.ksp.generated.com_santimattius_template_di_AppModule
-import org.koin.ksp.generated.com_santimattius_template_di_DataModule
-import org.koin.ksp.generated.defaultModule
 import org.koin.test.KoinTest
 import org.koin.test.KoinTestRule
 import org.koin.test.get

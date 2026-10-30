@@ -17,7 +17,6 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -40,25 +39,15 @@ import com.santimattius.template.ui.compose.ui.components.snackbar.SnackBarVisua
 import com.santimattius.template.ui.compose.ui.theme.AndroidTestingTheme
 import com.santimattius.template.ui.xml.home.HomeViewActivity
 import org.koin.androidx.compose.koinViewModel
-import org.koin.compose.LocalKoinApplication
-import org.koin.compose.LocalKoinScope
-import org.koin.core.annotation.KoinInternalApi
-import org.koin.mp.KoinPlatformTools
+import org.koin.compose.KoinContext
 
 
 class HomeComposeActivity : ComponentActivity() {
 
-    @OptIn(KoinInternalApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            // This shouldn't be needed, but allows robolectric tests to run successfully
-            // TODO remove once a solution is found or a fix in koin?
-            CompositionLocalProvider(
-                LocalKoinScope provides KoinPlatformTools.defaultContext()
-                    .get().scopeRegistry.rootScope,
-                LocalKoinApplication provides KoinPlatformTools.defaultContext().get()
-            ) {
+            KoinContext {
                 AndroidTestingTheme {
                     Surface(
                         modifier = Modifier.fillMaxSize(),
@@ -87,7 +76,7 @@ fun HomeRoute(
                     AppBarIcon(
                         navIcon = AppBarIconModel(
                             icon = Icons.Default.Android,
-                            contentDescription = "",
+                            contentDescription = stringResource(R.string.action_open_views_screen),
                         ) {
                             context.startActivity(Intent(context, HomeViewActivity::class.java))
                         },

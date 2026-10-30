@@ -10,7 +10,7 @@ import com.santimattius.template.ui.xml.models.HomeState
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import org.koin.android.annotation.KoinViewModel
+import org.koin.core.annotation.KoinViewModel
 
 
 @KoinViewModel
