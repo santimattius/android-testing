@@ -76,7 +76,7 @@ fun HomeRoute(
                     AppBarIcon(
                         navIcon = AppBarIconModel(
                             icon = Icons.Default.Android,
-                            contentDescription = "",
+                            contentDescription = stringResource(R.string.action_open_views_screen),
                         ) {
                             context.startActivity(Intent(context, HomeViewActivity::class.java))
                         },
