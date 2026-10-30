@@ -1,5 +1,8 @@
 package com.santimattius.template.ui
 
+import org.koin.plugin.module.dsl.modules
+import com.santimattius.template.di.FakeDataModule
+import com.santimattius.template.di.DataModule
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -19,9 +22,6 @@ import com.santimattius.test.rules.MainCoroutinesTestRule
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.koin.ksp.generated.com_santimattius_template_di_AppModule
-import org.koin.ksp.generated.com_santimattius_template_di_FakeDataModule
-import org.koin.ksp.generated.defaultModule
 
 @MediumTest
 @RunWith(AndroidJUnit4::class)
@@ -29,11 +29,7 @@ class HomeViewActivityTest {
 
     @get:Rule(order = 0)
     var koinTestRule = KoinAndroidTestRule(
-        listOf(
-            com_santimattius_template_di_FakeDataModule,
-            com_santimattius_template_di_AppModule,
-            defaultModule
-        )
+        configuration = { modules(DataModule::class, FakeDataModule::class) }
     )
 
     @get:Rule

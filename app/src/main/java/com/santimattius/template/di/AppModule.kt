@@ -7,22 +7,22 @@ import com.santimattius.core.data.client.network.TheMovieDBService
 import com.santimattius.template.BuildConfig
 import org.koin.core.annotation.Module
 import org.koin.core.annotation.Named
-import org.koin.core.annotation.Single
+import org.koin.core.annotation.Singleton
 
 
 @Module
 class AppModule {
 
-    @Single
+    @Singleton
     fun provideAppDatabase(context: Context): TheMovieDataBase =
         TheMovieDataBase.get(context)
 
-    @Single
+    @Singleton
     fun provideMovieDBService(serviceCreator: RetrofitServiceCreator): TheMovieDBService =
         serviceCreator.createService(TheMovieDBService::class.java)
 
 
-    @Single
+    @Singleton
     fun provideRetrofit(@Named("base_url") baseUrl: String): RetrofitServiceCreator {
         return RetrofitServiceCreator(
             baseUrl = baseUrl,
@@ -31,7 +31,7 @@ class AppModule {
     }
 
     @Named("base_url")
-    @Single
+    @Singleton
     @Suppress("FunctionOnlyReturningConstant")
     fun provideBaseUrl() = "https://api.themoviedb.org"
 }

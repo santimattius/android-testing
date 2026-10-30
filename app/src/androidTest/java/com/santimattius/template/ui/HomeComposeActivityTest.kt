@@ -1,5 +1,8 @@
 package com.santimattius.template.ui
 
+import org.koin.plugin.module.dsl.modules
+import com.santimattius.template.di.FakeDataModule
+import com.santimattius.template.di.DataModule
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
@@ -14,9 +17,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.koin.ksp.generated.com_santimattius_template_di_AppModule
-import org.koin.ksp.generated.com_santimattius_template_di_FakeDataModule
-import org.koin.ksp.generated.defaultModule
 import java.util.concurrent.TimeUnit
 
 @MediumTest
@@ -25,11 +25,7 @@ class HomeComposeActivityTest {
 
     @get:Rule(order = 0)
     var koinTestRule = KoinAndroidTestRule(
-        listOf(
-            com_santimattius_template_di_FakeDataModule,
-            com_santimattius_template_di_AppModule,
-            defaultModule
-        )
+        configuration = { modules(DataModule::class, FakeDataModule::class) }
     )
 
     @get:Rule
