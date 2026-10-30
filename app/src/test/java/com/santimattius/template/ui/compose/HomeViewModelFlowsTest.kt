@@ -59,17 +59,16 @@ class HomeViewModelFlowsTest {
 
     @Suppress("TooGenericExceptionThrown")
     @Test
-    fun `Given result is error When popular movies Then return error`() {
-        val repository = MockMovieRepository(onPopularMovies = { throw Exception() })
+    fun `Given refresh returns failure When state starts Then return loading error`() {
+        val repository = MockMovieRepository(
+            onPopularMovies = { emptyList() },
+            onFetchPopularMovies = { throw Exception("refresh failed") }
+        )
         viewModelScenario { HomeComposeViewModel(repository) }.use { scenario ->
             val viewModel = scenario.viewModel
             runTest(mainCoroutinesTestRule.testDispatcher) {
                 viewModel.state.test {
-                    val currentState = awaitItem()
-                    assertThat(
-                        currentState.loadingError,
-                        equalTo(true)
-                    )
+                    assertThat(awaitItem().loadingError, equalTo(true))
                     cancelAndIgnoreRemainingEvents()
                 }
             }

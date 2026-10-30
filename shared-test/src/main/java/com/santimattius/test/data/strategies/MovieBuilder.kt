@@ -22,7 +22,7 @@ class MovieBuilder(
     }
 
     fun withPoster(value: String) = apply {
-        this.title = value
+        this.poster = value
     }
 
     fun build() = Movie(id, overview, title, poster)

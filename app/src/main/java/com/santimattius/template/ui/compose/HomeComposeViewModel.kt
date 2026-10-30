@@ -32,7 +32,9 @@ class HomeComposeViewModel(
             state // Si no ha cambiado nada, retorna el mismo estado
         }
     }.onStart {
-        movieRepository.refresh()
+        movieRepository.refresh().onFailure {
+            _state.update { state -> state.copy(isLoading = false, loadingError = true) }
+        }
     }.catch {
         emit(HomeUiState(loadingError = true))
     }.stateIn(
