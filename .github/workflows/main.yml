@@ -28,13 +28,26 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
         with:
-          fetch-depth: 1
-          ref: ${{ github.head_ref }}
-      - name: DeteKt
-        uses: natiginfo/action-detekt-all@1.23.7
+          distribution: 'zulu'
+          java-version: '17'
+          cache: gradle
+
+      # Runs the project's own detekt Gradle plugin (config/detekt/detekt.yml and the baseline)
+      # instead of a Docker-based action whose base image no longer exists.
+      - name: Detekt
+        run: ./gradlew detekt --stacktrace
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
         with:
-          args: --config config/detekt/detekt.yml
+          name: detekt-report
+          path: app/build/reports/detekt/
+          if-no-files-found: ignore
 
   unit-tests:
     name: Unit tests, lint and coverage
