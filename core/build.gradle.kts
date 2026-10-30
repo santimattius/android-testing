@@ -35,6 +35,16 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
     testOptions {
+        execution = "ANDROIDX_TEST_ORCHESTRATOR"
+        managedDevices {
+            localDevices {
+                create("pixel9api35") {
+                    device = "Pixel 9"
+                    apiLevel = 35
+                    systemImageSource = "aosp-atd"
+                }
+            }
+        }
         unitTests {
             isReturnDefaultValues = true
             isIncludeAndroidResources = true
@@ -75,6 +85,11 @@ dependencies {
     testImplementation(libs.koin.test.core)
     testImplementation(libs.koin.test.junit4)
 
+    androidTestUtil(libs.test.orchestrator)
     androidTestImplementation(libs.test.ext)
     androidTestImplementation(libs.test.espresso)
+    androidTestImplementation(libs.test.runner)
+    androidTestImplementation(libs.junit)
+    androidTestImplementation(libs.coroutine.test)
+    androidTestImplementation(libs.turbine)
 }

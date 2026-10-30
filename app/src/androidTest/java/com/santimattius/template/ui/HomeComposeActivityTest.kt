@@ -6,6 +6,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.test.espresso.IdlingPolicies
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
+import com.santimattius.template.rules.FakeImageLoaderRule
 import com.santimattius.test.rules.KoinAndroidTestRule
 import com.santimattius.template.ui.compose.HomeComposeActivity
 import com.santimattius.test.rules.MainCoroutinesTestRule
@@ -38,18 +39,25 @@ class HomeComposeActivityTest {
     val coroutinesTestRule = MainCoroutinesTestRule()
 
     @get:Rule(order = 2)
+    val fakeImageLoaderRule = FakeImageLoaderRule()
+
+    @get:Rule(order = 3)
     val composeTestRule = createAndroidComposeRule<HomeComposeActivity>()
 
     @Before
     fun init() {
+        // The loading state shows an infinite progress animation, so the clock is driven manually.
         composeTestRule.mainClock.autoAdvance = false
         IdlingPolicies.setIdlingResourceTimeout(10, TimeUnit.SECONDS)
     }
 
     @Test
-    fun showsTitleOfImageIfThereAreImages() {
-        composeTestRule.mainClock.advanceTimeBy(5000)
-        composeTestRule.onNodeWithTag("Spider-Man: No Way Home")
-            .assertExists("The image title tag was not found.")
+    fun showsMovieCardWhenThereAreMovies() {
+        val cardTag = "card_Spider-Man: No Way Home"
+
+        composeTestRule.mainClock.advanceTimeBy(5_000)
+
+        composeTestRule.onNodeWithTag(cardTag)
+            .assertExists("The movie card was not found.")
     }
 }
