@@ -82,8 +82,9 @@ artifacts.
 
 ## Known limitations
 
-- The instrumented job has not been run on GitHub-hosted runners yet.
-- Instrumented coverage regression is checked locally only; the managed-device report path is
-  unverified.
+- Instrumented coverage regression is checked locally only. The managed-device job runs the 13
+  instrumented tests on GitHub-hosted runners (about 10 minutes), but it does not generate a
+  coverage report, and its results land under `build/outputs/androidTest-results/managedDevice/`
+  rather than `connected/`, so the regression check does not read them yet.
 - Activity and fragment tests exist both under Robolectric (`app/src/test`) and as instrumented
   tests (`app/src/androidTest`).
