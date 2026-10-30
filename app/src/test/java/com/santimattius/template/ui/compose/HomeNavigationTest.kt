@@ -10,6 +10,7 @@ import androidx.compose.ui.test.runAndroidComposeUiTest
 import com.santimattius.template.di.DataModule
 import com.santimattius.template.ui.di.FakeDataModule
 import com.santimattius.template.ui.xml.home.HomeViewActivity
+import com.santimattius.test.rules.FakeImageLoaderRule
 import com.santimattius.test.rules.MainCoroutinesTestRule
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -39,6 +40,9 @@ class HomeNavigationTest {
     var koinTestRule = KoinTestRule.create {
         modules(DataModule::class, FakeDataModule::class)
     }
+
+    @get:Rule
+    val fakeImageLoaderRule = FakeImageLoaderRule()
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()

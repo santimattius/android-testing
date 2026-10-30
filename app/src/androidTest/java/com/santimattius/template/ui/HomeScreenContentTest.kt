@@ -7,7 +7,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
-import com.santimattius.template.rules.FakeImageLoaderRule
+import com.santimattius.test.rules.FakeImageLoaderRule
 import com.santimattius.template.ui.compose.HomeScreenContent
 import com.santimattius.template.ui.compose.models.HomeUiState
 import com.santimattius.template.ui.compose.ui.components.MoviesGridAction

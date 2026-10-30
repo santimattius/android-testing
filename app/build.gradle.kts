@@ -173,7 +173,6 @@ dependencies {
     testImplementation(libs.koin.test.junit4)
 
     androidTestUtil(libs.test.orchestrator)
-    androidTestImplementation(libs.coil.test)
     androidTestImplementation(libs.koin.test.junit4)
     androidTestImplementation(libs.koin.android.test)
 

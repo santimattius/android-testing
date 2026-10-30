@@ -20,6 +20,7 @@ import com.santimattius.core.data.client.network.RetrofitServiceCreator
 import com.santimattius.template.ui.rules.OkHttpComposeIdle
 import com.santimattius.template.ui.rules.RoomTestRule
 import com.santimattius.test.data.TheMovieDBServiceMother
+import com.santimattius.test.rules.FakeImageLoaderRule
 import com.santimattius.test.rules.MainCoroutinesTestRule
 import com.santimattius.test.rules.MockWebServerRule
 import org.junit.After
@@ -68,6 +69,9 @@ class HomeComposeActivityDiTest : KoinTest {
             }
         )
     }
+
+    @get:Rule
+    val fakeImageLoaderRule = FakeImageLoaderRule()
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
