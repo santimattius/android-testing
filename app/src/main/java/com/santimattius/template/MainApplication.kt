@@ -6,7 +6,6 @@ import org.koin.android.logger.AndroidLogger
 import org.koin.androix.startup.KoinStartup
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.dsl.KoinConfiguration
-import org.koin.ksp.generated.com_santimattius_template_di_AppModule
 import org.koin.ksp.generated.com_santimattius_template_di_DataModule
 import org.koin.ksp.generated.defaultModule
 
@@ -18,7 +17,6 @@ class MainApplication : Application(), KoinStartup {
             logger(AndroidLogger())
             modules(
                 com_santimattius_template_di_DataModule,
-                com_santimattius_template_di_AppModule,
                 defaultModule
             )
         }

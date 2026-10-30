@@ -1,38 +1,39 @@
 [versions]
 # Plugins
-androidGradlePlugin = "9.1.0"
+androidGradlePlugin = "9.5.0"
 hamcrest = "3.0"
-kotlin = "2.3.10"
+kotlin = "2.4.21"
 detektGradlePlugin = "1.23.8"
-ksp = "2.3.6"
+ksp = "2.3.12"
 googleSecretsPlugin = "2.0.1"
-automatticMeasureBuilds = "3.2.2"
+automatticMeasureBuilds = "3.2.3"
 
 # Define the dependency versions
-coreKtx = "1.18.0"
+coreKtx = "1.19.1"
 legacySupport = "1.0.0"
-appCompat = "1.7.1"
-fragmentKtx = "1.8.9"
-constraintLayout = "2.2.1"
+appCompat = "1.8.0"
+fragmentKtx = "1.9.1"
+constraintLayout = "2.2.2"
 recyclerView = "1.4.0"
-materialVersion = "1.13.0"
-lifecycle = "2.10.0"
+materialVersion = "1.14.0"
+lifecycle = "2.11.0"
 
 retrofit = "3.0.0"
-okHttp = "5.3.2"
+okHttp = "5.5.1"
 
-coroutine = "1.10.2"
-gson = "2.13.2"
-glide = "5.0.5"
+coroutine = "1.11.0"
+gson = "2.15.0"
+glide = "5.0.9"
 coil = "2.7.0"
-room = "2.8.4"
+room = "2.8.5"
 
-androidxComposeBom = "2026.03.00"
+androidxComposeBom = "2026.09.00"
 activityCompose = "1.13.0"
 
-#TODO: pending for migration
+# Pinned to the newest stable Koin runtime compatible with koin-ksp-compiler 2.3.1.
 koinBom = "4.1.0"
-koinAnnotations = "2.1.0"
+koinAnnotations = "2.3.1"
+koinKspCompiler = "2.3.1"
 
 #Testing
 junit = "4.13.2"
@@ -45,14 +46,13 @@ fragmentTesting = "1.8.9"
 espressoCore = "3.7.0"
 okhttp3IdlingResource = "1.0.0"
 
-mockk = "1.14.9"
-robolectric = "4.16.1"
+mockk = "1.14.11"
+robolectric = "4.17"
 turbine = "1.2.1"
-mockitoKotlin = "6.2.3"
+mockitoKotlin = "6.4.0"
 
 [libraries]
 # Define the libraries
-kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
 # Android
 core-ktx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
 core-testing = { module = "androidx.arch.core:core-testing", version.ref = "coreTesting" }
@@ -101,8 +101,8 @@ koin-bom = { module = "io.insert-koin:koin-bom", version.ref = "koinBom" }
 koin-android = { group = "io.insert-koin", name = "koin-android" }
 koin-androidx-compose = { group = "io.insert-koin", name = "koin-androidx-compose" }
 koin-androidx-startup = { group = "io.insert-koin", name = "koin-androidx-startup" }
-koin-annotations-core = { group = "io.insert-koin", name = "koin-annotations" , version.ref= "koinAnnotations" }
-koin-annotations-compiler = { group = "io.insert-koin", name = "koin-ksp-compiler", version.ref= "koinAnnotations" }
+koin-annotations-core = { group = "io.insert-koin", name = "koin-annotations", version.ref = "koinAnnotations" }
+koin-annotations-compiler = { group = "io.insert-koin", name = "koin-ksp-compiler", version.ref = "koinKspCompiler" }
 koin-test-core = { group = "io.insert-koin", name = "koin-test"}
 koin-test-junit4 = { group = "io.insert-koin", name = "koin-test-junit4"}
 koin-android-test = { group = "io.insert-koin", name = "koin-android-test"}
@@ -149,7 +149,6 @@ androidTesting = ["core-testing", "mockwebserver", "okHttp3-idling-resource", "j
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
-kotlin = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 room = { id = "androidx.room", version.ref = "room" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
