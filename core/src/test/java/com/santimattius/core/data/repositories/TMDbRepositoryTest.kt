@@ -218,16 +218,18 @@ class TMDbRepositoryTest {
             assertEquals(emptyList<MovieEntity>(), storedMovies())
         }
 
+    @Ignore("PR5: refresh only upserts and never prunes, so movies absent from the latest network response stay stored")
     @Test
-    fun `given stored movies and empty network response when refresh then stored movies are kept`() =
+    fun `given stored movies and a network response without them when refresh then stale movies are removed`() =
         runTest {
-            network.enqueueSuccess(movies)
+            network.enqueueSuccess(listOf(firstMovie, secondMovie))
             repository.refresh()
-            network.enqueueSuccess(emptyList())
+            network.enqueueSuccess(listOf(firstMovie))
 
             val result = repository.refresh()
 
-            assertEquals(movies.dtoToDomain(), result.getOrNull())
+            assertEquals(listOf(firstMovie).dtoToDomain(), result.getOrNull())
+            assertEquals(listOf(firstMovie).dtoToEntity(), storedMovies())
         }
 
     @Ignore("PR5: refresh ignores the Result of local save, so a local write failure is reported as success with stale data")
