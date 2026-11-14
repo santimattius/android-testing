@@ -38,6 +38,20 @@ class FakeMovieRepositoryTest {
     }
 
     @Test
+    fun allFailureIsThrownWhenTheMovieStreamIsCollected() = runTest {
+        val repository = FakeMovieRepository(listOf(movie(1)))
+        val failure = IllegalStateException("stream failed")
+        repository.allFailure = failure
+
+        try {
+            repository.all.first()
+            fail("Expected all to throw")
+        } catch (thrown: IllegalStateException) {
+            assertSame(failure, thrown)
+        }
+    }
+
+    @Test
     fun addToFavoriteUpdatesTheEmittedList() = runTest {
         val repository = FakeMovieRepository(listOf(movie(1), movie(2)))
 
@@ -119,6 +133,17 @@ class FakeMovieRepositoryTest {
         gate.complete(Unit)
 
         assertEquals(listOf(movie(1)), call.await().getOrThrow())
+    }
+
+    @Test
+    fun favoriteFailureFailsFavoriteOperationsAndKeepsTheList() = runTest {
+        val repository = FakeMovieRepository(listOf(movie(1)))
+        val failure = IllegalStateException("favorite failed")
+        repository.favoriteFailure = failure
+
+        assertSame(failure, repository.addToFavorite(1).exceptionOrNull())
+        assertSame(failure, repository.removeFromFavorite(1).exceptionOrNull())
+        assertEquals(listOf(movie(1)), repository.getAll())
     }
 
     @Test

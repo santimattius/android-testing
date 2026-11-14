@@ -1,16 +1,17 @@
 package com.santimattius.template.ui.xml
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.Observer
+import com.santimattius.template.ui.models.mapping.asUiModels
+import com.santimattius.template.ui.xml.home.HomeViewModel
+import com.santimattius.template.ui.xml.models.HomeState
 import com.santimattius.test.data.FakeMovieRepository
 import com.santimattius.test.data.MovieMother
 import com.santimattius.test.data.dtoToDomain
 import com.santimattius.test.extensions.getOrAwaitValue
 import com.santimattius.test.rules.MainCoroutinesTestRule
-import com.santimattius.template.ui.xml.home.HomeViewModel
-import com.santimattius.template.ui.xml.models.HomeState
-import com.santimattius.template.ui.models.mapping.asUiModels
-import org.hamcrest.CoreMatchers.equalTo
-import org.hamcrest.MatcherAssert.assertThat
+import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 
@@ -22,30 +23,46 @@ class HomeViewModelLiveDataTest {
     @get:Rule
     val mainCoroutinesTestRule = MainCoroutinesTestRule()
 
-    private val movieRepository = FakeMovieRepository()
-    private val viewModel = HomeViewModel(movieRepository)
-
     @Test
-    fun `fetch result success`() {
-        //Given
+    fun `popular movies publishes data`() {
         val movies = MovieMother.createMovies().dtoToDomain()
-        //When
+        val viewModel = HomeViewModel(FakeMovieRepository(movies))
+
         viewModel.popularMovies()
-        //Then
-        assertThat(
-            viewModel.state.getOrAwaitValue(),
-            equalTo(HomeState.Data(movies.asUiModels()))
-        )
+
+        assertEquals(HomeState.Data(movies.asUiModels()), viewModel.state.getOrAwaitValue())
     }
 
     @Test
-    @Suppress("TooGenericExceptionThrown")
-    fun `fetch result fail`() {
-        //Given
-        movieRepository.getAllFailure = Throwable()
-        //When
+    fun `popular movies publishes error when loading throws`() {
+        val repository = FakeMovieRepository().apply {
+            getAllFailure = IllegalStateException("loading failed")
+        }
+        val viewModel = HomeViewModel(repository)
+
         viewModel.popularMovies()
-        //Then
-        assertThat(viewModel.state.getOrAwaitValue(), equalTo(HomeState.Error))
+
+        assertEquals(HomeState.Error, viewModel.state.getOrAwaitValue())
     }
+
+    @Test
+    fun `refresh publishes refreshing before refreshed data`() =
+        runTest(mainCoroutinesTestRule.testDispatcher) {
+            val movies = MovieMother.createMovies().dtoToDomain()
+            val viewModel = HomeViewModel(FakeMovieRepository(movies))
+            val observedStates = mutableListOf<HomeState>()
+            val observer = Observer<HomeState> { observedStates += it }
+            viewModel.state.observeForever(observer)
+
+            try {
+                viewModel.refresh()
+
+                assertEquals(
+                    listOf(HomeState.Refreshing, HomeState.Data(movies.asUiModels())),
+                    observedStates,
+                )
+            } finally {
+                viewModel.state.removeObserver(observer)
+            }
+        }
 }
