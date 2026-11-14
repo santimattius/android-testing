@@ -102,12 +102,6 @@ tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
     jvmTarget = "17"
 }
 
-configurations {
-    androidTestImplementation {
-        exclude("io.mockk", "mockk-agent-jvm")
-    }
-}
-
 // compose-bom:2026.03.00 strictly pins monitor:1.6.0, but espresso-core:3.7.0 was compiled
 // against monitor:1.8.0 (ReflectiveMethod(Class,String,Class[]) constructor added in 1.8.0).
 // Force 1.8.0 across all androidTest configurations to override the BOM strict constraint
