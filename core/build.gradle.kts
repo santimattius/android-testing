@@ -83,7 +83,6 @@ dependencies {
     testImplementation(libs.junit)
     testImplementation(libs.turbine)
     testImplementation(libs.hamcrest)
-    testImplementation(libs.mockito.kotlin)
 
     testImplementation(libs.koin.test.core)
     testImplementation(libs.koin.test.junit4)
