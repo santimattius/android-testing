@@ -1,11 +1,11 @@
 package com.santimattius.template.ui.xml
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.santimattius.test.data.FakeMovieRepository
 import com.santimattius.test.data.MovieMother
 import com.santimattius.test.data.dtoToDomain
 import com.santimattius.test.extensions.getOrAwaitValue
 import com.santimattius.test.rules.MainCoroutinesTestRule
-import com.santimattius.template.ui.fakes.MockMovieRepository
 import com.santimattius.template.ui.xml.home.HomeViewModel
 import com.santimattius.template.ui.xml.models.HomeState
 import com.santimattius.template.ui.models.mapping.asUiModels
@@ -22,7 +22,7 @@ class HomeViewModelLiveDataTest {
     @get:Rule
     val mainCoroutinesTestRule = MainCoroutinesTestRule()
 
-    private val movieRepository = MockMovieRepository()
+    private val movieRepository = FakeMovieRepository()
     private val viewModel = HomeViewModel(movieRepository)
 
     @Test
@@ -42,7 +42,7 @@ class HomeViewModelLiveDataTest {
     @Suppress("TooGenericExceptionThrown")
     fun `fetch result fail`() {
         //Given
-        movieRepository.onPopularMovies = { throw Throwable() }
+        movieRepository.getAllFailure = Throwable()
         //When
         viewModel.popularMovies()
         //Then

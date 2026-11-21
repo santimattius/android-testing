@@ -3,9 +3,9 @@ package com.santimattius.template.ui.compose
 import androidx.lifecycle.viewmodel.testing.viewModelScenario
 import app.cash.turbine.test
 import com.santimattius.template.ui.compose.models.HomeUiState
-import com.santimattius.template.ui.fakes.MockMovieRepository
 import com.santimattius.template.ui.models.mapping.asUiModels
 import com.santimattius.template.ui.xml.models.HomeState
+import com.santimattius.test.data.FakeMovieRepository
 import com.santimattius.test.data.MovieMother
 import com.santimattius.test.data.dtoToDomain
 import com.santimattius.test.rules.MainCoroutinesTestRule
@@ -23,7 +23,7 @@ class HomeViewModelFlowsTest {
     @Test
     fun `Given result is success When popular movies Then return movies`() {
         val movies = MovieMother.createMovies().dtoToDomain()
-        val repository = MockMovieRepository(onPopularMovies = { movies })
+        val repository = FakeMovieRepository(movies)
         val expectedState = HomeUiState(movies = movies.asUiModels())
         viewModelScenario { HomeComposeViewModel(repository) }.use { scenario ->
             val viewModel = scenario.viewModel
@@ -41,7 +41,7 @@ class HomeViewModelFlowsTest {
 
     @Test
     fun `Given result is empty When popular movies Then return empty list`() {
-        val repository = MockMovieRepository(onPopularMovies = { emptyList() })
+        val repository = FakeMovieRepository(emptyList())
         viewModelScenario { HomeComposeViewModel(repository) }.use {
             val viewModel = it.viewModel
             runTest(mainCoroutinesTestRule.testDispatcher) {
@@ -60,10 +60,9 @@ class HomeViewModelFlowsTest {
     @Suppress("TooGenericExceptionThrown")
     @Test
     fun `Given refresh returns failure When state starts Then return loading error`() {
-        val repository = MockMovieRepository(
-            onPopularMovies = { emptyList() },
-            onFetchPopularMovies = { throw Exception("refresh failed") }
-        )
+        val repository = FakeMovieRepository(emptyList()).apply {
+            refreshResult = Result.failure(Exception("refresh failed"))
+        }
         viewModelScenario { HomeComposeViewModel(repository) }.use { scenario ->
             val viewModel = scenario.viewModel
             runTest(mainCoroutinesTestRule.testDispatcher) {
