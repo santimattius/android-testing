@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -39,22 +40,20 @@ import com.santimattius.template.ui.compose.ui.components.snackbar.SnackBarVisua
 import com.santimattius.template.ui.compose.ui.theme.AndroidTestingTheme
 import com.santimattius.template.ui.xml.home.HomeViewActivity
 import org.koin.androidx.compose.koinViewModel
-import org.koin.compose.KoinContext
 
 
 class HomeComposeActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContent {
-            KoinContext {
-                AndroidTestingTheme {
-                    Surface(
-                        modifier = Modifier.fillMaxSize(),
-                        color = MaterialTheme.colorScheme.background
-                    ) {
-                        HomeRoute()
-                    }
+            AndroidTestingTheme {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    HomeRoute()
                 }
             }
         }

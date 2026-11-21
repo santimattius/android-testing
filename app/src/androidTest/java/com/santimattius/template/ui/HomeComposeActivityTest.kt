@@ -4,7 +4,7 @@ import org.koin.plugin.module.dsl.modules
 import com.santimattius.template.di.FakeDataModule
 import com.santimattius.template.di.DataModule
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.test.espresso.IdlingPolicies
 import androidx.test.ext.junit.runners.AndroidJUnit4
