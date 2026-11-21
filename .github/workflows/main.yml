@@ -36,6 +36,11 @@ jobs:
           java-version: '17'
           cache: gradle
 
+      - name: Setup API Key
+        env:
+          APIKEY: ${{ secrets.APIKEY }}
+        run: printf '\napiKey=%s\n' "${APIKEY:-NO_API_KEY}" >> local.properties
+
       # Runs the project's own detekt Gradle plugin (config/detekt/detekt.yml and the baseline)
       # instead of a Docker-based action whose base image no longer exists.
       - name: Detekt
@@ -64,6 +69,11 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
           cache: gradle
+
+      - name: Setup API Key
+        env:
+          APIKEY: ${{ secrets.APIKEY }}
+        run: printf '\napiKey=%s\n' "${APIKEY:-NO_API_KEY}" >> local.properties
 
       - name: Unit tests and lint
         run: ./gradlew test lint --stacktrace
@@ -102,6 +112,11 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
           cache: gradle
+
+      - name: Setup API Key
+        env:
+          APIKEY: ${{ secrets.APIKEY }}
+        run: printf '\napiKey=%s\n' "${APIKEY:-NO_API_KEY}" >> local.properties
 
       - name: Enable KVM
         run: |

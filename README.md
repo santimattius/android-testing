@@ -23,8 +23,11 @@ The app reads the TMDb API key from `local.properties` (never commit it):
 apiKey={your-api-key}
 ```
 
-Without it the build falls back to the non-secret `NO_API_KEY` in `local.defaults.properties`, which
-is enough to build and run every test. Tests never call the real API.
+A real key is required for access to the TMDb API. For local tests, `NO_API_KEY` can be used as a
+placeholder; tests never call the real API.
+
+CI appends the `APIKEY` repository secret to its ephemeral `local.properties`. When the secret is
+unavailable, such as on a fork pull request, CI uses `NO_API_KEY` for tests only.
 
 ## Running tests
 
