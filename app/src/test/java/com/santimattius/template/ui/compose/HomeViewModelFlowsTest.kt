@@ -8,14 +8,16 @@ import com.santimattius.test.data.FakeMovieRepository
 import com.santimattius.test.data.MovieMother
 import com.santimattius.test.data.dtoToDomain
 import com.santimattius.test.rules.MainCoroutinesTestRule
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
-import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class HomeViewModelFlowsTest {
 
     @get:Rule
@@ -35,7 +37,6 @@ class HomeViewModelFlowsTest {
             }
         }
 
-    @Ignore("Known isLoading bug; enabled with the T5 production fix")
     @Test
     fun `empty movies clear loading when collection starts`() =
         runTest(mainCoroutinesTestRule.testDispatcher) {
@@ -67,6 +68,21 @@ class HomeViewModelFlowsTest {
                     assertFalse(errorState.isLoading)
                     cancelAndIgnoreRemainingEvents()
                 }
+            }
+        }
+
+    @Test
+    fun `refresh starts before the state has a collector`() =
+        runTest(mainCoroutinesTestRule.testDispatcher) {
+            val refreshedMovies = MovieMother.createMovies().dtoToDomain()
+            val repository = FakeMovieRepository(emptyList()).apply {
+                refreshResult = Result.success(refreshedMovies)
+            }
+
+            viewModelScenario { HomeComposeViewModel(repository) }.use { scenario ->
+                scenario.viewModel
+                runCurrent()
+                assertEquals(refreshedMovies, repository.getAll())
             }
         }
 

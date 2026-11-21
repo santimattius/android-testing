@@ -104,16 +104,18 @@ fun HomeRoute(
                     }
                 }
             }
-            LaunchedEffect(state) {
+            LaunchedEffect(state.successMessages, state.errorMessages) {
                 when {
                     state.successMessages is Messages.Success -> {
                         val message = (state.successMessages as Messages.Success).message
                         snackBarHostState.showSnackbar(SnackBarVisualsWithError(message))
+                        viewModel.onMessageConsumed()
                     }
 
                     state.errorMessages is Messages.Error -> {
                         val message = (state.errorMessages as Messages.Error).message
                         snackBarHostState.showSnackbar(SnackBarVisualsWithError(message, true))
+                        viewModel.onMessageConsumed()
                     }
                 }
             }
