@@ -10,11 +10,15 @@ import com.santimattius.test.data.MovieMother
 import com.santimattius.test.data.dtoToDomain
 import com.santimattius.test.extensions.getOrAwaitValue
 import com.santimattius.test.rules.MainCoroutinesTestRule
+import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class HomeViewModelLiveDataTest {
 
     @get:Rule
@@ -44,6 +48,41 @@ class HomeViewModelLiveDataTest {
 
         assertEquals(HomeState.Error, viewModel.state.getOrAwaitValue())
     }
+
+    @Test
+    fun `refresh cancels an in-flight popular movies load`() =
+        runTest(mainCoroutinesTestRule.testDispatcher) {
+            val refreshedMovies = listOf(
+                MovieMother.createMovie(id = 2, title = "Refreshed"),
+            )
+            val gate = CompletableDeferred<Unit>()
+            val repository = FakeMovieRepository().apply {
+                getAllGate = gate
+                refreshResult = Result.success(refreshedMovies)
+            }
+            val viewModel = HomeViewModel(repository)
+            val observedStates = mutableListOf<HomeState>()
+            val observer = Observer<HomeState> { observedStates += it }
+            viewModel.state.observeForever(observer)
+
+            try {
+                viewModel.popularMovies()
+                viewModel.refresh()
+                gate.complete(Unit)
+                advanceUntilIdle()
+
+                assertEquals(
+                    listOf(
+                        HomeState.Loading,
+                        HomeState.Refreshing,
+                        HomeState.Data(refreshedMovies.asUiModels()),
+                    ),
+                    observedStates,
+                )
+            } finally {
+                viewModel.state.removeObserver(observer)
+            }
+        }
 
     @Test
     fun `refresh publishes refreshing before refreshed data`() =

@@ -102,6 +102,11 @@ class HomeComposeViewModelTest {
 
                     Messages.None -> error("A favorite operation must publish a message")
                 }
+
+                scenario.viewModel.onMessageConsumed()
+                val consumedState = awaitItem()
+                assertEquals(Messages.None, consumedState.successMessages)
+                assertEquals(Messages.None, consumedState.errorMessages)
                 cancelAndIgnoreRemainingEvents()
             }
         }
