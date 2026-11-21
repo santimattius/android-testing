@@ -6,6 +6,7 @@ import com.santimattius.core.data.dtoToEntity
 import com.santimattius.core.data.entityToDomain
 import com.santimattius.core.domain.entities.Movie
 import com.santimattius.core.domain.repositories.MovieRepository
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -20,18 +21,20 @@ class TMDbRepository(
 
     override suspend fun getAll(): List<Movie> {
         if (movieLocalDataSource.isEmpty()) {
-            val movies = movieNetworkDataSource.getPopularMovies().getOrDefault(emptyList())
-            movieLocalDataSource.save(movies.dtoToEntity())
+            val movies = movieNetworkDataSource.getPopularMovies().getOrThrow()
+            movieLocalDataSource.save(movies.dtoToEntity()).getOrThrow()
         }
         return movieLocalDataSource.getAll().entityToDomain()
     }
 
-    override suspend fun refresh() = movieNetworkDataSource.getPopularMovies().fold(onSuccess = {
-        movieLocalDataSource.save(it.dtoToEntity())
-        Result.success(movieLocalDataSource.getAll().entityToDomain())
-    }, onFailure = {
-        Result.failure(RefreshMovieFailed())
-    })
+    override suspend fun refresh(): Result<List<Movie>> {
+        val networkResult = movieNetworkDataSource.getPopularMovies()
+        val movies = networkResult.getOrElse {
+            if (it is CancellationException) throw it
+            return Result.failure(it)
+        }
+        return movieLocalDataSource.replace(movies.dtoToEntity()).map { it.entityToDomain() }
+    }
 
     override suspend fun addToFavorite(movieId: Long): Result<Unit> {
         return movieLocalDataSource.addToFavorite(movieId)

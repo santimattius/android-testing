@@ -4,13 +4,14 @@ import com.santimattius.core.data.client.database.MovieDao
 import com.santimattius.core.data.client.database.TheMovieDataBase
 import com.santimattius.core.data.datasources.MovieLocalDataSource
 import com.santimattius.core.data.models.MovieEntity
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.Flow
 
-class RoomMovieLocalDataSource(
-    theMovieDataBase: TheMovieDataBase,
+class RoomMovieLocalDataSource internal constructor(
+    private val dao: MovieDao,
 ) : MovieLocalDataSource {
 
-    private val dao = theMovieDataBase.dao()
+    constructor(theMovieDataBase: TheMovieDataBase) : this(theMovieDataBase.dao())
 
     override val all: Flow<List<MovieEntity>>
         get() = dao.searchAll()
@@ -22,6 +23,10 @@ class RoomMovieLocalDataSource(
 
     override suspend fun save(movies: List<MovieEntity>): Result<Boolean> = runSafe {
         upsert(movies); true
+    }
+
+    override suspend fun replace(movies: List<MovieEntity>): Result<List<MovieEntity>> = runSafe {
+        replace(movies)
     }
 
     override suspend fun find(id: Long) = runSafe {
@@ -45,6 +50,11 @@ class RoomMovieLocalDataSource(
         return runSafe { removeFromFavorite(movieId) }
     }
 
-    private suspend fun <R> runSafe(block: suspend MovieDao.() -> R) =
-        dao.runCatching { block() }
+    private suspend fun <R> runSafe(block: suspend MovieDao.() -> R): Result<R> = try {
+        Result.success(dao.block())
+    } catch (cancellation: CancellationException) {
+        throw cancellation
+    } catch (failure: Throwable) {
+        Result.failure(failure)
+    }
 }

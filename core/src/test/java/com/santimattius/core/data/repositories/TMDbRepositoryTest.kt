@@ -20,7 +20,6 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertSame
 import org.junit.Assert.assertTrue
-import org.junit.Ignore
 import org.junit.Test
 import java.io.IOException
 
@@ -82,20 +81,12 @@ class TMDbRepositoryTest {
         }
 
     @Test
-    fun `given empty local and failing network when getAll then returns empty list`() = runTest {
-        network.enqueueFailure(IOException("offline"))
-
-        val result = repository.getAll()
-
-        assertEquals(emptyList<Movie>(), result)
-    }
-
-    @Test
     fun `given empty local and failing network when getAll then local stays empty`() = runTest {
         network.enqueueFailure(IOException("offline"))
 
-        repository.getAll()
+        val outcome = runCatching { repository.getAll() }
 
+        assertTrue(outcome.isFailure)
         assertEquals(emptyList<MovieEntity>(), storedMovies())
     }
 
@@ -105,14 +96,13 @@ class TMDbRepositoryTest {
             network.enqueueFailure(IOException("offline"))
             network.enqueueSuccess(movies)
 
-            val first = repository.getAll()
+            val first = runCatching { repository.getAll() }
             val second = repository.getAll()
 
-            assertEquals(emptyList<Movie>(), first)
+            assertTrue(first.isFailure)
             assertEquals(movies.dtoToDomain(), second)
         }
 
-    @Ignore("PR5: getAll swallows the network failure (getOrDefault(emptyList())), so callers cannot tell offline from empty")
     @Test
     fun `given empty local and failing network when getAll then failure cause is preserved`() =
         runTest {
@@ -147,13 +137,13 @@ class TMDbRepositoryTest {
     }
 
     @Test
-    fun `given failing network when refresh then returns RefreshMovieFailed`() = runTest {
-        network.enqueueFailure(IOException("offline"))
+    fun `given failing network when refresh then preserves the failure cause`() = runTest {
+        val cause = IOException("offline")
+        network.enqueueFailure(cause)
 
         val result = repository.refresh()
 
-        assertTrue(result.isFailure)
-        assertTrue(result.exceptionOrNull() is RefreshMovieFailed)
+        assertSame(cause, result.exceptionOrNull())
     }
 
     @Test
@@ -218,13 +208,12 @@ class TMDbRepositoryTest {
             assertEquals(emptyList<MovieEntity>(), storedMovies())
         }
 
-    @Ignore("PR5: refresh only upserts and never prunes, so movies absent from the latest network response stay stored")
     @Test
     fun `given stored movies and a network response without them when refresh then stale movies are removed`() =
         runTest {
             network.enqueueSuccess(listOf(firstMovie, secondMovie))
-            repository.refresh()
             network.enqueueSuccess(listOf(firstMovie))
+            repository.refresh()
 
             val result = repository.refresh()
 
@@ -232,7 +221,6 @@ class TMDbRepositoryTest {
             assertEquals(listOf(firstMovie).dtoToEntity(), storedMovies())
         }
 
-    @Ignore("PR5: refresh ignores the Result of local save, so a local write failure is reported as success with stale data")
     @Test
     fun `given local save failure when refresh then returns failure`() = runTest {
         network.enqueueSuccess(movies)
@@ -240,7 +228,7 @@ class TMDbRepositoryTest {
 
         val result = repository.refresh()
 
-        assertTrue(result.isFailure)
+        assertSame(local.failure, result.exceptionOrNull())
     }
 
     // endregion

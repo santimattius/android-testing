@@ -3,6 +3,9 @@ package com.santimattius.test.data
 import com.santimattius.core.data.datasources.MovieLocalDataSource
 import com.santimattius.core.data.datasources.implementation.MovieNoExists
 import com.santimattius.core.data.models.MovieEntity
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -39,7 +42,24 @@ class FakeMovieLocalDataSource : MovieLocalDataSource {
     }
 
     override suspend fun save(movies: List<MovieEntity>): Result<Boolean> = guarded {
-        var merged = moviesFlow.value
+        moviesFlow.value = merge(moviesFlow.value, movies)
+        true
+    }
+
+    override suspend fun replace(movies: List<MovieEntity>): Result<List<MovieEntity>> {
+        val context = currentCoroutineContext()
+        return guarded {
+            context.ensureActive()
+            val incomingIds = movies.mapTo(mutableSetOf()) { it.id }
+            val snapshot = merge(moviesFlow.value, movies).filter { it.id in incomingIds }
+            context.ensureActive()
+            moviesFlow.value = snapshot
+            snapshot
+        }
+    }
+
+    private fun merge(existing: List<MovieEntity>, movies: List<MovieEntity>): List<MovieEntity> {
+        var merged = existing
         movies.forEach { incoming ->
             val index = merged.indexOfFirst { it.id == incoming.id }
             merged = if (index == -1) {
@@ -50,8 +70,7 @@ class FakeMovieLocalDataSource : MovieLocalDataSource {
                 }
             }
         }
-        moviesFlow.value = merged
-        true
+        return merged
     }
 
     override suspend fun find(id: Long): Result<MovieEntity> = guarded {
@@ -81,8 +100,17 @@ class FakeMovieLocalDataSource : MovieLocalDataSource {
     }
 
     private suspend fun <T> guarded(block: () -> T): Result<T> = mutex.withLock {
-        failure?.let { return@withLock Result.failure(it) }
-        runCatching(block)
+        failure?.let {
+            if (it is CancellationException) throw it
+            return@withLock Result.failure(it)
+        }
+        try {
+            Result.success(block())
+        } catch (cancellation: CancellationException) {
+            throw cancellation
+        } catch (error: Throwable) {
+            Result.failure(error)
+        }
     }
 
     private fun MutableStateFlow<List<MovieEntity>>.update(

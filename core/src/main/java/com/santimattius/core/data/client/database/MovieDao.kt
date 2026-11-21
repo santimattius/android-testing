@@ -52,6 +52,14 @@ interface MovieDao {
     suspend fun updateMovieDetails(id: Long, title: String, overview: String, poster: String)
 
     @Transaction
+    suspend fun replace(movies: List<MovieEntity>): List<MovieEntity> {
+        upsert(movies)
+        val incomingIds = movies.mapTo(mutableSetOf()) { it.id }
+        getAll().filter { it.id !in incomingIds }.forEach { delete(it) }
+        return getAll()
+    }
+
+    @Transaction
     suspend fun upsert(movies: List<MovieEntity>) {
         val result = insertAll(*movies.toTypedArray())
         for ((index, movieId) in result.withIndex()) {
