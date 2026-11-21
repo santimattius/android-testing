@@ -1,124 +1,123 @@
 package com.santimattius.template.ui.compose
 
-import android.app.Application
-import android.os.Build
 import androidx.lifecycle.viewmodel.testing.viewModelScenario
-import androidx.test.core.app.ApplicationProvider
 import app.cash.turbine.test
-import com.santimattius.core.data.client.database.TheMovieDataBase
-import com.santimattius.core.data.client.network.RetrofitServiceCreator
-import com.santimattius.core.data.client.network.TheMovieDBService
-import com.santimattius.core.data.datasources.implementation.RetrofitMovieNetworkDataSource
-import com.santimattius.core.data.datasources.implementation.RoomMovieLocalDataSource
-import com.santimattius.core.data.repositories.TMDbRepository
+import com.santimattius.core.domain.entities.Movie
 import com.santimattius.template.ui.compose.models.Messages
 import com.santimattius.template.ui.models.MovieUiModel
-import com.santimattius.template.ui.rules.RoomTestRule
-import com.santimattius.template.ui.rules.loadModule
+import com.santimattius.test.data.FakeMovieRepository
 import com.santimattius.test.data.MovieMother
-import com.santimattius.test.data.TheMovieDBServiceMother
 import com.santimattius.test.rules.MainCoroutinesTestRule
-import com.santimattius.test.rules.MockWebServerRule
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
-import org.junit.Before
-import org.junit.Ignore
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.koin.core.qualifier.named
-import org.koin.dsl.module
-import org.koin.test.KoinTest
-import org.koin.test.KoinTestRule
-import org.koin.test.get
-import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
 
-@RunWith(RobolectricTestRunner::class)
-@Config(
-    manifest = Config.NONE,
-    sdk = [Build.VERSION_CODES.R],
-    instrumentedPackages = ["androidx.loader.content"],
-    application = Application::class
-)
 class HomeComposeViewModelTest {
 
-    private lateinit var movieRepository: TMDbRepository
-    private val appContext = ApplicationProvider.getApplicationContext<Application>()
-
-    @get:Rule(order = 0)
-    val mockWebServerRule = MockWebServerRule {
-        TheMovieDBServiceMother.createPopularMovieResponse()
-    }
-
-    @get:Rule(order = 1)
-    val roomTestRule = RoomTestRule(appContext, TheMovieDataBase::class.java)
-
-
-    @get:Rule(order = 2)
+    @get:Rule
     val mainCoroutinesTestRule = MainCoroutinesTestRule()
 
-    @Before
-    fun setUp() {
-        val movieLocalDataSource = RoomMovieLocalDataSource(roomTestRule.db)
-        val serviceCreator = RetrofitServiceCreator(mockWebServerRule.baseUrl, "test")
-        val movieNetworkDataSource = RetrofitMovieNetworkDataSource(
-            serviceCreator.createService(
-                TheMovieDBService::class.java
-            )
+    @Test
+    fun `adding a favorite updates movies and publishes success`() =
+        verifyFavoriteChange(
+            initialFavorite = false,
+            failure = null,
+            expectedMessage = Messages.Success("Add Movie  to favorite"),
+            expectedFavorite = true,
         )
-        movieRepository = TMDbRepository(movieNetworkDataSource, movieLocalDataSource)
-    }
 
     @Test
-    fun `onFavorite should update state with success message when adding to favorite succeeds`() {
-        viewModelScenario { HomeComposeViewModel(movieRepository = movieRepository) }.use {
-            val dto = MovieMother.createMovie()
-            val movie = MovieUiModel(
-                id = dto.id,
-                title = dto.title,
-                imageUrl = dto.poster,
-                favorite = false
-            )
-            val viewModel = it.viewModel
+    fun `removing a favorite updates movies and publishes success`() =
+        verifyFavoriteChange(
+            initialFavorite = true,
+            failure = null,
+            expectedMessage = Messages.Success("Remove Movie from favorite"),
+            expectedFavorite = false,
+        )
 
-            runTest(mainCoroutinesTestRule.testDispatcher) {
-                viewModel.onFavorite(movie)
-                viewModel.state.test {
-                    awaitItem()
-                    assertEquals(
-                        Messages.Success("Add ${movie.title}  to favorite"),
-                        awaitItem().successMessages
-                    )
-                    cancelAndIgnoreRemainingEvents()
+    @Test
+    fun `failed favorite addition keeps movies and publishes error`() =
+        verifyFavoriteChange(
+            initialFavorite = false,
+            failure = IllegalStateException("favorite failed"),
+            expectedMessage = Messages.Error("Failed to add Movie to favorite"),
+            expectedFavorite = false,
+        )
+
+    @Test
+    fun `failed favorite removal keeps movies and publishes error`() =
+        verifyFavoriteChange(
+            initialFavorite = true,
+            failure = IllegalStateException("favorite failed"),
+            expectedMessage = Messages.Error("Failed to remove Movie from favorite"),
+            expectedFavorite = true,
+        )
+
+    private fun verifyFavoriteChange(
+        initialFavorite: Boolean,
+        failure: Throwable?,
+        expectedMessage: Messages,
+        expectedFavorite: Boolean,
+    ) = runTest(mainCoroutinesTestRule.testDispatcher) {
+        val movie = MovieMother.createMovie(
+            id = 1,
+            title = "Movie",
+            overview = "Overview",
+            poster = "/poster.jpg",
+        ).copy(favorite = initialFavorite)
+        val repository = FakeMovieRepository(listOf(movie)).apply {
+            favoriteFailure = failure
+        }
+        val uiMovie = movie.asUiModel()
+
+        viewModelScenario { HomeComposeViewModel(repository) }.use { scenario ->
+            scenario.viewModel.state.test {
+                awaitItem()
+
+                scenario.viewModel.onFavorite(uiMovie)
+
+                var messageState = awaitItem()
+                if (messageState.successMessages == Messages.None &&
+                    messageState.errorMessages == Messages.None
+                ) {
+                    messageState = awaitItem()
                 }
+                assertEquals(
+                    listOf(uiMovie.copy(favorite = expectedFavorite)),
+                    messageState.movies,
+                )
+                when (expectedMessage) {
+                    is Messages.Success -> assertEquals(
+                        expectedMessage,
+                        messageState.successMessages,
+                    )
+
+                    is Messages.Error -> assertEquals(
+                        expectedMessage,
+                        messageState.errorMessages,
+                    )
+
+                    Messages.None -> error("A favorite operation must publish a message")
+                }
+                cancelAndIgnoreRemainingEvents()
             }
+        }
+
+        val storedMovie = repository.getAll().single()
+        if (expectedFavorite) {
+            assertTrue(storedMovie.favorite)
+        } else {
+            assertFalse(storedMovie.favorite)
         }
     }
 
-    @Test
-    fun `onFavorite should update state with success message when removing from favorite succeeds`() {
-        viewModelScenario { HomeComposeViewModel(movieRepository = movieRepository) }.use {
-            val dto = MovieMother.createMovie()
-            val movie = MovieUiModel(
-                id = dto.id,
-                title = dto.title,
-                imageUrl = dto.poster,
-                favorite = true
-            )
-            val viewModel = it.viewModel
-            runTest(mainCoroutinesTestRule.testDispatcher) {
-                viewModel.onFavorite(movie)
-                viewModel.state.test {
-                    awaitItem()
-                    assertEquals(
-                        Messages.Success("Remove ${movie.title} from favorite"),
-                        awaitItem().successMessages
-                    )
-                    cancelAndIgnoreRemainingEvents()
-                }
-            }
-        }
-    }
-
+    private fun Movie.asUiModel() = MovieUiModel(
+        id = id,
+        title = title,
+        imageUrl = poster,
+        favorite = favorite,
+    )
 }

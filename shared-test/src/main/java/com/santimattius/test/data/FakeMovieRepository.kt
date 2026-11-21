@@ -5,14 +5,15 @@ import com.santimattius.core.domain.repositories.MovieRepository
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.update
 
 /**
  * Hand-written [MovieRepository] backed by an in-memory list.
  *
- * [all] reflects favorite changes and successful refreshes. [refreshResult], [getAllFailure]
- * and the gates let a test script failures and hold calls open.
+ * [all] reflects favorite changes and successful refreshes. [refreshResult], [allFailure],
+ * [getAllFailure] and the gates let a test script failures and hold calls open.
  */
 class FakeMovieRepository(
     initialMovies: List<Movie> = MovieMother.createMovies().dtoToDomain(),
@@ -22,6 +23,12 @@ class FakeMovieRepository(
 
     /** Outcome of [refresh]; `null` succeeds with the current list. A success replaces the list. */
     var refreshResult: Result<List<Movie>>? = null
+
+    /** When set, [addToFavorite] and [removeFromFavorite] fail with it and leave the list unchanged. */
+    var favoriteFailure: Throwable? = null
+
+    /** When set, collecting [all] throws it before emitting movies. */
+    var allFailure: Throwable? = null
 
     /** When set, [getAll] throws it. */
     var getAllFailure: Throwable? = null
@@ -34,7 +41,10 @@ class FakeMovieRepository(
     @Volatile
     var getAllGate: CompletableDeferred<Unit>? = null
 
-    override val all: Flow<List<Movie>> = movies.asStateFlow()
+    override val all: Flow<List<Movie>> = flow {
+        allFailure?.let { throw it }
+        emitAll(movies)
+    }
 
     override suspend fun getAll(): List<Movie> {
         getAllGate?.await()
@@ -55,6 +65,7 @@ class FakeMovieRepository(
         setFavorite(movieId, false)
 
     private fun setFavorite(movieId: Long, favorite: Boolean): Result<Unit> {
+        favoriteFailure?.let { return Result.failure(it) }
         movies.update { current ->
             current.map { if (it.id == movieId) it.copy(favorite = favorite) else it }
         }
