@@ -31,7 +31,9 @@ class HomeViewModelFlowsTest {
 
             viewModelScenario { HomeComposeViewModel(repository) }.use { scenario ->
                 scenario.viewModel.state.test {
-                    assertEquals(HomeUiState(movies = movies.asUiModels()), awaitItem())
+                    var state = awaitItem()
+                    while (state.isLoading) state = awaitItem()
+                    assertEquals(HomeUiState(movies = movies.asUiModels()), state)
                     cancelAndIgnoreRemainingEvents()
                 }
             }
@@ -44,7 +46,8 @@ class HomeViewModelFlowsTest {
 
             viewModelScenario { HomeComposeViewModel(repository) }.use { scenario ->
                 scenario.viewModel.state.test {
-                    val loadedState = awaitItem()
+                    var loadedState = awaitItem()
+                    while (loadedState.isLoading) loadedState = awaitItem()
                     assertTrue(loadedState.isEmpty)
                     assertFalse(loadedState.isLoading)
                     cancelAndIgnoreRemainingEvents()
@@ -62,7 +65,10 @@ class HomeViewModelFlowsTest {
 
             viewModelScenario { HomeComposeViewModel(repository) }.use { scenario ->
                 scenario.viewModel.state.test {
-                    val errorState = awaitItem()
+                    var errorState = awaitItem()
+                    while (!errorState.loadingError || errorState.movies != movies.asUiModels()) {
+                        errorState = awaitItem()
+                    }
                     assertEquals(movies.asUiModels(), errorState.movies)
                     assertTrue(errorState.loadingError)
                     assertFalse(errorState.isLoading)
@@ -94,7 +100,8 @@ class HomeViewModelFlowsTest {
 
             viewModelScenario { HomeComposeViewModel(repository) }.use { scenario ->
                 scenario.viewModel.state.test {
-                    val errorState = awaitItem()
+                    var errorState = awaitItem()
+                    while (!errorState.loadingError) errorState = awaitItem()
                     assertTrue(errorState.loadingError)
                     assertFalse(errorState.isLoading)
                     assertTrue(errorState.movies.isEmpty())

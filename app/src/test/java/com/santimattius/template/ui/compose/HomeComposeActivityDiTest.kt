@@ -21,7 +21,6 @@ import com.santimattius.template.ui.rules.OkHttpComposeIdle
 import com.santimattius.template.ui.rules.RoomTestRule
 import com.santimattius.test.data.TheMovieDBServiceMother
 import com.santimattius.test.rules.FakeImageLoaderRule
-import com.santimattius.test.rules.MainCoroutinesTestRule
 import com.santimattius.test.rules.MockWebServerRule
 import org.junit.After
 import org.junit.Before
@@ -76,15 +75,9 @@ class HomeComposeActivityDiTest : KoinTest {
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    @get:Rule
-    val coroutinesTestRule = MainCoroutinesTestRule()
-
     @OptIn(ExperimentalTestApi::class)
     @get:Rule(order = 3)
-    val composeTestRule = createAndroidComposeRule(
-        HomeComposeActivity::class.java,
-        coroutinesTestRule.testDispatcher
-    )
+    val composeTestRule = createAndroidComposeRule(HomeComposeActivity::class.java)
 
     @Before
     fun setUp() {

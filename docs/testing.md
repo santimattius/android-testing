@@ -44,8 +44,15 @@ instrumented tests instead of unit tests.
   expensive work itself, it must move that work off the main thread and inject the dispatcher
   ([data-layer threading](https://developer.android.com/topic/architecture/data-layer#threading)).
 - **ViewModel-owned work.** ViewModels start screen business-logic coroutines and expose state;
-  inject their dispatcher for deterministic tests. Use `runTest` and test dispatchers sharing one
-  scheduler ([coroutine best practices](https://developer.android.com/kotlin/coroutines/coroutines-best-practices)).
+  inject their dispatcher for deterministic tests. `MainCoroutinesTestRule` defaults to a
+  `StandardTestDispatcher`: use `runTest` with its dispatcher and advance its scheduler at explicit
+  boundaries. Await observable emissions for external Room or network work rather than assuming
+  virtual-time advancement completes it. Callers can provide a different test dispatcher when needed
+  ([coroutine best practices](https://developer.android.com/kotlin/coroutines/coroutines-best-practices)).
+  Activity and fragment UI tests instead leave Main to the framework and use UI-test synchronization;
+  Android guidance says not to replace Main in instrumented tests and describes Compose/Espresso
+  synchronization in [behavior UI tests](https://developer.android.com/training/testing/ui-tests/behavior).
+  Robolectric UI tests follow the same framework-owned approach here.
 - **Cancellation is not a failure result.** Rethrow `CancellationException` when catching broad
   exceptions, so cancellation reaches the caller
   ([exception guidance](https://developer.android.com/kotlin/coroutines/coroutines-best-practices#watch-out-for-exceptions)).
