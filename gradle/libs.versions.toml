@@ -45,10 +45,8 @@ fragmentTesting = "1.8.9"
 espressoCore = "3.7.0"
 okhttp3IdlingResource = "1.0.0"
 
-mockk = "1.14.11"
 robolectric = "4.17"
 turbine = "1.2.1"
-mockitoKotlin = "6.4.0"
 
 [libraries]
 # Define the libraries
@@ -109,9 +107,6 @@ koin-android-test = { group = "io.insert-koin", name = "koin-android-test"}
 # Test
 junit = { module = "junit:junit", version.ref = "junit" }
 mockwebserver = { module = "com.squareup.okhttp3:mockwebserver", version.ref = "okHttp" }
-mockk-core = { module = "io.mockk:mockk", version.ref = "mockk" }
-mockk-android = { module = "io.mockk:mockk-android", version.ref = "mockk" }
-mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockitoKotlin" }
 robolectric-core = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
 robolectric-httpclient = { module = "org.robolectric:shadows-httpclient", version.ref = "robolectric" }
 androidx-core-ktx = { module = "androidx.test:core-ktx", version.ref = "coreKtxVersion" }
@@ -143,8 +138,8 @@ retrofit = ["retrofit-core", "retrofit-gson", "logging-interceptor"]
 serializable = ["gson-core"]
 
 robolectric = ["robolectric-core", "robolectric-httpclient"]
-unitTesting = ["core-testing", "mockwebserver", "coroutine-test", "junit", "mockk-core", "test-ext-ktx"]
-androidTesting = ["core-testing", "mockwebserver", "okHttp3-idling-resource", "junit", "mockk-android", "test-ext-ktx", "test-runner", "test-rule", "test-espresso", "test-espresso-contrib"]
+unitTesting = ["core-testing", "mockwebserver", "coroutine-test", "junit", "test-ext-ktx"]
+androidTesting = ["core-testing", "mockwebserver", "okHttp3-idling-resource", "junit", "test-ext-ktx", "test-runner", "test-rule", "test-espresso", "test-espresso-contrib"]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }

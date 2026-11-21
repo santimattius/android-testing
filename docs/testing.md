@@ -21,9 +21,9 @@ instrumented tests instead of unit tests.
 
 ## Conventions
 
-- **Prefer fakes over mocks.** `FakeMovieLocalDataSource` and `FakeMovieNetworkDataSource` in
-  `shared-test` behave like the real thing. `TMDbRepositoryUsingFakesTest` is the preferred style;
-  the Mockito and MockK variants are kept only to compare approaches
+- **Prefer fakes over mocks.** `FakeMovieLocalDataSource`, `FakeMovieNetworkDataSource` and
+  `FakeMovieRepository` in `shared-test` behave like the real thing. `TMDbRepositoryTest` shows the
+  preferred style; Mockito and MockK are deliberately not project dependencies
   ([test doubles](https://developer.android.com/training/testing/fundamentals/test-doubles)).
 - **Fakes publish immutable snapshots.** Collectors never see a list change after receiving it.
 - **Hermetic tests.** No test reaches the network. HTTP goes through `MockWebServerRule`, images
