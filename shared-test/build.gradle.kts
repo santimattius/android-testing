@@ -63,7 +63,10 @@ dependencies {
     implementation(libs.koin.test.core)
     implementation(libs.koin.android)
 
-    implementation(libs.bundles.unitTesting)
+    implementation(libs.junit)
+    implementation(libs.mockwebserver)
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.test.runner)
     implementation(libs.coil.core)
     implementation(libs.coil.test)
 

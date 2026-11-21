@@ -11,7 +11,6 @@ import com.santimattius.template.di.DataModule
 import com.santimattius.template.ui.di.FakeDataModule
 import com.santimattius.template.ui.xml.home.HomeViewActivity
 import com.santimattius.test.rules.FakeImageLoaderRule
-import com.santimattius.test.rules.MainCoroutinesTestRule
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -46,9 +45,6 @@ class HomeNavigationTest {
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
-
-    @get:Rule
-    val coroutinesTestRule = MainCoroutinesTestRule()
 
     @OptIn(ExperimentalTestApi::class)
     @Test

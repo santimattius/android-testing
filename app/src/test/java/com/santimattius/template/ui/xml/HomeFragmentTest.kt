@@ -10,7 +10,6 @@ import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.lifecycle.Lifecycle
 import com.santimattius.template.ui.xml.home.HomeFragment
 import com.santimattius.template.ui.xml.home.components.viewholders.MovieViewHolder
-import com.santimattius.test.rules.MainCoroutinesTestRule
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Rule
@@ -36,9 +35,6 @@ class HomeFragmentTest {
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
-
-    @get:Rule
-    val coroutinesTestRule = MainCoroutinesTestRule()
 
 
     @Test

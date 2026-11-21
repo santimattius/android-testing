@@ -21,9 +21,9 @@ instrumented tests instead of unit tests.
 
 ## Conventions
 
-- **Prefer fakes over mocks.** `FakeMovieLocalDataSource` and `FakeMovieNetworkDataSource` in
-  `shared-test` behave like the real thing. `TMDbRepositoryUsingFakesTest` is the preferred style;
-  the Mockito and MockK variants are kept only to compare approaches
+- **Prefer fakes over mocks.** `FakeMovieLocalDataSource`, `FakeMovieNetworkDataSource` and
+  `FakeMovieRepository` in `shared-test` behave like the real thing. `TMDbRepositoryTest` shows the
+  preferred style; Mockito and MockK are deliberately not project dependencies
   ([test doubles](https://developer.android.com/training/testing/fundamentals/test-doubles)).
 - **Fakes publish immutable snapshots.** Collectors never see a list change after receiving it.
 - **Hermetic tests.** No test reaches the network. HTTP goes through `MockWebServerRule`, images
@@ -36,6 +36,34 @@ instrumented tests instead of unit tests.
 - **Test the smallest UI contract.** Prefer a plain composable with state and callbacks over the
   full activity when only layout or a callback is under test.
 - **Fixtures.** Use `MovieMother` and `MovieBuilder` instead of inline JSON or repeated setup.
+
+## Coroutine and refresh decisions
+
+- **Main-safe data access.** Room DAO and Retrofit service calls use suspend APIs, so the data
+  sources do not inject a dispatcher just to call them. If a source later performs blocking or
+  expensive work itself, it must move that work off the main thread and inject the dispatcher
+  ([data-layer threading](https://developer.android.com/topic/architecture/data-layer#threading)).
+- **ViewModel-owned work.** ViewModels start screen business-logic coroutines and expose state;
+  inject their dispatcher for deterministic tests. `MainCoroutinesTestRule` defaults to a
+  `StandardTestDispatcher`: use `runTest` with its dispatcher and advance its scheduler at explicit
+  boundaries. Await observable emissions for external Room or network work rather than assuming
+  virtual-time advancement completes it. Callers can provide a different test dispatcher when needed
+  ([coroutine best practices](https://developer.android.com/kotlin/coroutines/coroutines-best-practices)).
+  Activity and fragment UI tests instead leave Main to the framework and use UI-test synchronization;
+  Android guidance says not to replace Main in instrumented tests and describes Compose/Espresso
+  synchronization in [behavior UI tests](https://developer.android.com/training/testing/ui-tests/behavior).
+  Robolectric UI tests follow the same framework-owned approach here.
+- **Cancellation is not a failure result.** Rethrow `CancellationException` when catching broad
+  exceptions, so cancellation reaches the caller
+  ([exception guidance](https://developer.android.com/kotlin/coroutines/coroutines-best-practices#watch-out-for-exceptions)).
+- **Refresh replaces; save adds.** The app atomically upserts incoming movies and deletes stale
+  entries in a Room 2 `@Transaction`, preserving favorites for matching IDs. An empty refresh
+  removes all cached entries; a failed transaction leaves the previous cache intact. Ordinary
+  `save` remains additive. This is the app's policy, not a universal Room requirement: Android's
+  [Room 2 guide](https://developer.android.com/training/data-storage/room/v2) shows `@Transaction`,
+  and its [network/database guide](https://developer.android.com/topic/libraries/architecture/paging/v3-network-db)
+  groups refresh database writes in a transaction for consistency. `RoomMovieRefreshTest` checks
+  replacement, favorite retention and rollback.
 
 ## Coverage
 

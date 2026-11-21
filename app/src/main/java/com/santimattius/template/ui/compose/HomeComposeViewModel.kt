@@ -7,12 +7,13 @@ import com.santimattius.template.ui.compose.models.HomeUiState
 import com.santimattius.template.ui.compose.models.Messages
 import com.santimattius.template.ui.models.MovieUiModel
 import com.santimattius.template.ui.models.mapping.asUiModels
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -21,45 +22,51 @@ import org.koin.core.annotation.KoinViewModel
 @KoinViewModel
 class HomeComposeViewModel(
     private val movieRepository: MovieRepository,
+    private val mainDispatcher: CoroutineDispatcher = Dispatchers.Main.immediate,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(HomeUiState(isLoading = true))
     val state: StateFlow<HomeUiState> = movieRepository.all.combine(_state) { movies, state ->
-        val newMovies = movies.asUiModels()
-        if (newMovies != state.movies) {
-            state.copy(movies = newMovies, isLoading = false)
-        } else {
-            state // Si no ha cambiado nada, retorna el mismo estado
-        }
-    }.onStart {
-        movieRepository.refresh().onFailure {
-            _state.update { state -> state.copy(isLoading = false, loadingError = true) }
-        }
+        state.copy(movies = movies.asUiModels(), isLoading = false)
     }.catch {
-        emit(HomeUiState(loadingError = true))
+        emit(_state.value.copy(isLoading = false, loadingError = true))
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = _state.value
+        initialValue = _state.value,
     )
 
+    init {
+        refresh()
+    }
+
+    private fun refresh() {
+        viewModelScope.launch(mainDispatcher) {
+            movieRepository.refresh().onFailure {
+                _state.update { state -> state.copy(isLoading = false, loadingError = true) }
+            }
+        }
+    }
+
     fun onFavorite(movie: MovieUiModel) {
-        viewModelScope.launch {
+        viewModelScope.launch(mainDispatcher) {
             val result = if (movie.favorite) {
                 movieRepository.removeFromFavorite(movie.id).fold(
                     onSuccess = {
                         Messages.Success("Remove ${movie.title} from favorite")
-                    }, onFailure = {
+                    },
+                    onFailure = {
                         Messages.Error("Failed to remove ${movie.title} from favorite")
-                    }
+                    },
                 )
             } else {
                 movieRepository.addToFavorite(movie.id).fold(
                     onSuccess = {
                         Messages.Success("Add ${movie.title}  to favorite")
-                    }, onFailure = {
+                    },
+                    onFailure = {
                         Messages.Error("Failed to add ${movie.title} to favorite")
-                    }
+                    },
                 )
             }
             when (result) {
@@ -71,8 +78,17 @@ class HomeComposeViewModel(
                     _state.update { it.copy(successMessages = result) }
                 }
 
-                Messages.None -> {}
+                Messages.None -> Unit
             }
+        }
+    }
+
+    fun onMessageConsumed() {
+        _state.update {
+            it.copy(
+                errorMessages = Messages.None,
+                successMessages = Messages.None,
+            )
         }
     }
 }
