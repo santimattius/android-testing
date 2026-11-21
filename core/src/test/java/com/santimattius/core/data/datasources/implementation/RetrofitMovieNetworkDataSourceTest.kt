@@ -7,7 +7,6 @@ import com.santimattius.core.data.models.Response
 import com.santimattius.test.data.TheMovieDBServiceMother
 import com.santimattius.test.rules.MockWebServerRule
 import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
@@ -33,28 +32,23 @@ class RetrofitMovieNetworkDataSourceTest {
     }
 
     @Test
-    fun validateSuccessResponse() {
-        //Give
+    fun validateSuccessResponse() = runTest {
         val response = TheMovieDBServiceMother.createPopularMovieResponse()
         mockWebServerRule.enqueue(response)
-        runBlocking {
-            //When
-            val result = dataSource.getPopularMovies()
-            //Then
-            assertThat(result.isSuccess, equalTo(true))
-        }
+
+        val result = dataSource.getPopularMovies()
+
+        assertThat(result.isSuccess, equalTo(true))
     }
 
     @Test
-    fun validateFailResponse() {
+    fun validateFailResponse() = runTest {
         val response = TheMovieDBServiceMother.createErrorResponse()
-
         mockWebServerRule.enqueue(response)
 
-        runBlocking {
-            val result = dataSource.getPopularMovies()
-            assertThat(result.isSuccess, equalTo(false))
-        }
+        val result = dataSource.getPopularMovies()
+
+        assertThat(result.isSuccess, equalTo(false))
     }
 
     @Test

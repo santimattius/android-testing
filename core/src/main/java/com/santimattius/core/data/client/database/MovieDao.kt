@@ -8,6 +8,8 @@ import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
 import com.santimattius.core.data.models.MovieEntity
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -56,7 +58,9 @@ interface MovieDao {
         upsert(movies)
         val incomingIds = movies.mapTo(mutableSetOf()) { it.id }
         getAll().filter { it.id !in incomingIds }.forEach { delete(it) }
-        return getAll()
+        val snapshot = getAll()
+        currentCoroutineContext().ensureActive()
+        return snapshot
     }
 
     @Transaction
