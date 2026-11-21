@@ -75,13 +75,16 @@ class HomeComposeViewModelTest {
 
         viewModelScenario { HomeComposeViewModel(repository) }.use { scenario ->
             scenario.viewModel.state.test {
-                awaitItem()
+                var initialState = awaitItem()
+                while (initialState.isLoading) initialState = awaitItem()
+                assertEquals(listOf(uiMovie), initialState.movies)
 
                 scenario.viewModel.onFavorite(uiMovie)
 
                 var messageState = awaitItem()
-                if (messageState.successMessages == Messages.None &&
-                    messageState.errorMessages == Messages.None
+                while ((messageState.successMessages == Messages.None &&
+                        messageState.errorMessages == Messages.None) ||
+                    messageState.movies != listOf(uiMovie.copy(favorite = expectedFavorite))
                 ) {
                     messageState = awaitItem()
                 }

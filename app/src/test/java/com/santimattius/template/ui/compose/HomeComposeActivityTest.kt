@@ -14,7 +14,6 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.runAndroidComposeUiTest
 import com.santimattius.test.rules.FakeImageLoaderRule
-import com.santimattius.test.rules.MainCoroutinesTestRule
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -42,9 +41,6 @@ class HomeComposeActivityTest {
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
-
-    @get:Rule
-    val coroutinesTestRule = MainCoroutinesTestRule()
 
     @OptIn(ExperimentalTestApi::class)
     @Test

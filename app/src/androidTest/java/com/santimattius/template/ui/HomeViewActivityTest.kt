@@ -18,7 +18,6 @@ import com.santimattius.template.ui.models.MovieUiModel
 import com.santimattius.template.ui.models.mapping.asUiModels
 import com.santimattius.template.ui.xml.home.HomeViewActivity
 import com.santimattius.test.data.MovieMother
-import com.santimattius.test.rules.MainCoroutinesTestRule
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -35,22 +34,19 @@ class HomeViewActivityTest {
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    @get:Rule(order = 1)
-    val coroutinesTestRule = MainCoroutinesTestRule()
-
     @Test
     fun showsTitleOfImageIfThereAreImages() {
         val pictures = MovieMother.createDomainMovies()
 
-        ActivityScenario.launch(HomeViewActivity::class.java)
-
-        RecyclerViewInteraction.onRecyclerView<MovieUiModel>(withId(R.id.grid_of_movies))
-            .withItems(pictures.asUiModels())
-            .check { picture, view, exception ->
-                matches(hasDescendant(withContentDescription(picture.title))).check(
-                    view,
-                    exception
-                )
-            }
+        ActivityScenario.launch(HomeViewActivity::class.java).use {
+            RecyclerViewInteraction.onRecyclerView<MovieUiModel>(withId(R.id.grid_of_movies))
+                .withItems(pictures.asUiModels())
+                .check { picture, view, exception ->
+                    matches(hasDescendant(withContentDescription(picture.title))).check(
+                        view,
+                        exception
+                    )
+                }
+        }
     }
 }

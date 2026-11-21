@@ -12,7 +12,6 @@ import androidx.test.filters.MediumTest
 import com.santimattius.test.rules.FakeImageLoaderRule
 import com.santimattius.test.rules.KoinAndroidTestRule
 import com.santimattius.template.ui.compose.HomeComposeActivity
-import com.santimattius.test.rules.MainCoroutinesTestRule
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -30,9 +29,6 @@ class HomeComposeActivityTest {
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
-
-    @get:Rule(order = 1)
-    val coroutinesTestRule = MainCoroutinesTestRule()
 
     @get:Rule(order = 2)
     val fakeImageLoaderRule = FakeImageLoaderRule()
