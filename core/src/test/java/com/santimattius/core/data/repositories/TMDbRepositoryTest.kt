@@ -7,6 +7,7 @@ import com.santimattius.test.data.FakeMovieLocalDataSource
 import com.santimattius.test.data.FakeMovieNetworkDataSource
 import com.santimattius.test.data.MovieMother
 import com.santimattius.test.data.dtoToDomain
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
@@ -114,6 +115,29 @@ class TMDbRepositoryTest {
             assertSame(cause, outcome.exceptionOrNull())
         }
 
+    @Test
+    fun `given local save failure when getAll then preserves failure and leaves cache empty`() = runTest {
+        val cause = IOException("disk full")
+        network.enqueueSuccess(movies)
+        local.failure = cause
+
+        val outcome = runCatching { repository.getAll() }
+
+        assertSame(cause, outcome.exceptionOrNull())
+        assertEquals(emptyList<MovieEntity>(), storedMovies())
+    }
+
+    @Test
+    fun `given network cancellation result when getAll then rethrows it and leaves cache empty`() = runTest {
+        val cancellation = CancellationException("cancelled")
+        network.enqueueFailure(cancellation)
+
+        val outcome = runCatching { repository.getAll() }
+
+        assertSame(cancellation, outcome.exceptionOrNull())
+        assertEquals(emptyList<MovieEntity>(), storedMovies())
+    }
+
     // endregion
 
     // region refresh
@@ -144,6 +168,20 @@ class TMDbRepositoryTest {
         val result = repository.refresh()
 
         assertSame(cause, result.exceptionOrNull())
+    }
+
+    @Test
+    fun `given network cancellation result when refresh then rethrows it and preserves cache`() = runTest {
+        local.save(listOf(firstMovie).dtoToEntity()).getOrThrow()
+        local.addToFavorite(firstMovie.id).getOrThrow()
+        val before = storedMovies()
+        val cancellation = CancellationException("cancelled")
+        network.enqueueFailure(cancellation)
+
+        val outcome = runCatching { repository.refresh() }
+
+        assertSame(cancellation, outcome.exceptionOrNull())
+        assertEquals(before, storedMovies())
     }
 
     @Test
