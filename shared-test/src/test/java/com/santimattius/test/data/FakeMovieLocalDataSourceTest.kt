@@ -2,6 +2,7 @@ package com.santimattius.test.data
 
 import com.santimattius.core.data.datasources.implementation.MovieNoExists
 import com.santimattius.core.data.models.MovieEntity
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.drop
@@ -64,6 +65,55 @@ class FakeMovieLocalDataSourceTest {
 
         assertTrue(result.getOrThrow())
         assertEquals(listOf(movie(1)), dataSource.getAll())
+    }
+
+    @Test
+    fun replacementRetainsFavoritesRemovesStaleAndPublishesSnapshot() = runTest {
+        dataSource.save(listOf(movie(1, favorite = true), movie(2)))
+        val before = dataSource.all.first()
+        val next = async(start = CoroutineStart.UNDISPATCHED) { dataSource.all.drop(1).first() }
+        val incoming = mutableListOf(movie(1, title = "Updated"), movie(3))
+
+        val result = dataSource.replace(incoming).getOrThrow()
+        incoming.clear()
+
+        val expected = listOf(movie(1, favorite = true, title = "Updated"), movie(3))
+        assertEquals(expected, result)
+        assertEquals(expected, next.await())
+        assertEquals(expected, dataSource.getAll())
+        assertEquals(listOf(movie(1, favorite = true), movie(2)), before)
+    }
+
+    @Test
+    fun emptyReplacementClearsStoredMovies() = runTest {
+        dataSource.save(listOf(movie(1)))
+
+        assertEquals(emptyList<MovieEntity>(), dataSource.replace(emptyList()).getOrThrow())
+        assertTrue(dataSource.isEmpty())
+        assertEquals(emptyList<MovieEntity>(), dataSource.all.first())
+    }
+
+    @Test
+    fun replacementFailureAndCancellationLeavePublicStateUnchanged() = runTest {
+        dataSource.save(listOf(movie(1, favorite = true), movie(2)))
+        val before = dataSource.all.first()
+        val failure = IllegalStateException("disk down")
+        dataSource.failure = failure
+        assertSame(failure, dataSource.replace(listOf(movie(1, title = "Changed"))).exceptionOrNull())
+        assertEquals(before, dataSource.getAll())
+        assertEquals(before, dataSource.all.first())
+
+        val cancellation = CancellationException("cancelled")
+        dataSource.failure = cancellation
+        val thrown = try {
+            dataSource.replace(emptyList())
+            null
+        } catch (actual: CancellationException) {
+            actual
+        }
+        assertSame(cancellation, thrown)
+        assertEquals(before, dataSource.getAll())
+        assertEquals(before, dataSource.all.first())
     }
 
     @Test
