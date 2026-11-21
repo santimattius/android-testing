@@ -2,11 +2,13 @@ package com.santimattius.template.ui.xml.home
 
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.santimattius.template.R
 
 class HomeViewActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -15,7 +17,7 @@ class HomeViewActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
-                onBackPressed()
+                onBackPressedDispatcher.onBackPressed()
                 true
             }
 

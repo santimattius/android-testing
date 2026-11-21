@@ -6,7 +6,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.runAndroidComposeUiTest
+import androidx.compose.ui.test.v2.runAndroidComposeUiTest
 import com.santimattius.template.di.DataModule
 import com.santimattius.template.ui.di.FakeDataModule
 import com.santimattius.template.ui.xml.home.HomeViewActivity
