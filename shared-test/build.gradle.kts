@@ -70,6 +70,10 @@ dependencies {
     implementation(libs.coil.core)
     implementation(libs.coil.test)
 
+    // Screen robots only. compileOnly keeps Compose off the classpath of consumers without UI.
+    compileOnly(platform(libs.compose.bom))
+    compileOnly(libs.compose.ui.test.junit)
+
     androidTestImplementation(libs.test.runner)
     androidTestImplementation(libs.test.ext)
     androidTestImplementation(libs.junit)
