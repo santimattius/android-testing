@@ -1,6 +1,7 @@
 package com.santimattius.test.compose
 
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
@@ -20,6 +21,24 @@ class HomeRobot(private val composeTestRule: ComposeTestRule) {
 
     fun tapEnableNotifications() {
         composeTestRule.onNodeWithContentDescription("Enable notifications").performClick()
+    }
+
+    fun closeMovieDetail() {
+        composeTestRule.onNodeWithText("Cerrar").performClick()
+    }
+
+    fun assertMovieDetailDisplayed(title: String) {
+        composeTestRule.onNodeWithTag("movie_detail_title")
+            .assertIsDisplayed()
+            .assertTextEquals(title)
+    }
+
+    fun assertNoMovieDetail() {
+        composeTestRule.onNodeWithTag("movie_detail_title").assertDoesNotExist()
+    }
+
+    fun assertMovieListed(title: String) {
+        composeTestRule.onNodeWithTag("card_$title").assertExists()
     }
 
     fun assertLoadingDisplayed() {

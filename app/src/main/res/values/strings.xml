@@ -13,5 +13,6 @@
     <string name="message_notifications_granted">Notificaciones activadas</string>
     <string name="message_notifications_denied">Permiso de notificaciones denegado</string>
     <string name="message_notifications_disabled">Las notificaciones están desactivadas en los ajustes</string>
+    <string name="button_text_close">Cerrar</string>
 
 </resources>
