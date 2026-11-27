@@ -6,18 +6,18 @@ deterministic tests and fewer larger ones, as in the
 
 ## Test layers
 
-| Layer | Where | Runs on | What it proves |
-|---|---|---|---|
-| Local unit | `*/src/test` | JVM | Logic of repositories, data sources, view models and fakes |
-| Local integration | `*/src/test` | JVM (Robolectric, MockWebServer) | Several real classes together, such as repository plus fake sources or Room |
-| Component UI | `app/src/androidTest` (`HomeScreenContentTest`) | Device | One composable rendered from controlled state |
-| Instrumented integration | `app/src/androidTest` (activity tests) | Device | Activity, DI wiring and UI together, with fake data sources |
-| Device-backed data | `core/src/androidTest` (`MovieDaoTest`) | Device | Room queries against a real SQLite database |
+| Layer                    | Where                                           | Runs on                          | What it proves                                                              |
+|--------------------------|-------------------------------------------------|----------------------------------|-----------------------------------------------------------------------------|
+| Local unit               | `*/src/test`                                    | JVM                              | Logic of repositories, data sources, view models and fakes                  |
+| Local integration        | `*/src/test`                                    | JVM (Robolectric, MockWebServer) | Several real classes together, such as repository plus fake sources or Room |
+| Component UI             | `app/src/sharedTest` (`HomeScreenContent*`)     | JVM and device                   | One composable rendered from controlled state                               |
+| Instrumented integration | `app/src/androidTest` (activity tests)          | Device                           | Activity, DI wiring and UI together, with fake data sources                 |
+| Device-backed data       | `core/src/androidTest` (`MovieDaoTest`)         | Device                           | Room queries against a real SQLite database                                 |
 
 Pick the lowest layer that can prove the behavior
 ([what to test](https://developer.android.com/training/testing/fundamentals/what-to-test)).
-Framework entry points such as activities hold no business logic, so they are covered by
-instrumented tests instead of unit tests.
+Framework entry points such as activities hold no business logic, so they are covered by UI tests
+(instrumented or Robolectric) instead of plain unit tests.
 
 ## Conventions
 
@@ -27,7 +27,8 @@ instrumented tests instead of unit tests.
   ([test doubles](https://developer.android.com/training/testing/fundamentals/test-doubles)).
 - **Fakes publish immutable snapshots.** Collectors never see a list change after receiving it.
 - **Hermetic tests.** No test reaches the network. HTTP goes through `MockWebServerRule`, images
-  through `FakeImageLoaderRule` (`coil-test`, shared by unit and instrumented tests), and the app graph through `FakeDataModule`.
+  through `FakeImageLoaderRule` (`coil-test`, shared by unit and instrumented tests), and the app
+  graph through `FakeDataModule`.
 - **Never swallow cancellation.** Code that catches `Throwable` must rethrow
   `CancellationException`; `RetrofitMovieNetworkDataSourceTest` guards this.
 - **No sleeps.** Wait for a condition, not for time. Compose tests that show the loading spinner
@@ -36,6 +37,27 @@ instrumented tests instead of unit tests.
 - **Test the smallest UI contract.** Prefer a plain composable with state and callbacks over the
   full activity when only layout or a callback is under test.
 - **Fixtures.** Use `MovieMother` and `MovieBuilder` instead of inline JSON or repeated setup.
+
+## Screen robots and scenarios
+
+- **Robot.** `HomeRobot` (`shared-test`) finds and drives home screen nodes through semantics. It
+  does not know how the screen is hosted, so `shared-test` does not depend on `app`. Compose test is
+  `compileOnly` there: a module that uses the robot must declare `ui-test-junit4` itself.
+- **Scenario DSL.** `scenario(robot) { given { } whenever { } then { } }` only names the steps; each
+  block runs immediately. `ScenarioTest` and `HomeRobotTest` guard that a wrong expectation fails.
+- **Shared cases.** `HomeScreenContentScenarios` (`app/src/sharedTest`) is written once.
+  `HomeScreenContentTest` in `app/src/test` and `app/src/androidTest` only choose the runner.
+- **Feature files.** `docs/features/*.feature` are living documentation with `@P1`/`@P2` tags. No
+  runner executes them, so keep scenario titles equal to test names by hand.
+
+## System interactions
+
+- **Runtime permissions.** `HomeNotificationPermissionTest` checks that the request is launched and
+  how the screen reacts to each answer, using Robolectric. It never drives the system dialog. Below
+  Android 13 there is nothing to request, so the app reports whether notifications are enabled.
+- **Deep links.** `HomeMovieDeepLinkTest` launches `androidtesting://movies/{id}` with
+  `ActivityScenario`. The activity is exported, so every part of the link is validated, and links
+  replayed from Recents are ignored.
 
 ## Coroutine and refresh decisions
 
@@ -49,9 +71,11 @@ instrumented tests instead of unit tests.
   boundaries. Await observable emissions for external Room or network work rather than assuming
   virtual-time advancement completes it. Callers can provide a different test dispatcher when needed
   ([coroutine best practices](https://developer.android.com/kotlin/coroutines/coroutines-best-practices)).
-  Activity and fragment UI tests instead leave Main to the framework and use UI-test synchronization;
+  Activity and fragment UI tests instead leave Main to the framework and use UI-test
+  synchronization;
   Android guidance says not to replace Main in instrumented tests and describes Compose/Espresso
-  synchronization in [behavior UI tests](https://developer.android.com/training/testing/ui-tests/behavior).
+  synchronization
+  in [behavior UI tests](https://developer.android.com/training/testing/ui-tests/behavior).
   Robolectric UI tests follow the same framework-owned approach here.
 - **Cancellation is not a failure result.** Rethrow `CancellationException` when catching broad
   exceptions, so cancellation reaches the caller
@@ -61,7 +85,8 @@ instrumented tests instead of unit tests.
   removes all cached entries; a failed transaction leaves the previous cache intact. Ordinary
   `save` remains additive. This is the app's policy, not a universal Room requirement: Android's
   [Room 2 guide](https://developer.android.com/training/data-storage/room/v2) shows `@Transaction`,
-  and its [network/database guide](https://developer.android.com/topic/libraries/architecture/paging/v3-network-db)
+  and
+  its [network/database guide](https://developer.android.com/topic/libraries/architecture/paging/v3-network-db)
   groups refresh database writes in a transaction for consistency. `RoomMovieRefreshTest` checks
   replacement, favorite retention and rollback.
 
@@ -69,7 +94,8 @@ instrumented tests instead of unit tests.
 
 Coverage uses AGP's built-in reports (`enableUnitTestCoverage`, `enableAndroidTestCoverage`).
 Unit and instrumented coverage are tracked **separately**, because instrumented tests have different
-goals ([CI guidance](https://developer.android.com/training/testing/continuous-integration/automation)).
+goals
+([CI guidance](https://developer.android.com/training/testing/continuous-integration/automation)).
 
 ```shell
 ./gradlew createDebugUnitTestCoverageReport      # build/reports/coverage/test/debug
@@ -91,7 +117,8 @@ not the absolute number.
 - Tests run under Android Test Orchestrator, so each test has its own `Instrumentation` and a crash
   does not stop the suite. `clearPackageData` is intentionally **not** set: it deletes the coverage
   data from the device.
-- `pixel9api35` is a [Gradle-managed device](https://developer.android.com/studio/test/gradle-managed-devices)
+- `pixel9api35` is
+  a [Gradle-managed device](https://developer.android.com/studio/test/gradle-managed-devices)
   (Pixel 9, API 35, `aosp-atd` image), so no emulator has to be started by hand.
 - Room is tested on a device in `MovieDaoTest` with an in-memory database.
 
@@ -99,11 +126,11 @@ not the absolute number.
 
 Defined in `.github/workflows/main.yml`:
 
-| Job | When | What |
-|---|---|---|
-| Detekt | Pull requests and `master` | Static analysis |
-| Unit tests, lint and coverage | Pull requests and `master` | `test lint`, coverage report, regression check |
-| Instrumented tests | `master`, nightly, manual | `pixel9api35DebugAndroidTest` with KVM and a software GPU |
+| Job                           | When                       | What                                                      |
+|-------------------------------|----------------------------|-----------------------------------------------------------|
+| Detekt                        | Pull requests and `master` | Static analysis                                           |
+| Unit tests, lint and coverage | Pull requests and `master` | `test lint`, coverage report, regression check            |
+| Instrumented tests            | `master`, nightly, manual  | `pixel9api35DebugAndroidTest` with KVM and a software GPU |
 
 Small tests run on every change; slower device tests run less often. Reports are uploaded as build
 artifacts.
@@ -116,3 +143,7 @@ artifacts.
   rather than `connected/`, so the regression check does not read them yet.
 - Activity and fragment tests exist both under Robolectric (`app/src/test`) and as instrumented
   tests (`app/src/androidTest`).
+- The notification permission and deep link behavior is covered only under Robolectric. The system
+  dialog, a link opened from another app and a real relaunch from Recents are not verified on a
+  device.
+- After a permanent permission denial the app offers no route to system settings.
