@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Android
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -65,6 +66,7 @@ fun HomeRoute(
     viewModel: HomeComposeViewModel = koinViewModel()
 ) {
     val snackBarHostState = remember { SnackbarHostState() }
+    val enableNotifications = rememberEnableNotificationsAction(snackBarHostState)
     Scaffold(
         snackbarHost = { CustomSnackBarHost(snackBarHostState) },
         topBar = {
@@ -72,6 +74,13 @@ fun HomeRoute(
             AppBar(
                 title = stringResource(id = R.string.title_activity_home_compose),
                 actions = {
+                    AppBarIcon(
+                        navIcon = AppBarIconModel(
+                            icon = Icons.Default.Notifications,
+                            contentDescription = stringResource(R.string.action_enable_notifications),
+                            action = enableNotifications,
+                        ),
+                    )
                     AppBarIcon(
                         navIcon = AppBarIconModel(
                             icon = Icons.Default.Android,

@@ -2,6 +2,7 @@ package com.santimattius.test.compose
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.ComposeTestRule
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -15,6 +16,10 @@ import androidx.compose.ui.test.performClick
 class HomeRobot(private val composeTestRule: ComposeTestRule) {
     fun tapFavorite(title: String) {
         composeTestRule.onNodeWithTag("favorite_$title").performClick()
+    }
+
+    fun tapEnableNotifications() {
+        composeTestRule.onNodeWithContentDescription("Enable notifications").performClick()
     }
 
     fun assertLoadingDisplayed() {
