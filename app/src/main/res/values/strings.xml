@@ -9,5 +9,10 @@
     <string name="title_activity_home_compose">Example Compose</string>
     <string name="action_open_views_screen">Open the Views version</string>
     <string name="title_activity_home_view">Example View</string>
+    <string name="action_enable_notifications">Enable notifications</string>
+    <string name="message_notifications_granted">Notificaciones activadas</string>
+    <string name="message_notifications_denied">Permiso de notificaciones denegado</string>
+    <string name="message_notifications_disabled">Las notificaciones están desactivadas en los ajustes</string>
+    <string name="button_text_close">Cerrar</string>
 
 </resources>

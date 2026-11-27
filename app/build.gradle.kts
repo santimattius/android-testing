@@ -72,6 +72,13 @@ android {
         buildConfig = true
     }
 
+    // UI scenarios that run both on the JVM (Robolectric) and on a device.
+    sourceSets {
+        listOf("test", "androidTest").forEach { name ->
+            getByName(name).kotlin.directories += "src/sharedTest/java"
+        }
+    }
+
     packaging {
         resources {
             excludes.add("/META-INF/{AL2.0,LGPL2.1}")
