@@ -21,7 +21,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
@@ -34,6 +36,7 @@ import com.santimattius.template.ui.compose.ui.components.AppBar
 import com.santimattius.template.ui.compose.ui.components.AppBarIcon
 import com.santimattius.template.ui.compose.ui.components.AppBarIconModel
 import com.santimattius.template.ui.compose.ui.components.Center
+import com.santimattius.template.ui.compose.ui.components.MovieDetailDialog
 import com.santimattius.template.ui.compose.ui.components.MoviesGrid
 import com.santimattius.template.ui.compose.ui.components.MoviesGridAction
 import com.santimattius.template.ui.compose.ui.components.snackbar.CustomSnackBarHost
@@ -45,24 +48,53 @@ import org.koin.androidx.compose.koinViewModel
 
 class HomeComposeActivity : ComponentActivity() {
 
+    /** Movie requested through a deep link whose detail has not been dismissed yet. */
+    private var linkedMovieId by mutableStateOf<Long?>(null)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        // After a recreation the saved value wins, so a dismissed detail is not shown again.
+        linkedMovieId = if (savedInstanceState == null) {
+            intent.linkedMovieId()
+        } else {
+            savedInstanceState.getString(STATE_LINKED_MOVIE_ID)?.toLong()
+        }
         setContent {
             AndroidTestingTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    HomeRoute()
+                    HomeRoute(
+                        linkedMovieId = linkedMovieId,
+                        onLinkedMovieDismissed = { linkedMovieId = null },
+                    )
                 }
             }
         }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        // Intents without a movie link, such as the launcher's, keep the current detail.
+        intent.linkedMovieId()?.let { linkedMovieId = it }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(STATE_LINKED_MOVIE_ID, linkedMovieId?.toString())
+    }
+
+    private companion object {
+        const val STATE_LINKED_MOVIE_ID = "linked_movie_id"
     }
 }
 
 @Composable
 fun HomeRoute(
+    linkedMovieId: Long? = null,
+    onLinkedMovieDismissed: () -> Unit = {},
     viewModel: HomeComposeViewModel = koinViewModel()
 ) {
     val snackBarHostState = remember { SnackbarHostState() }
@@ -111,6 +143,10 @@ fun HomeRoute(
                         viewModel.onFavorite(action.movie)
                     }
                 }
+            }
+            // Shows nothing until the cache contains the movie, and nothing for unknown ids.
+            state.movies.firstOrNull { it.id == linkedMovieId }?.let { movie ->
+                MovieDetailDialog(movie = movie, onDismiss = onLinkedMovieDismissed)
             }
             LaunchedEffect(state.successMessages, state.errorMessages) {
                 when {
