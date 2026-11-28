@@ -70,6 +70,15 @@ jobs:
           java-version: '17'
           cache: gradle
 
+      # Robolectric downloads one Android image per tested SDK into the local Maven repository,
+      # which the Gradle cache above does not cover.
+      - name: Cache Robolectric artifacts
+        uses: actions/cache@v6
+        with:
+          path: ~/.m2/repository/org/robolectric
+          key: robolectric-${{ runner.os }}-${{ hashFiles('gradle/libs.versions.toml', '**/src/test/**/*.kt') }}
+          restore-keys: robolectric-${{ runner.os }}-
+
       - name: Setup API Key
         env:
           APIKEY: ${{ secrets.APIKEY }}
